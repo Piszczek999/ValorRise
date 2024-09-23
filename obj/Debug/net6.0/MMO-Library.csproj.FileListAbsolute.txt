@@ -1,0 +1,12 @@
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\bin\Debug\net6.0\MMO-Library.deps.json
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\bin\Debug\net6.0\MMO-Library.dll
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\bin\Debug\net6.0\MMO-Library.pdb
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.csproj.AssemblyReference.cache
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.AssemblyInfoInputs.cache
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.AssemblyInfo.cs
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.csproj.CoreCompileInputs.cache
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.dll
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\refint\MMO-Library.dll
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\MMO-Library.pdb
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\net6.0\ref\MMO-Library.dll

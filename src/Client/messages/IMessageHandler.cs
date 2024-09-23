@@ -1,0 +1,7 @@
+namespace MMO_Library.Client;
+using Riptide;
+
+internal interface IMessageHandler
+{
+    void HandleMessage(Message message);
+}

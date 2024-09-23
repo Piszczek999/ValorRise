@@ -1,0 +1,5 @@
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\netstandard2.0\MMO-Library.csproj.AssemblyReference.cache
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\netstandard2.0\MMO-Library.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\netstandard2.0\MMO-Library.AssemblyInfoInputs.cache
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\netstandard2.0\MMO-Library.AssemblyInfo.cs
+C:\Users\ognis\OneDrive\CS Projects\MMO-Library\obj\Debug\netstandard2.0\MMO-Library.csproj.CoreCompileInputs.cache
