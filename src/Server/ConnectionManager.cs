@@ -4,9 +4,9 @@ public class ConnectionManager
 {
     private readonly Dictionary<ushort, Connection> _connections = new();
 
-    public void AddConnection(ushort connectionId, Connection connection)
+    public void AddConnection(Riptide.Connection connection)
     {
-        _connections[connectionId] = connection;
+        _connections[connection.Id] = new Connection(connection);
     }
 
     public void RemoveConnection(ushort connectionId)

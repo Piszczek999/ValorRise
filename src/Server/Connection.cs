@@ -1,10 +1,18 @@
 namespace MMO_Library.Server;
 
+using MongoDB.Bson;
 using Riptide;
 
-public class Connection
+public interface IConnection
+{
+    void Send(Message message);
+    void Disconnect();
+}
+
+public class Connection : IConnection
 {
     private Riptide.Connection _connection;
+    public ObjectId UserId { get; set; }
 
     public Connection(Riptide.Connection connection)
     {
@@ -18,6 +26,6 @@ public class Connection
 
     public void Disconnect()
     {
-        _connection.TimeoutTime = 0;
+        _connection.Disconnect();
     }
 }

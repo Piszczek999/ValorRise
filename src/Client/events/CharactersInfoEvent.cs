@@ -1,14 +1,14 @@
-namespace MMO_Library.Server;
+namespace MMO_Library.Client;
 
 public class CharactersInfoEvent : EventArgs
 {
-    public Connection Connection { get; }
+    public ushort ClientId { get; }
     public byte Count { get; }
     public CharacterInfo[] Characters { get; }
 
-    public CharactersInfoEvent(Connection client, byte count, CharacterInfo[] characters)
+    public CharactersInfoEvent(ushort clientId, byte count, CharacterInfo[] characters)
     {
-        Connection = client;
+        ClientId = clientId;
         Count = count;
         Characters = characters;
     }

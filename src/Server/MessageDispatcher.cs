@@ -1,7 +1,7 @@
 namespace MMO_Library.Server;
 using Riptide;
 
-public class MessageDispatcher
+internal class MessageDispatcher
 {
     private readonly Dictionary<ushort, IMessageHandler> _messageHandlers;
     private readonly EventBus _eventBus;

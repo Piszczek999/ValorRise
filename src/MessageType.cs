@@ -26,8 +26,8 @@ public static class MessageType
     CharactersInfo,
     NewCharacterRequest,
     NewCharacterResponse,
-    SelectCharacterRequest,
-    SelectCharacterResponse
+    CharacterSelectRequest,
+    CharacterSelectResponse
   }
   public enum ToAuthenticate : ushort
   {

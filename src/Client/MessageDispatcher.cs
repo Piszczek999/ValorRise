@@ -1,7 +1,7 @@
 namespace MMO_Library.Client;
 using Riptide;
 
-public class MessageDispatcher
+internal class MessageDispatcher
 {
     private readonly Dictionary<ushort, IMessageHandler> _messageHandlers;
     private readonly EventBus _eventBus;
@@ -13,6 +13,9 @@ public class MessageDispatcher
         {
             {(ushort)MessageType.ToGateway.LoginResponse, new LoginResponseMessageHandler(_eventBus)},
             {(ushort)MessageType.ToGateway.RegisterResponse, new RegisterResponseMessageHandler(_eventBus)},
+            {(ushort)MessageType.ToGateway.NewCharacterResponse, new NewCharacterResponseMessageHandler(_eventBus)},
+            {(ushort)MessageType.ToGateway.CharacterSelectResponse, new CharacterSelectResponseMessageHandler(_eventBus)},
+            {(ushort)MessageType.ToGateway.CharactersInfo, new CharactersInfoMessageHandler(_eventBus)},
         };
     }
 

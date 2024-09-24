@@ -1,11 +1,11 @@
 namespace MMO_Library.Client;
 using Riptide;
 
-internal class SelectCharacterResponseMessageHandler : IMessageHandler
+internal class CharacterSelectResponseMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
 
-    public SelectCharacterResponseMessageHandler(EventBus eventBus)
+    public CharacterSelectResponseMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
     }

@@ -20,9 +20,9 @@ public class Client
         _dispatcher = new MessageDispatcher(_eventBus);
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
-        _client.Connected += (s, e) => Connected.Invoke(this, e);
-        _client.Disconnected += (s, e) => Disonnected.Invoke(this, e);
-        _client.ConnectionFailed += (s, e) => ConnectionFailed.Invoke(this, e); ;
+        _client.Connected += (s, e) => Connected?.Invoke(this, e);
+        _client.Disconnected += (s, e) => Disonnected?.Invoke(this, e);
+        _client.ConnectionFailed += (s, e) => ConnectionFailed?.Invoke(this, e);
     }
 
     public void Connect(string address, ushort port)

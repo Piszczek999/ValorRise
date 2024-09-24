@@ -5,6 +5,7 @@ public class Server
 {
     private readonly Riptide.Server _server;
     private readonly ConnectionManager _connectionManager;
+    private readonly EntityManager _entityManager;
     private readonly MessageDispatcher _dispatcher;
     private readonly EventBus _eventBus;
 
@@ -13,6 +14,7 @@ public class Server
 
     public ConnectionManager ConnectionManager { get => _connectionManager; }
     public EventBus EventBus { get => _eventBus; }
+    public EntityManager EntityManager { get => _entityManager; }
 
     public Server()
     {
@@ -20,10 +22,13 @@ public class Server
         _eventBus = new EventBus();
         _connectionManager = new ConnectionManager();
         _dispatcher = new MessageDispatcher(_eventBus, _connectionManager);
+        _entityManager = new EntityManager();
 
         _server.MessageReceived += (s, e) => _dispatcher.Dispatch(e.FromConnection.Id, e.Message, e.MessageId);
-        _server.ClientConnected += (s, e) => ClientConnected.Invoke(this, e);
-        _server.ClientDisconnected += (s, e) => ClientDisconnected.Invoke(this, e);
+        _server.ClientConnected += (s, e) => _connectionManager.AddConnection(e.Client);
+        _server.ClientDisconnected += (s, e) => _connectionManager.RemoveConnection(e.Client.Id);
+        _server.ClientConnected += (s, e) => ClientConnected?.Invoke(this, e);
+        _server.ClientDisconnected += (s, e) => ClientDisconnected?.Invoke(this, e);
     }
 
     public void Start(ushort port, ushort maxClients)
