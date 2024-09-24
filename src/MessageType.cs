@@ -4,11 +4,11 @@ public static class MessageType
 {
   public enum ToClient : ushort
   {
-    LoginResponse,
-    RegisterResponse,
-    CharactersInfo,
-    NewCharacterResponse,
-    Character,
+    LoginResult,
+    RegisterResult,
+    CharactersInfoResult,
+    NewCharacterResult,
+    CharacterSelectResult,
     TokenRequest,
     TokenVerificationResult,
   }
@@ -23,7 +23,7 @@ public static class MessageType
     RegisterRequest,
     LoginResponse,
     RegisterResponse,
-    CharactersInfo,
+    CharactersInfoResponse,
     NewCharacterRequest,
     NewCharacterResponse,
     CharacterSelectRequest,
@@ -31,9 +31,9 @@ public static class MessageType
   }
   public enum ToAuthenticate : ushort
   {
-    LoginRequest,
-    RegisterRequest,
-    NewCharacterRequest,
-    CharacterSelectRequest
+    LoginAuthRequest,
+    RegisterAuthRequest,
+    NewCharacterAuthRequest,
+    CharacterSelectAuthRequest
   }
 }

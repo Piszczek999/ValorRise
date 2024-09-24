@@ -5,17 +5,21 @@ internal class MessageDispatcher
 {
     private readonly Dictionary<ushort, IMessageHandler> _messageHandlers;
     private readonly EventBus _eventBus;
-    private readonly ConnectionManager _connectionManager;
+    private readonly Server _server;
 
-    public MessageDispatcher(EventBus eventBus, ConnectionManager connectionManager)
+    public MessageDispatcher(EventBus eventBus, Server server)
     {
         _eventBus = eventBus;
-        _connectionManager = connectionManager;
+        _server = server;
 
         _messageHandlers = new()
         {
-            {(ushort)MessageType.ToGateway.LoginRequest, new LoginRequestMessageHandler(_eventBus, _connectionManager)},
-            {(ushort)MessageType.ToGateway.RegisterRequest, new RegisterRequestMessageHandler(_eventBus, _connectionManager)},
+            {(ushort)MessageType.ToGateway.LoginRequest, new LoginRequestMessageHandler(_eventBus, _server)},
+            {(ushort)MessageType.ToGateway.RegisterRequest, new RegisterRequestMessageHandler(_eventBus, _server)},
+            {(ushort)MessageType.ToGateway.NewCharacterRequest, new NewCharacterRequestMessageHandler(_eventBus, _server)},
+            {(ushort)MessageType.ToGateway.CharacterSelectRequest, new CharacterSelectRequestMessageHandler(_eventBus, _server)},
+
+            {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequestMessageHandler(_eventBus, _server)},
         };
     }
 

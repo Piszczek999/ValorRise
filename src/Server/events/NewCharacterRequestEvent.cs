@@ -1,3 +1,5 @@
+using Riptide;
+
 namespace MMO_Library.Server;
 
 public class NewCharacterRequestEvent : EventArgs

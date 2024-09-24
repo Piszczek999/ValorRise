@@ -1,19 +1,18 @@
 namespace MMO_Library.Client;
-
+using MongoDB.Bson;
 using Riptide;
 
-internal class CharactersInfoResponseMessageHandler : IMessageHandler
+internal class CharactersInfoResultMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
 
-    public CharactersInfoResponseMessageHandler(EventBus eventBus)
+    public CharactersInfoResultMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
     }
 
     public void HandleMessage(Message message)
     {
-        ushort clientId = message.GetUShort();
         byte count = message.GetByte();
         CharacterInfo[] characters = new CharacterInfo[count];
         for (int i = 0; i < count; i++)
@@ -21,7 +20,7 @@ internal class CharactersInfoResponseMessageHandler : IMessageHandler
             characters[i] = message.GetCharacterInfo();
         }
 
-        var args = new CharactersInfoEvent(clientId, count, characters);
+        var args = new CharactersInfoResultEvent(count, characters);
         _eventBus.Publish(args);
     }
 }

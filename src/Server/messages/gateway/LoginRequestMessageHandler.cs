@@ -4,12 +4,12 @@ using Riptide;
 internal class LoginRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly ConnectionManager _clientManager;
+    private readonly Server _server;
 
-    public LoginRequestMessageHandler(EventBus eventBus, ConnectionManager clientManager)
+    public LoginRequestMessageHandler(EventBus eventBus, Server server)
     {
         _eventBus = eventBus;
-        _clientManager = clientManager;
+        _server = server;
     }
 
     public void HandleMessage(ushort clientId, Message message)
@@ -17,7 +17,7 @@ internal class LoginRequestMessageHandler : IMessageHandler
         string username = message.GetString();
         string password = message.GetString();
 
-        var client = _clientManager.GetConnection(clientId);
+        if (!_server.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
         var args = new LoginRequestEvent(client, username, password);
         _eventBus.Publish(args);
     }

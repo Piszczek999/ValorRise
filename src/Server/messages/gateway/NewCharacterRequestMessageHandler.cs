@@ -1,22 +1,22 @@
 namespace MMO_Library.Server;
 using Riptide;
 
-internal class NewCharacterRequestMessage : IMessageHandler
+internal class NewCharacterRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly ConnectionManager _clientManager;
+    private readonly Server _server;
 
-    public NewCharacterRequestMessage(EventBus eventBus, ConnectionManager clientManager)
+    public NewCharacterRequestMessageHandler(EventBus eventBus, Server server)
     {
         _eventBus = eventBus;
-        _clientManager = clientManager;
+        _server = server;
     }
 
     public void HandleMessage(ushort clientId, Message message)
     {
         string name = message.GetString();
 
-        var client = _clientManager.GetConnection(clientId);
+        if (!_server.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
         var args = new NewCharacterRequestEvent(client, name);
         _eventBus.Publish(args);
     }

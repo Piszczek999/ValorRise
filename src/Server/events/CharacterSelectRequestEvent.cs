@@ -1,5 +1,6 @@
 namespace MMO_Library.Server;
 using MongoDB.Bson;
+using Riptide;
 
 public class CharacterSelectRequestEvent : EventArgs
 {
