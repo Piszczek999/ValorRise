@@ -2,12 +2,12 @@ namespace MMO_Library.Server;
 using MongoDB.Bson;
 using Riptide;
 
-internal class CharacterSelectAuthRequestMessageHandler : IMessageHandler
+internal class NewCharacterAuthRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
     private readonly Server _server;
 
-    public CharacterSelectAuthRequestMessageHandler(EventBus eventBus, Server server)
+    public NewCharacterAuthRequestMessageHandler(EventBus eventBus, Server server)
     {
         _eventBus = eventBus;
         _server = server;
@@ -17,10 +17,10 @@ internal class CharacterSelectAuthRequestMessageHandler : IMessageHandler
     {
         ushort clientId = message.GetUShort();
         ObjectId userId = message.GetObjectId();
-        ObjectId characterId = message.GetObjectId();
+        string name = message.GetString();
 
         if (!_server.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
-        var args = new CharacterSelectAuthRequestEvent(gateway, clientId, userId, characterId);
+        var args = new NewCharacterAuthRequestEvent(gateway, clientId, userId, name);
         _eventBus.Publish(args);
     }
 }

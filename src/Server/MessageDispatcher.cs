@@ -19,6 +19,9 @@ internal class MessageDispatcher
             {(ushort)MessageType.ToGateway.NewCharacterRequest, new NewCharacterRequestMessageHandler(_eventBus, _server)},
             {(ushort)MessageType.ToGateway.CharacterSelectRequest, new CharacterSelectRequestMessageHandler(_eventBus, _server)},
 
+            {(ushort)MessageType.ToAuthenticate.LoginAuthRequest, new LoginAuthRequestMessageHandler(_eventBus, _server)},
+            {(ushort)MessageType.ToAuthenticate.RegisterAuthRequest, new RegisterAuthRequestMessageHandler(_eventBus, _server)},
+            {(ushort)MessageType.ToAuthenticate.NewCharacterAuthRequest, new NewCharacterAuthRequestMessageHandler(_eventBus, _server)},
             {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequestMessageHandler(_eventBus, _server)},
         };
     }

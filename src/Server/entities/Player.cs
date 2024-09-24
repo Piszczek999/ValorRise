@@ -2,7 +2,7 @@ using Riptide;
 
 namespace MMO_Library.Server;
 
-public class Player : LivingEntity, IConnection
+public class Player : LivingEntity
 {
     private Connection _connection;
 

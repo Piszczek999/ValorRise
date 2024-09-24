@@ -4,13 +4,13 @@ namespace MMO_Library.Server;
 
 public class LoginRequestEvent : EventArgs
 {
-  public Connection Connection { get; }
+  public Connection Client { get; }
   public string Username { get; }
   public string Password { get; }
 
-  public LoginRequestEvent(Connection connection, string username, string password)
+  public LoginRequestEvent(Connection client, string username, string password)
   {
-    Connection = connection;
+    Client = client;
     Username = username;
     Password = password;
   }

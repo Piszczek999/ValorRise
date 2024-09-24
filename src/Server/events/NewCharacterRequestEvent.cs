@@ -4,12 +4,12 @@ namespace MMO_Library.Server;
 
 public class NewCharacterRequestEvent : EventArgs
 {
-    public Connection Connection { get; }
+    public Connection Client { get; }
     public string Name { get; }
 
-    public NewCharacterRequestEvent(Connection connection, string name)
+    public NewCharacterRequestEvent(Connection client, string name)
     {
-        Connection = connection;
+        Client = client;
         Name = name;
     }
 }

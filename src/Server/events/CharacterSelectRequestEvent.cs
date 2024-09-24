@@ -4,12 +4,12 @@ using Riptide;
 
 public class CharacterSelectRequestEvent : EventArgs
 {
-    public Connection Connection { get; }
+    public Connection Client { get; }
     public ObjectId CharacterId { get; }
 
-    public CharacterSelectRequestEvent(Connection connection, ObjectId characterId)
+    public CharacterSelectRequestEvent(Connection client, ObjectId characterId)
     {
-        Connection = connection;
+        Client = client;
         CharacterId = characterId;
     }
 }
