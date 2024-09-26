@@ -1,4 +1,4 @@
-namespace MMO_Library.Server;
+namespace MMOLibrary.Server;
 using MongoDB.Bson;
 
 public class EntityManager

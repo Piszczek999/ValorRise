@@ -1,4 +1,4 @@
-namespace MMO_Library;
+namespace MMOLibrary;
 
 public static class MessageType
 {

@@ -1,28 +1,34 @@
-namespace MMO_Library.Client;
+namespace MMOLibrary.Client;
 using Riptide;
 
-public class Client
+public class MMOClient
 {
-    private readonly Riptide.Client _client;
+    private static MMOClient _instance;
+    private readonly Client _client;
     private readonly EventBus _eventBus;
     private readonly MessageDispatcher _dispatcher;
 
-    private event EventHandler Connected;
-    private event EventHandler<DisconnectedEventArgs> Disonnected;
-    private event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
+    public event EventHandler Connected;
+    public event EventHandler<DisconnectedEventArgs> Disonnected;
+    public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
 
-    public EventBus EventBus { get => _eventBus; }
+    public static EventBus EventBus => _instance._eventBus;
 
-    public Client()
+    private MMOClient(ClientType type)
     {
-        _client = new Riptide.Client();
+        _client = new Client();
         _eventBus = new EventBus();
-        _dispatcher = new MessageDispatcher(_eventBus);
+        _dispatcher = new MessageDispatcher(_eventBus, type);
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
         _client.Connected += (s, e) => Connected?.Invoke(this, e);
         _client.Disconnected += (s, e) => Disonnected?.Invoke(this, e);
         _client.ConnectionFailed += (s, e) => ConnectionFailed?.Invoke(this, e);
+    }
+
+    public static MMOClient Init(ClientType type)
+    {
+        return _instance ??= new MMOClient(type);
     }
 
     public void Connect(string address, ushort port)

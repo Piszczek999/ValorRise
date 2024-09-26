@@ -1,4 +1,4 @@
-namespace MMO_Library;
+namespace MMOLibrary;
 using Riptide.Utils;
 
 public static class Logger

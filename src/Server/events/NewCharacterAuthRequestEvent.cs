@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using Riptide;
 
-namespace MMO_Library.Server;
+namespace MMOLibrary.Server;
 
 public class NewCharacterAuthRequestEvent : EventArgs
 {

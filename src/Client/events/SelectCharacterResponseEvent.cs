@@ -1,4 +1,4 @@
-namespace MMO_Library.Client;
+namespace MMOLibrary.Client;
 
 public class SelectCharacterResponseEvent : EventArgs
 {

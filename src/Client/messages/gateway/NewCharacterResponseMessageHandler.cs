@@ -1,4 +1,4 @@
-namespace MMO_Library.Client;
+namespace MMOLibrary.Client;
 using Riptide;
 
 internal class NewCharacterResponseMessageHandler : IMessageHandler

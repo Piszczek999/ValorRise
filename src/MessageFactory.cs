@@ -1,4 +1,4 @@
-namespace MMO_Library;
+namespace MMOLibrary;
 
 using MongoDB.Bson;
 using Riptide;

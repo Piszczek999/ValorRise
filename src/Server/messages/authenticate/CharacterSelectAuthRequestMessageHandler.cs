@@ -1,13 +1,13 @@
-namespace MMO_Library.Server;
+namespace MMOLibrary.Server;
 using MongoDB.Bson;
 using Riptide;
 
 internal class CharacterSelectAuthRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly Server _server;
+    private readonly MMOServer _server;
 
-    public CharacterSelectAuthRequestMessageHandler(EventBus eventBus, Server server)
+    public CharacterSelectAuthRequestMessageHandler(EventBus eventBus, MMOServer server)
     {
         _eventBus = eventBus;
         _server = server;

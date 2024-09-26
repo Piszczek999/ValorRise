@@ -1,6 +1,6 @@
 using Riptide;
 
-namespace MMO_Library.Server;
+namespace MMOLibrary.Server;
 
 public class RegisterRequestEvent : EventArgs
 {

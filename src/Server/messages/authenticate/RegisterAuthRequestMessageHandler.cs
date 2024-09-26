@@ -1,12 +1,12 @@
-namespace MMO_Library.Server;
+namespace MMOLibrary.Server;
 using Riptide;
 
 internal class RegisterAuthRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly Server _server;
+    private readonly MMOServer _server;
 
-    public RegisterAuthRequestMessageHandler(EventBus eventBus, Server server)
+    public RegisterAuthRequestMessageHandler(EventBus eventBus, MMOServer server)
     {
         _eventBus = eventBus;
         _server = server;
