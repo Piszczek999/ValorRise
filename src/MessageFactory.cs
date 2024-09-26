@@ -1,5 +1,6 @@
 namespace MMOLibrary;
 
+using System.Collections;
 using MongoDB.Bson;
 using Riptide;
 
@@ -63,7 +64,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoResult(byte count, CharacterInfo[] characters)
+            public static Message CharactersInfoResult(byte count, IEnumerable<CharacterInfo> characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResult);
                 message.AddByte(count);
@@ -84,6 +85,14 @@ public static class MessageFactory
             public static Message CharacterSelectResult(Character character)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResult);
+                message.AddCharacter(character);
+                return message;
+            }
+
+            public static Message CharacterResult(ushort clientId, Character character)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterResult);
+                message.AddUShort(clientId);
                 message.AddCharacter(character);
                 return message;
             }
@@ -150,7 +159,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoResponse(ushort clientId, byte count, CharacterInfo[] characters)
+            public static Message CharactersInfoResponse(ushort clientId, byte count, IEnumerable<CharacterInfo> characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoResponse);
                 message.AddUShort(clientId);
@@ -170,9 +179,18 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharacterSelectResponse(Character character)
+            public static Message CharacterSelectResponse(ushort clientId, CharacterSelectResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectResponse);
+                message.AddUShort(clientId);
+                message.AddByte((byte)result);
+                return message;
+            }
+
+            public static Message CharacterResponse(ushort clientId, Character character)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterResponse);
+                message.AddUShort(clientId);
                 message.AddCharacter(character);
                 return message;
             }

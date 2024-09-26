@@ -11,6 +11,7 @@ public static class MessageType
     CharacterSelectResult,
     TokenRequest,
     TokenVerificationResult,
+    CharacterResult
   }
   public enum ToGameServer : ushort
   {
@@ -27,7 +28,8 @@ public static class MessageType
     NewCharacterRequest,
     NewCharacterResponse,
     CharacterSelectRequest,
-    CharacterSelectResponse
+    CharacterSelectResponse,
+    CharacterResponse
   }
   public enum ToAuthenticate : ushort
   {

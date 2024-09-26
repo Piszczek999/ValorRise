@@ -18,6 +18,7 @@ internal class MessageDispatcher
                 {(ushort)MessageType.ToGateway.CharactersInfoResponse, new CharactersInfoResponseMessageHandler(_eventBus)},
                 {(ushort)MessageType.ToGateway.NewCharacterResponse, new NewCharacterResponseMessageHandler(_eventBus)},
                 {(ushort)MessageType.ToGateway.CharacterSelectResponse, new CharacterSelectResponseMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToGateway.CharacterResponse, new CharacterResponseMessageHandler(_eventBus)},
             },
             ClientType.Client => new Dictionary<ushort, IMessageHandler>
             {
@@ -25,6 +26,8 @@ internal class MessageDispatcher
                 {(ushort)MessageType.ToClient.RegisterResult, new RegisterResultMessageHandler(_eventBus)},
                 {(ushort)MessageType.ToClient.CharactersInfoResult, new CharactersInfoResultMessageHandler(_eventBus)},
                 {(ushort)MessageType.ToClient.NewCharacterResult, new NewCharacterResultMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToClient.CharacterSelectResult, new CharacterSelectResultMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToClient.CharacterResult, new CharacterResultMessageHandler(_eventBus)},
                 {(ushort)MessageType.ToClient.TokenVerificationResult, new TokenVerificationResultMessageHandler(_eventBus)},
             },
             ClientType.GameServer => new Dictionary<ushort, IMessageHandler>(),

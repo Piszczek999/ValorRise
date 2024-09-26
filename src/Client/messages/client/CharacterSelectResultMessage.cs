@@ -1,22 +1,21 @@
 namespace MMOLibrary.Client;
+using MongoDB.Bson;
 using Riptide;
 
-internal class CharacterSelectResponseMessageHandler : IMessageHandler
+internal class CharacterSelectResultMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
 
-    public CharacterSelectResponseMessageHandler(EventBus eventBus)
+    public CharacterSelectResultMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
     }
 
     public void HandleMessage(Message message)
     {
-        ushort clientId = message.GetUShort();
         var result = (CharacterSelectResult)message.GetByte();
 
-
-        var args = new CharacterSelectResponseEvent(clientId, result);
+        var args = new CharacterSelectResultEvent(result);
         _eventBus.Publish(args);
     }
 }
