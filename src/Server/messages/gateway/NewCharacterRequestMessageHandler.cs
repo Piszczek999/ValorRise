@@ -4,19 +4,17 @@ using Riptide;
 internal class NewCharacterRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly MMOServer _server;
 
-    public NewCharacterRequestMessageHandler(EventBus eventBus, MMOServer server)
+    public NewCharacterRequestMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
-        _server = server;
     }
 
     public void HandleMessage(ushort clientId, Message message)
     {
         string name = message.GetString();
 
-        if (!_server.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
+        if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
         var args = new NewCharacterRequestEvent(client, name);
         _eventBus.Publish(args);
     }

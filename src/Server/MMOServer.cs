@@ -1,5 +1,6 @@
 namespace MMOLibrary.Server;
 using Riptide;
+using Riptide.Utils;
 
 public class MMOServer
 {
@@ -17,9 +18,10 @@ public class MMOServer
 
     private MMOServer(ServerType type)
     {
+        RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _server = new Server();
         _eventBus = new EventBus();
-        _dispatcher = new MessageDispatcher(_eventBus, this, type);
+        _dispatcher = new MessageDispatcher(_eventBus, type);
         _entityManager = new EntityManager();
 
         _server.MessageReceived += (s, e) => _dispatcher.Dispatch(e.FromConnection.Id, e.Message, e.MessageId);
@@ -47,14 +49,14 @@ public class MMOServer
         _server.Update();
     }
 
-    public bool TryGetClient(ushort clientId, out Connection client)
+    public static bool TryGetClient(ushort clientId, out Connection client)
     {
-        return _server.TryGetClient(clientId, out client);
+        return _instance._server.TryGetClient(clientId, out client);
     }
 
-    public void SendMessage(ushort clientId, Message message)
+    public static void SendMessage(ushort clientId, Message message)
     {
-        _server.Send(message, clientId);
+        _instance._server.Send(message, clientId);
     }
 
     public void DisconnectPlayer(ushort connectionId)

@@ -4,12 +4,10 @@ using Riptide;
 internal class RegisterAuthRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly MMOServer _server;
 
-    public RegisterAuthRequestMessageHandler(EventBus eventBus, MMOServer server)
+    public RegisterAuthRequestMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
-        _server = server;
     }
 
     public void HandleMessage(ushort gatewayId, Message message)
@@ -18,7 +16,7 @@ internal class RegisterAuthRequestMessageHandler : IMessageHandler
         string username = message.GetString();
         string password = message.GetString();
 
-        if (!_server.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
+        if (!MMOServer.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
         var args = new RegisterAuthRequestEvent(gateway, clientId, username, password);
         _eventBus.Publish(args);
     }

@@ -1,5 +1,6 @@
 namespace MMOLibrary.Client;
 using Riptide;
+using Riptide.Utils;
 
 public class MMOClient
 {
@@ -16,6 +17,7 @@ public class MMOClient
 
     private MMOClient(ClientType type)
     {
+        RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _client = new Client();
         _eventBus = new EventBus();
         _dispatcher = new MessageDispatcher(_eventBus, type);
@@ -46,8 +48,8 @@ public class MMOClient
         _client.Update();
     }
 
-    public void SendMessage(Message message)
+    public static void Send(Message message)
     {
-        _client.Send(message);
+        _instance._client.Send(message);
     }
 }

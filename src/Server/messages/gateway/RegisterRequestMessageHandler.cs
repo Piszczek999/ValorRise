@@ -4,12 +4,10 @@ using Riptide;
 internal class RegisterRequestMessageHandler : IMessageHandler
 {
   private readonly EventBus _eventBus;
-  private readonly MMOServer _server;
 
-  public RegisterRequestMessageHandler(EventBus eventBus, MMOServer server)
+  public RegisterRequestMessageHandler(EventBus eventBus)
   {
     _eventBus = eventBus;
-    _server = server;
   }
 
   public void HandleMessage(ushort clientId, Message message)
@@ -17,7 +15,7 @@ internal class RegisterRequestMessageHandler : IMessageHandler
     string username = message.GetString();
     string password = message.GetString();
 
-    if (!_server.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
+    if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
     var args = new RegisterRequestEvent(client, username, password);
     _eventBus.Publish(args);
   }

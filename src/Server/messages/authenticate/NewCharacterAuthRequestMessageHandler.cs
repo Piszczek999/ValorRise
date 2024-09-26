@@ -5,12 +5,10 @@ using Riptide;
 internal class NewCharacterAuthRequestMessageHandler : IMessageHandler
 {
     private readonly EventBus _eventBus;
-    private readonly MMOServer _server;
 
-    public NewCharacterAuthRequestMessageHandler(EventBus eventBus, MMOServer server)
+    public NewCharacterAuthRequestMessageHandler(EventBus eventBus)
     {
         _eventBus = eventBus;
-        _server = server;
     }
 
     public void HandleMessage(ushort gatewayId, Message message)
@@ -19,7 +17,7 @@ internal class NewCharacterAuthRequestMessageHandler : IMessageHandler
         ObjectId userId = message.GetObjectId();
         string name = message.GetString();
 
-        if (!_server.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
+        if (!MMOServer.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
         var args = new NewCharacterAuthRequestEvent(gateway, clientId, userId, name);
         _eventBus.Publish(args);
     }

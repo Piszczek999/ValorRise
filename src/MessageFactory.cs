@@ -49,21 +49,21 @@ public static class MessageFactory
     {
         public static class ToClient
         {
-            public static Message RegisterResponse(RegisterResult result)
+            public static Message RegisterResult(RegisterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResult);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message LoginResponse(LoginResult result)
+            public static Message LoginResult(LoginResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResult);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message CharactersInfo(byte count, List<CharacterInfo> characters)
+            public static Message CharactersInfoResult(byte count, CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResult);
                 message.AddByte(count);
@@ -74,14 +74,14 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message NewCharacterResponse(NewCharacterResult result)
+            public static Message NewCharacterResult(NewCharacterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResult);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message Character(Character character)
+            public static Message CharacterSelectResult(Character character)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResult);
                 message.AddCharacter(character);
@@ -90,7 +90,7 @@ public static class MessageFactory
         }
         public static class ToAuthenticate
         {
-            public static Message RegisterRequest(ushort clientId, string username, string password)
+            public static Message RegisterAuthRequest(ushort clientId, string username, string password)
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.RegisterAuthRequest);
                 message.AddUShort(clientId);
@@ -99,7 +99,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message LoginRequest(ushort clientId, string username, string password)
+            public static Message LoginAuthRequest(ushort clientId, string username, string password)
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.LoginAuthRequest);
                 message.AddUShort(clientId);
@@ -108,7 +108,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message NewCharacterRequest(ushort clientId, ObjectId userId, string name)
+            public static Message NewCharacterAuthRequest(ushort clientId, ObjectId userId, string name)
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.NewCharacterAuthRequest);
                 message.AddUShort(clientId);
@@ -117,7 +117,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message SelectCharacterRequest(ushort clientId, ObjectId userId, ObjectId characterId)
+            public static Message CharacterSelectAuthRequest(ushort clientId, ObjectId userId, ObjectId characterId)
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.CharacterSelectAuthRequest);
                 message.AddUShort(clientId);
@@ -150,7 +150,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfo(ushort clientId, byte count, CharacterInfo[] characters)
+            public static Message CharactersInfoResponse(ushort clientId, byte count, CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoResponse);
                 message.AddUShort(clientId);

@@ -21,7 +21,7 @@ internal class CharactersInfoResponseMessageHandler : IMessageHandler
             characters[i] = message.GetCharacterInfo();
         }
 
-        var args = new CharactersInfoEvent(clientId, count, characters);
+        var args = new CharactersInfoResponseEvent(clientId, count, characters);
         _eventBus.Publish(args);
     }
 }

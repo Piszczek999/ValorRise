@@ -1,12 +1,12 @@
 namespace MMOLibrary.Client;
 
-public class CharactersInfoEvent : EventArgs
+public class CharactersInfoResponseEvent : EventArgs
 {
     public ushort ClientId { get; }
     public byte Count { get; }
     public CharacterInfo[] Characters { get; }
 
-    public CharactersInfoEvent(ushort clientId, byte count, CharacterInfo[] characters)
+    public CharactersInfoResponseEvent(ushort clientId, byte count, CharacterInfo[] characters)
     {
         ClientId = clientId;
         Count = count;

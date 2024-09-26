@@ -1,11 +1,11 @@
 namespace MMOLibrary.Client;
 
-public class SelectCharacterResponseEvent : EventArgs
+public class CharacterSelectResponseEvent : EventArgs
 {
     public ushort ClientId { get; }
     public Character Character { get; }
 
-    public SelectCharacterResponseEvent(ushort clientId, Character character)
+    public CharacterSelectResponseEvent(ushort clientId, Character character)
     {
         ClientId = clientId;
         Character = character;

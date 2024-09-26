@@ -15,7 +15,7 @@ internal class CharacterSelectResponseMessageHandler : IMessageHandler
         ushort clientId = message.GetUShort();
         Character character = message.GetCharacter();
 
-        var args = new SelectCharacterResponseEvent(clientId, character);
+        var args = new CharacterSelectResponseEvent(clientId, character);
         _eventBus.Publish(args);
     }
 }
