@@ -1,4 +1,6 @@
 namespace MMOLibrary.Server;
+
+using MMOLibrary.Server.Messages;
 using Riptide;
 
 internal class MessageDispatcher
@@ -14,19 +16,31 @@ internal class MessageDispatcher
         {
             ServerType.Gateway => new Dictionary<ushort, IMessageHandler>
             {
-                {(ushort)MessageType.ToGateway.LoginRequest, new LoginRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.RegisterRequest, new RegisterRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.NewCharacterRequest, new NewCharacterRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.CharacterSelectRequest, new CharacterSelectRequestMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToGateway.LoginRequest, new LoginRequest(_eventBus)},
+                {(ushort)MessageType.ToGateway.RegisterRequest, new RegisterRequest(_eventBus)},
+                {(ushort)MessageType.ToGateway.NewCharacterRequest, new NewCharacterRequest(_eventBus)},
+                {(ushort)MessageType.ToGateway.CharacterSelectRequest, new CharacterSelectRequest(_eventBus)},
             },
             ServerType.Authenticate => new Dictionary<ushort, IMessageHandler>
             {
-                {(ushort)MessageType.ToAuthenticate.LoginAuthRequest, new LoginAuthRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.RegisterAuthRequest, new RegisterAuthRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.NewCharacterAuthRequest, new NewCharacterAuthRequestMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequestMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.LoginAuthRequest, new LoginAuthRequest(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.RegisterAuthRequest, new RegisterAuthRequest(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.NewCharacterAuthRequest, new NewCharacterAuthRequest(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequest(_eventBus)},
             },
-            ServerType.GameServer => new Dictionary<ushort, IMessageHandler>(),
+            ServerType.Database => new Dictionary<ushort, IMessageHandler>
+            {
+                {(ushort)MessageType.ToDatabase.LoginDBRequest, new LoginDBRequest(_eventBus)},
+                {(ushort)MessageType.ToDatabase.RegisterDBRequest, new RegisterDBRequest(_eventBus)},
+                {(ushort)MessageType.ToDatabase.CharactersInfoDBRequest, new CharactersInfoDBRequest(_eventBus)},
+                {(ushort)MessageType.ToDatabase.NewCharacterDBRequest, new NewCharacterDBRequest(_eventBus)},
+                {(ushort)MessageType.ToDatabase.CharacterSelectDBRequest, new CharacterSelectDBRequest(_eventBus)},
+                {(ushort)MessageType.ToDatabase.VerifyTokenDBRequest, new VerifyTokenDBRequest(_eventBus)},
+            },
+            ServerType.GameServer => new Dictionary<ushort, IMessageHandler>
+            {
+                {(ushort)MessageType.ToGameServer.VerifyTokenRequest, new VerifyTokenRequest(_eventBus)},
+            },
             _ => throw new NotImplementedException(),
         };
     }

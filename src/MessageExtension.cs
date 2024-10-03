@@ -62,6 +62,16 @@ public static class MessageExtensions
       CreatedAt = DateTime.Parse(message.GetString())
     };
   }
+
+  public static CharacterInfo[] GetCharacterInfos(this Message message, int count)
+  {
+    var infos = new CharacterInfo[count];
+    for (int i = 0; i < count; i++)
+    {
+      infos[i] = message.GetCharacterInfo();
+    }
+    return infos;
+  }
   #endregion
 
   #region User

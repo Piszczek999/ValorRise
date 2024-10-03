@@ -4,38 +4,62 @@ public static class MessageType
 {
   public enum ToClient : ushort
   {
-    LoginResult,
-    RegisterResult,
-    CharactersInfoResult,
-    NewCharacterResult,
-    CharacterSelectResult,
-    TokenRequest,
-    TokenVerificationResult,
-    CharacterResult
-  }
-  public enum ToGameServer : ushort
-  {
-    Token,
-    TokenResponse,
-  }
-  public enum ToGateway : ushort
-  {
-    LoginRequest,
-    RegisterRequest,
+    // From Gateway
     LoginResponse,
     RegisterResponse,
     CharactersInfoResponse,
-    NewCharacterRequest,
     NewCharacterResponse,
-    CharacterSelectRequest,
     CharacterSelectResponse,
-    CharacterResponse
+    VerifyTokenResponse,
+  }
+  public enum ToGameServer : ushort
+  {
+    // From Client
+    VerifyTokenRequest,
+
+    // From Database
+    VerifyTokenDBResponse,
+  }
+  public enum ToGateway : ushort
+  {
+    // From CLient
+    LoginRequest,
+    RegisterRequest,
+    NewCharacterRequest,
+    CharacterSelectRequest,
+
+    // From Authenticate
+    LoginAuthResponse,
+    RegisterAuthResponse,
+    CharactersInfoAuthResponse,
+    NewCharacterAuthResponse,
+    CharacterSelectAuthResponse,
   }
   public enum ToAuthenticate : ushort
   {
+    // From Gateway
     LoginAuthRequest,
     RegisterAuthRequest,
     NewCharacterAuthRequest,
-    CharacterSelectAuthRequest
+    CharacterSelectAuthRequest,
+
+    // From Database
+    LoginDBResponse,
+    RegisterDBResponse,
+    CharactersInfoDBResponse,
+    NewCharacterDBResponse,
+    CharacterSelectDBResponse,
+  }
+  public enum ToDatabase : ushort
+  {
+    // From Authenticate
+    LoginDBRequest,
+    RegisterDBRequest,
+    CharactersInfoDBRequest,
+    NewCharacterDBRequest,
+    CharacterSelectDBRequest,
+
+    // From GameServer
+    VerifyTokenDBRequest,
   }
 }

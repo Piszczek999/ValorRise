@@ -52,21 +52,21 @@ public static class MessageFactory
         {
             public static Message RegisterResult(RegisterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResult);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
             public static Message LoginResult(LoginResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResult);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
             public static Message CharactersInfoResult(byte count, IEnumerable<CharacterInfo> characters)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResult);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse);
                 message.AddByte(count);
                 foreach (var character in characters)
                 {
@@ -77,22 +77,15 @@ public static class MessageFactory
 
             public static Message NewCharacterResult(NewCharacterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResult);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message CharacterSelectResult(Character character)
+            public static Message CharacterSelectResult(CharacterSelectResult result, Character character)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResult);
-                message.AddCharacter(character);
-                return message;
-            }
-
-            public static Message CharacterResult(ushort clientId, Character character)
-            {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterResult);
-                message.AddUShort(clientId);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse);
+                message.AddByte((byte)result);
                 message.AddCharacter(character);
                 return message;
             }
@@ -144,7 +137,7 @@ public static class MessageFactory
 
             public static Message LoginResponse(ushort clientId, LoginResult result, ObjectId userId = default)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginResponse);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginAuthResponse);
                 message.AddUShort(clientId);
                 message.AddByte((byte)result);
                 message.AddObjectId(userId);
@@ -153,7 +146,7 @@ public static class MessageFactory
 
             public static Message RegisterResponse(ushort clientId, RegisterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterResponse);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterAuthResponse);
                 message.AddUShort(clientId);
                 message.AddByte((byte)result);
                 return message;
@@ -161,7 +154,7 @@ public static class MessageFactory
 
             public static Message CharactersInfoResponse(ushort clientId, byte count, IEnumerable<CharacterInfo> characters)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoResponse);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
                 message.AddUShort(clientId);
                 message.AddByte(count);
                 foreach (var character in characters)
@@ -173,24 +166,17 @@ public static class MessageFactory
 
             public static Message NewCharacterResponse(ushort clientId, NewCharacterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterResponse);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterAuthResponse);
                 message.AddUShort(clientId);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message CharacterSelectResponse(ushort clientId, CharacterSelectResult result)
+            public static Message CharacterSelectResponse(ushort clientId, CharacterSelectResult result, Character character)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectResponse);
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectAuthResponse);
                 message.AddUShort(clientId);
                 message.AddByte((byte)result);
-                return message;
-            }
-
-            public static Message CharacterResponse(ushort clientId, Character character)
-            {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterResponse);
-                message.AddUShort(clientId);
                 message.AddCharacter(character);
                 return message;
             }

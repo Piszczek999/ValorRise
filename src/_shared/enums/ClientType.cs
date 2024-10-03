@@ -4,5 +4,6 @@ public enum ClientType
 {
     Client,
     Gateway,
-    GameServer
+    GameServer,
+    Authenticate
 }

@@ -5,6 +5,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 public class User
 {
+    public int FailedLoginAttempts { get; set; } = 0;
+    public DateTime? LockoutEnd { get; set; }
+
     [BsonId]
     public ObjectId Id { get; set; }
 

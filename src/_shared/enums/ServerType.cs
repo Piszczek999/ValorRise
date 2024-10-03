@@ -4,5 +4,6 @@ public enum ServerType
 {
     Gateway,
     Authenticate,
-    GameServer
+    GameServer,
+    Database
 }

@@ -1,0 +1,23 @@
+namespace MMOLibrary.Client.Messages;
+using MongoDB.Bson;
+using Riptide;
+
+internal class LoginAuthResponse : IMessageHandler
+{
+  private readonly EventBus _eventBus;
+
+  public LoginAuthResponse(EventBus eventBus)
+  {
+    _eventBus = eventBus;
+  }
+
+  public void HandleMessage(Message message)
+  {
+    ushort clientId = message.GetUShort();
+    LoginResult result = (LoginResult)message.GetByte();
+    ObjectId userId = message.GetObjectId();
+
+    var args = new LoginAuthResponseEvent(clientId, result, userId);
+    _eventBus.Publish(args);
+  }
+}

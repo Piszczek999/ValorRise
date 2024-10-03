@@ -4,5 +4,6 @@ public enum LoginResult
 {
     Success,
     IncorrectCredentials,
-    FailedToLogin
+    FailedToLogin,
+    AccountLockedOut
 }

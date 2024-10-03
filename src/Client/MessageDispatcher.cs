@@ -1,4 +1,6 @@
 namespace MMOLibrary.Client;
+
+using MMOLibrary.Client.Messages;
 using Riptide;
 
 internal class MessageDispatcher
@@ -13,24 +15,33 @@ internal class MessageDispatcher
         {
             ClientType.Gateway => new Dictionary<ushort, IMessageHandler>
             {
-                {(ushort)MessageType.ToGateway.LoginResponse, new LoginResponseMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.RegisterResponse, new RegisterResponseMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.CharactersInfoResponse, new CharactersInfoResponseMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.NewCharacterResponse, new NewCharacterResponseMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.CharacterSelectResponse, new CharacterSelectResponseMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToGateway.CharacterResponse, new CharacterResponseMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToGateway.LoginAuthResponse, new LoginAuthResponse(_eventBus)},
+                {(ushort)MessageType.ToGateway.RegisterAuthResponse, new RegisterAuthResponse(_eventBus)},
+                {(ushort)MessageType.ToGateway.CharactersInfoAuthResponse, new CharactersInfoAuthResponse(_eventBus)},
+                {(ushort)MessageType.ToGateway.NewCharacterAuthResponse, new NewCharacterAuthResponse(_eventBus)},
+                {(ushort)MessageType.ToGateway.CharacterSelectAuthResponse, new CharacterSelectAuthResponse(_eventBus)},
             },
             ClientType.Client => new Dictionary<ushort, IMessageHandler>
             {
-                {(ushort)MessageType.ToClient.LoginResult, new LoginResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.RegisterResult, new RegisterResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.CharactersInfoResult, new CharactersInfoResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.NewCharacterResult, new NewCharacterResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.CharacterSelectResult, new CharacterSelectResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.CharacterResult, new CharacterResultMessageHandler(_eventBus)},
-                {(ushort)MessageType.ToClient.TokenVerificationResult, new TokenVerificationResultMessageHandler(_eventBus)},
+                {(ushort)MessageType.ToClient.LoginResponse, new LoginResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.RegisterResponse, new RegisterResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.CharactersInfoResponse, new CharactersInfoResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.NewCharacterResponse, new NewCharacterResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.CharacterSelectResponse, new CharacterSelectResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.VerifyTokenResponse, new VerifyTokenResponse(_eventBus)},
             },
-            ClientType.GameServer => new Dictionary<ushort, IMessageHandler>(),
+            ClientType.GameServer => new Dictionary<ushort, IMessageHandler>
+            {
+                {(ushort)MessageType.ToGameServer.VerifyTokenDBResponse, new VerifyTokenDBResponse(_eventBus)},
+            },
+            ClientType.Authenticate => new Dictionary<ushort, IMessageHandler>
+            {
+                {(ushort)MessageType.ToAuthenticate.LoginDBResponse, new LoginDBResponse(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.RegisterDBResponse, new RegisterDBResponse(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.CharactersInfoDBResponse, new CharactersInfoDBResponse(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.NewCharacterDBResponse, new NewCharacterDBResponse(_eventBus)},
+                {(ushort)MessageType.ToAuthenticate.CharacterSelectDBResponse, new CharacterSelectDBResponse(_eventBus)},
+            },
             _ => throw new NotImplementedException(),
         };
     }
