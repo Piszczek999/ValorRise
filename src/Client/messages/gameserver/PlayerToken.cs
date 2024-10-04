@@ -1,0 +1,21 @@
+namespace MMOLibrary.Client.Messages;
+using Riptide;
+
+internal class PlayerToken : IMessageHandler
+{
+    private readonly EventBus _eventBus;
+
+    public PlayerToken(EventBus eventBus)
+    {
+        _eventBus = eventBus;
+    }
+
+    public void HandleMessage(Message message)
+    {
+        string token = message.GetString();
+        Character character = message.GetCharacter();
+
+        var args = new PlayerTokenEvent(token, character);
+        _eventBus.Publish(args);
+    }
+}

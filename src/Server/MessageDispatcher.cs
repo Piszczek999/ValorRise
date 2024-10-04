@@ -28,15 +28,6 @@ internal class MessageDispatcher
                 {(ushort)MessageType.ToAuthenticate.NewCharacterAuthRequest, new NewCharacterAuthRequest(_eventBus)},
                 {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequest(_eventBus)},
             },
-            ServerType.Database => new Dictionary<ushort, IMessageHandler>
-            {
-                {(ushort)MessageType.ToDatabase.LoginDBRequest, new LoginDBRequest(_eventBus)},
-                {(ushort)MessageType.ToDatabase.RegisterDBRequest, new RegisterDBRequest(_eventBus)},
-                {(ushort)MessageType.ToDatabase.CharactersInfoDBRequest, new CharactersInfoDBRequest(_eventBus)},
-                {(ushort)MessageType.ToDatabase.NewCharacterDBRequest, new NewCharacterDBRequest(_eventBus)},
-                {(ushort)MessageType.ToDatabase.CharacterSelectDBRequest, new CharacterSelectDBRequest(_eventBus)},
-                {(ushort)MessageType.ToDatabase.VerifyTokenDBRequest, new VerifyTokenDBRequest(_eventBus)},
-            },
             ServerType.GameServer => new Dictionary<ushort, IMessageHandler>
             {
                 {(ushort)MessageType.ToGameServer.VerifyTokenRequest, new VerifyTokenRequest(_eventBus)},

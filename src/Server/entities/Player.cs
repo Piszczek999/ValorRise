@@ -20,4 +20,10 @@ public class Player : LivingEntity
     {
         _connection.Send(message);
     }
+
+    public override void Serialize(Message message)
+    {
+        base.Serialize(message);
+
+    }
 }

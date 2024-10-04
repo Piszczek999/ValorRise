@@ -1,3 +1,7 @@
+using Riptide;
+
+namespace MMOLibrary.Server;
+
 public class LivingEntity : Entity
 {
     public double Health { get; set; }
@@ -18,5 +22,12 @@ public class LivingEntity : Entity
     public void Heal(double healAmount)
     {
         Health = Math.Min(Health + healAmount, MaxHealth);
+    }
+
+    public override void Serialize(Message message)
+    {
+        base.Serialize(message);
+        message.AddDouble(Health);
+        message.AddDouble(MaxHealth);
     }
 }

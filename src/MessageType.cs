@@ -10,15 +10,21 @@ public static class MessageType
     CharactersInfoResponse,
     NewCharacterResponse,
     CharacterSelectResponse,
+
+    // From GameServer
     VerifyTokenResponse,
+    InitLevel,
+    InitMainPlayer,
+    SpawnEntity,
+    MoveEntity,
   }
   public enum ToGameServer : ushort
   {
     // From Client
     VerifyTokenRequest,
 
-    // From Database
-    VerifyTokenDBResponse,
+    // From Authenticate
+    PlayerToken,
   }
   public enum ToGateway : ushort
   {
@@ -43,23 +49,7 @@ public static class MessageType
     NewCharacterAuthRequest,
     CharacterSelectAuthRequest,
 
-    // From Database
-    LoginDBResponse,
-    RegisterDBResponse,
-    CharactersInfoDBResponse,
-    NewCharacterDBResponse,
-    CharacterSelectDBResponse,
-  }
-  public enum ToDatabase : ushort
-  {
-    // From Authenticate
-    LoginDBRequest,
-    RegisterDBRequest,
-    CharactersInfoDBRequest,
-    NewCharacterDBRequest,
-    CharacterSelectDBRequest,
-
     // From GameServer
-    VerifyTokenDBRequest,
+
   }
 }

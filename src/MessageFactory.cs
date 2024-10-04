@@ -1,6 +1,7 @@
 namespace MMOLibrary;
 
 using System.Collections;
+using MMOLibrary.Server;
 using MongoDB.Bson;
 using Riptide;
 
@@ -42,7 +43,12 @@ public static class MessageFactory
         }
         public static class ToGameServer
         {
-
+            public static Message VerifyTokenRequest(string token)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.VerifyTokenRequest);
+                message.AddString(token);
+                return message;
+            }
         }
     }
 
@@ -50,24 +56,23 @@ public static class MessageFactory
     {
         public static class ToClient
         {
-            public static Message RegisterResult(RegisterResult result)
+            public static Message RegisterResponse(RegisterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message LoginResult(LoginResult result)
+            public static Message LoginResponse(LoginResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message CharactersInfoResult(byte count, IEnumerable<CharacterInfo> characters)
+            public static Message CharactersInfoResponse(CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse);
-                message.AddByte(count);
                 foreach (var character in characters)
                 {
                     message.AddCharacterInfo(character);
@@ -75,18 +80,18 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message NewCharacterResult(NewCharacterResult result)
+            public static Message NewCharacterResponse(NewCharacterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResponse);
                 message.AddByte((byte)result);
                 return message;
             }
 
-            public static Message CharacterSelectResult(CharacterSelectResult result, Character character)
+            public static Message CharacterSelectResponse(string token, string ipAddress)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse);
-                message.AddByte((byte)result);
-                message.AddCharacter(character);
+                message.AddString(token);
+                message.AddString(ipAddress);
                 return message;
             }
         }
@@ -134,8 +139,7 @@ public static class MessageFactory
     {
         public static class ToGateway
         {
-
-            public static Message LoginResponse(ushort clientId, LoginResult result, ObjectId userId = default)
+            public static Message LoginAuthResponse(ushort clientId, LoginResult result, ObjectId userId = default)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginAuthResponse);
                 message.AddUShort(clientId);
@@ -144,7 +148,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message RegisterResponse(ushort clientId, RegisterResult result)
+            public static Message RegisterAuthResponse(ushort clientId, RegisterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterAuthResponse);
                 message.AddUShort(clientId);
@@ -152,11 +156,10 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoResponse(ushort clientId, byte count, IEnumerable<CharacterInfo> characters)
+            public static Message CharactersInfoAuthResponse(ushort clientId, CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
                 message.AddUShort(clientId);
-                message.AddByte(count);
                 foreach (var character in characters)
                 {
                     message.AddCharacterInfo(character);
@@ -164,7 +167,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message NewCharacterResponse(ushort clientId, NewCharacterResult result)
+            public static Message NewCharacterAuthResponse(ushort clientId, NewCharacterResult result)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterAuthResponse);
                 message.AddUShort(clientId);
@@ -172,18 +175,24 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharacterSelectResponse(ushort clientId, CharacterSelectResult result, Character character)
+            public static Message CharacterSelectAuthResponse(ushort clientId, string token, string ipAddress)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectAuthResponse);
                 message.AddUShort(clientId);
-                message.AddByte((byte)result);
-                message.AddCharacter(character);
+                message.AddString(token);
+                message.AddString(ipAddress);
                 return message;
             }
         }
         public static class ToGameServer
         {
-
+            public static Message PlayerToken(string token, Character character)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.PlayerToken);
+                message.AddString(token);
+                message.AddCharacter(character);
+                return message;
+            }
         }
     }
 
@@ -191,7 +200,30 @@ public static class MessageFactory
     {
         public static class ToClient
         {
-
+            public static Message VerifyTokenResponse(bool result)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.VerifyTokenResponse);
+                message.AddBool(result);
+                return message;
+            }
+            public static Message InitLevel(ushort mapId)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitLevel);
+                message.AddUShort(mapId);
+                return message;
+            }
+            public static Message InitMainPlayer(Character character)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitMainPlayer);
+                message.AddCharacter(character);
+                return message;
+            }
+            public static Message SpawnEntity(Entity entity)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity);
+                entity.Serialize(message);
+                return message;
+            }
         }
         public static class ToAuthenticate
         {

@@ -28,19 +28,15 @@ internal class MessageDispatcher
                 {(ushort)MessageType.ToClient.CharactersInfoResponse, new CharactersInfoResponse(_eventBus)},
                 {(ushort)MessageType.ToClient.NewCharacterResponse, new NewCharacterResponse(_eventBus)},
                 {(ushort)MessageType.ToClient.CharacterSelectResponse, new CharacterSelectResponse(_eventBus)},
+
                 {(ushort)MessageType.ToClient.VerifyTokenResponse, new VerifyTokenResponse(_eventBus)},
+                {(ushort)MessageType.ToClient.InitLevel, new InitLevel(_eventBus)},
+                {(ushort)MessageType.ToClient.InitMainPlayer, new InitMainPlayer(_eventBus)},
+                {(ushort)MessageType.ToClient.SpawnEntity, new SpawnEntity(_eventBus)},
             },
             ClientType.GameServer => new Dictionary<ushort, IMessageHandler>
             {
-                {(ushort)MessageType.ToGameServer.VerifyTokenDBResponse, new VerifyTokenDBResponse(_eventBus)},
-            },
-            ClientType.Authenticate => new Dictionary<ushort, IMessageHandler>
-            {
-                {(ushort)MessageType.ToAuthenticate.LoginDBResponse, new LoginDBResponse(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.RegisterDBResponse, new RegisterDBResponse(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.CharactersInfoDBResponse, new CharactersInfoDBResponse(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.NewCharacterDBResponse, new NewCharacterDBResponse(_eventBus)},
-                {(ushort)MessageType.ToAuthenticate.CharacterSelectDBResponse, new CharacterSelectDBResponse(_eventBus)},
+                {(ushort)MessageType.ToGameServer.PlayerToken, new PlayerToken(_eventBus)},
             },
             _ => throw new NotImplementedException(),
         };
