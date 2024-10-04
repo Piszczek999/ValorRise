@@ -20,3 +20,15 @@ internal class VerifyTokenRequest : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class VerifyTokenRequestEvent : EventArgs
+{
+    public Connection Client { get; }
+    public string Token { get; }
+
+    public VerifyTokenRequestEvent(Connection client, string token)
+    {
+        Client = client;
+        Token = token;
+    }
+}

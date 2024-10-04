@@ -18,3 +18,13 @@ internal class LoginResponse : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class LoginResponseEvent : EventArgs
+{
+    public LoginResult Result { get; }
+
+    public LoginResponseEvent(LoginResult result)
+    {
+        Result = result;
+    }
+}

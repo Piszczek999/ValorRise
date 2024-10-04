@@ -13,14 +13,21 @@ internal class CharactersInfoAuthResponse : IMessageHandler
     public void HandleMessage(Message message)
     {
         ushort clientId = message.GetUShort();
-        byte count = message.GetByte();
-        CharacterInfo[] characters = new CharacterInfo[count];
-        for (int i = 0; i < count; i++)
-        {
-            characters[i] = message.GetCharacterInfo();
-        }
+        var characters = message.GetCharacterInfos(3);
 
         var args = new CharactersInfoAuthResponseEvent(clientId, characters);
         _eventBus.Publish(args);
+    }
+}
+
+public class CharactersInfoAuthResponseEvent : EventArgs
+{
+    public ushort ClientId { get; }
+    public CharacterInfo[] Characters { get; }
+
+    public CharactersInfoAuthResponseEvent(ushort clientId, CharacterInfo[] characters)
+    {
+        ClientId = clientId;
+        Characters = characters;
     }
 }

@@ -18,3 +18,13 @@ internal class SpawnEntity : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class SpawnEntityEvent : EventArgs
+{
+    public Entity Entity { get; }
+
+    public SpawnEntityEvent(Entity entity)
+    {
+        Entity = entity;
+    }
+}

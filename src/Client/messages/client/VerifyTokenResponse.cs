@@ -18,3 +18,13 @@ internal class VerifyTokenResponse : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class VerifyTokenResponseEvent : EventArgs
+{
+    public bool Result { get; set; }
+
+    public VerifyTokenResponseEvent(bool result)
+    {
+        Result = result;
+    }
+}

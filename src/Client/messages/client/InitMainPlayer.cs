@@ -18,3 +18,13 @@ internal class InitMainPlayer : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class InitMainPlayerEvent : EventArgs
+{
+    public Character Character { get; }
+
+    public InitMainPlayerEvent(Character character)
+    {
+        Character = character;
+    }
+}

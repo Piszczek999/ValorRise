@@ -18,3 +18,13 @@ internal class NewCharacterResponse : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class NewCharacterResponseEvent : EventArgs
+{
+    public NewCharacterResult Result { get; }
+
+    public NewCharacterResponseEvent(NewCharacterResult result)
+    {
+        Result = result;
+    }
+}

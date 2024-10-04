@@ -18,3 +18,13 @@ internal class RegisterResponse : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class RegisterResponseEvent : EventArgs
+{
+    public RegisterResult Result { get; }
+
+    public RegisterResponseEvent(RegisterResult result)
+    {
+        Result = result;
+    }
+}

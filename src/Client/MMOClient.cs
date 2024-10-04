@@ -38,6 +38,11 @@ public class MMOClient
         _client.Connect($"{address}:{port}", useMessageHandlers: false);
     }
 
+    public void Connect(string address)
+    {
+        _client.Connect(address, useMessageHandlers: false);
+    }
+
     public void Disconnect()
     {
         _client.Disconnect();

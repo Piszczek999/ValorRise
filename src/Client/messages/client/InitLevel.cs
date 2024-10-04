@@ -18,3 +18,13 @@ internal class InitLevel : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class InitLevelEvent : EventArgs
+{
+    public ushort MapId { get; }
+
+    public InitLevelEvent(ushort mapId)
+    {
+        MapId = mapId;
+    }
+}

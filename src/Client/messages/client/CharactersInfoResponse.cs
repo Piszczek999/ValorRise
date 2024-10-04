@@ -18,3 +18,13 @@ internal class CharactersInfoResponse : IMessageHandler
         _eventBus.Publish(args);
     }
 }
+
+public class CharactersInfoResponseEvent : EventArgs
+{
+    public CharacterInfo[] Characters { get; }
+
+    public CharactersInfoResponseEvent(CharacterInfo[] characters)
+    {
+        Characters = characters;
+    }
+}

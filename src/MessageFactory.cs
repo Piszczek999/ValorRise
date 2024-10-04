@@ -1,6 +1,7 @@
 namespace MMOLibrary;
 
 using System.Collections;
+using System.Collections.Generic;
 using MMOLibrary.Server;
 using MongoDB.Bson;
 using Riptide;
@@ -156,7 +157,7 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoAuthResponse(ushort clientId, CharacterInfo[] characters)
+            public static Message CharactersInfoAuthResponse(ushort clientId, List<CharacterInfo> characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
                 message.AddUShort(clientId);
