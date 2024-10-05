@@ -1,4 +1,4 @@
-namespace MMOLibrary;
+namespace ValorRiseClient;
 
 public class EventBus
 {

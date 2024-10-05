@@ -1,4 +1,4 @@
-namespace MMOLibrary;
+namespace ValorRise;
 
 public enum RegisterResult
 {

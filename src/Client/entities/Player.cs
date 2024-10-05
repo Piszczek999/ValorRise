@@ -1,8 +1,10 @@
 using Riptide;
+using ValorRise;
+using ValorRise.Entities;
 
-namespace MMOLibrary.Client;
+namespace ValorRiseClient;
 
-public class Player : LivingEntity
+public class Player : LivingEntity, IPlayer
 {
     public static new Player Deserialize(Message message)
     {

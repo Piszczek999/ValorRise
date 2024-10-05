@@ -1,6 +1,15 @@
-namespace MMOLibrary.Server;
+namespace ValorRiseServer;
+
+using ValorRiseClient;
 using Riptide;
 using Riptide.Utils;
+
+public enum ServerType
+{
+    Gateway,
+    Authenticate,
+    GameServer
+}
 
 public class MMOServer
 {

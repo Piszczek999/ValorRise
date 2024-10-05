@@ -1,10 +1,12 @@
 using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
+using ValorRise;
+using ValorRise.Entities;
 
-namespace MMOLibrary.Client;
+namespace ValorRiseClient;
 
-public abstract class Entity
+public abstract class Entity : IEntity
 {
     public EntityType EntityType { get; set; }
     public ObjectId Id { get; set; }

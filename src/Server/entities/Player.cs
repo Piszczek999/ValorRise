@@ -1,8 +1,8 @@
+namespace ValorRiseServer.Entities;
 using Riptide;
+using ValorRise.Entities;
 
-namespace MMOLibrary.Server;
-
-public class Player : LivingEntity
+public class Player : LivingEntity, IPlayer
 {
     private Connection _connection;
 
@@ -13,7 +13,7 @@ public class Player : LivingEntity
 
     public void Disconnect()
     {
-        _connection.Disconnect();
+        _connection.TimeoutTime = 0;
     }
 
     public void Send(Message message)

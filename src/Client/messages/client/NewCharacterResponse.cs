@@ -1,5 +1,6 @@
-namespace MMOLibrary.Client.Messages;
+namespace ValorRiseClient.Messages;
 using Riptide;
+using ValorRise;
 
 internal class NewCharacterResponse : IMessageHandler
 {

@@ -1,6 +1,13 @@
-namespace MMOLibrary.Client;
+namespace ValorRiseClient;
 using Riptide;
 using Riptide.Utils;
+
+public enum ClientType
+{
+    Client,
+    Gateway,
+    GameServer
+}
 
 public class MMOClient
 {

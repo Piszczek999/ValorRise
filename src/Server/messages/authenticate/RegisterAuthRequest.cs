@@ -1,4 +1,6 @@
-namespace MMOLibrary.Server.Messages;
+namespace ValorRiseServer.Messages;
+
+using ValorRiseClient;
 using Riptide;
 
 internal class RegisterAuthRequest : IMessageHandler

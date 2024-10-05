@@ -1,4 +1,4 @@
-namespace MMOLibrary;
+namespace ValorRiseClient;
 using Riptide.Utils;
 
 public static class Logger

@@ -1,10 +1,11 @@
-namespace MMOLibrary;
+namespace ValorRiseClient;
 
 using System.Collections;
 using System.Collections.Generic;
-using MMOLibrary.Server;
 using MongoDB.Bson;
 using Riptide;
+using ValorRise;
+using ValorRise.Entities;
 
 public static class MessageFactory
 {
@@ -219,7 +220,7 @@ public static class MessageFactory
                 message.AddCharacter(character);
                 return message;
             }
-            public static Message SpawnEntity(Entity entity)
+            public static Message SpawnEntity(IEntity entity)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity);
                 entity.Serialize(message);

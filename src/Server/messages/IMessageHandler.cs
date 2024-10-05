@@ -1,4 +1,4 @@
-namespace MMOLibrary.Server;
+namespace ValorRiseServer;
 using Riptide;
 
 internal interface IMessageHandler

@@ -1,6 +1,7 @@
-namespace MMOLibrary.Server;
+namespace ValorRiseServer;
 
-using MMOLibrary.Server.Messages;
+using ValorRiseClient;
+using ValorRiseServer.Messages;
 using Riptide;
 
 internal class MessageDispatcher

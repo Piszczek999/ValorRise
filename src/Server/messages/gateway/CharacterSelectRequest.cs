@@ -1,4 +1,6 @@
-namespace MMOLibrary.Server.Messages;
+namespace ValorRiseServer.Messages;
+
+using ValorRiseClient;
 using MongoDB.Bson;
 using Riptide;
 

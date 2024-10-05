@@ -1,5 +1,6 @@
-namespace MMOLibrary.Server;
+namespace ValorRiseServer;
 using MongoDB.Bson;
+using ValorRiseServer.Entities;
 
 public class EntityManager
 {

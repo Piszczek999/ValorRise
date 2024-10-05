@@ -1,4 +1,4 @@
-namespace MMOLibrary.Client;
+namespace ValorRiseClient.Messages;
 using Riptide;
 
 internal interface IMessageHandler

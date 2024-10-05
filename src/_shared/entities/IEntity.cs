@@ -1,12 +1,11 @@
-namespace ValorRiseServer.Entities;
 using System.Numerics;
+using ValorRiseClient;
 using MongoDB.Bson;
 using Riptide;
-using ValorRise.Entities;
-using ValorRiseClient;
 
+namespace ValorRise.Entities;
 
-public abstract class Entity : IEntity
+public interface IEntity
 {
     public ObjectId Id { get; set; }
     public string Name { get; set; }

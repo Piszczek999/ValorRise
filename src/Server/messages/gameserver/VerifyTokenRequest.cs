@@ -1,5 +1,6 @@
-namespace MMOLibrary.Server.Messages;
-using MongoDB.Bson;
+namespace ValorRiseServer.Messages;
+
+using ValorRiseClient;
 using Riptide;
 
 internal class VerifyTokenRequest : IMessageHandler
