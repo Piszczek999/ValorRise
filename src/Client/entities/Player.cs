@@ -1,10 +1,9 @@
 using Riptide;
 using ValorRise;
-using ValorRise.Entities;
 
-namespace ValorRiseClient;
+namespace ValorRise.Client.Entities;
 
-public class Player : LivingEntity, IPlayer
+public class Player : LivingEntity
 {
     public static new Player Deserialize(Message message)
     {

@@ -1,8 +1,7 @@
-namespace ValorRiseServer.Messages;
-
-using ValorRiseClient;
 using MongoDB.Bson;
 using Riptide;
+
+namespace ValorRise.Server.Messages;
 
 internal class CharacterSelectAuthRequest : IMessageHandler
 {

@@ -1,5 +1,5 @@
-namespace ValorRiseClient;
 using Riptide.Utils;
+namespace ValorRise;
 
 public static class Logger
 {

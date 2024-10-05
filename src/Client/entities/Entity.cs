@@ -1,12 +1,10 @@
 using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
-using ValorRise;
-using ValorRise.Entities;
 
-namespace ValorRiseClient;
+namespace ValorRise.Client.Entities;
 
-public abstract class Entity : IEntity
+public abstract class Entity
 {
     public EntityType EntityType { get; set; }
     public ObjectId Id { get; set; }

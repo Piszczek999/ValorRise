@@ -1,11 +1,11 @@
-namespace ValorRiseClient;
+namespace ValorRise;
 
 public static class MessageType
 {
   public enum ToClient : ushort
   {
     // From Gateway
-    LoginResponse,
+    LoginResponse = 1000,
     RegisterResponse,
     CharactersInfoResponse,
     NewCharacterResponse,
@@ -21,7 +21,7 @@ public static class MessageType
   public enum ToGameServer : ushort
   {
     // From Client
-    VerifyTokenRequest,
+    VerifyTokenRequest = 2000,
 
     // From Authenticate
     PlayerToken,
@@ -29,7 +29,7 @@ public static class MessageType
   public enum ToGateway : ushort
   {
     // From CLient
-    LoginRequest,
+    LoginRequest = 3000,
     RegisterRequest,
     NewCharacterRequest,
     CharacterSelectRequest,
@@ -44,7 +44,7 @@ public static class MessageType
   public enum ToAuthenticate : ushort
   {
     // From Gateway
-    LoginAuthRequest,
+    LoginAuthRequest = 4000,
     RegisterAuthRequest,
     NewCharacterAuthRequest,
     CharacterSelectAuthRequest,

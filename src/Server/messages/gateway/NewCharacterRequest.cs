@@ -1,7 +1,6 @@
-namespace ValorRiseServer.Messages;
-
-using ValorRiseClient;
 using Riptide;
+
+namespace ValorRise.Server.Messages;
 
 internal class NewCharacterRequest : IMessageHandler
 {

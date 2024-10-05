@@ -1,13 +1,14 @@
-namespace ValorRiseServer.Entities;
 using Riptide;
-using ValorRise.Entities;
 
-public class Player : LivingEntity, IPlayer
+namespace ValorRise.Server.Entities;
+
+public class Player : LivingEntity
 {
     private Connection _connection;
 
     public Player(Connection connection) : base()
     {
+        EntityType = EntityType.Player;
         _connection = connection;
     }
 
@@ -24,6 +25,5 @@ public class Player : LivingEntity, IPlayer
     public override void Serialize(Message message)
     {
         base.Serialize(message);
-
     }
 }

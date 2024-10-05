@@ -1,7 +1,7 @@
-namespace ValorRiseClient.Messages;
 using MongoDB.Bson;
 using Riptide;
-using ValorRise;
+
+namespace ValorRise.Client.Messages;
 
 internal class LoginAuthResponse : IMessageHandler
 {

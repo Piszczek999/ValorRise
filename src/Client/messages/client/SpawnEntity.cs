@@ -1,5 +1,7 @@
-namespace ValorRiseClient.Messages;
 using Riptide;
+using ValorRise.Client.Entities;
+
+namespace ValorRise.Client.Messages;
 
 internal class SpawnEntity : IMessageHandler
 {

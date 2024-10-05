@@ -1,8 +1,8 @@
-namespace ValorRiseServer.Entities;
 using Riptide;
-using ValorRise.Entities;
 
-public class LivingEntity : Entity, ILivingEntity
+namespace ValorRise.Server.Entities;
+
+public class LivingEntity : Entity
 {
     public double Health { get; set; }
     public double MaxHealth { get; set; }

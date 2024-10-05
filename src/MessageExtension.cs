@@ -1,8 +1,8 @@
-namespace ValorRiseClient;
 using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
-using ValorRise;
+
+namespace ValorRise;
 
 public static class MessageExtensions
 {

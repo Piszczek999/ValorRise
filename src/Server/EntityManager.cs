@@ -1,6 +1,7 @@
-namespace ValorRiseServer;
 using MongoDB.Bson;
-using ValorRiseServer.Entities;
+using ValorRise.Server.Entities;
+
+namespace ValorRise.Server;
 
 public class EntityManager
 {

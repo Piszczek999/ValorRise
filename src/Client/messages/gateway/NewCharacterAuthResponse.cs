@@ -1,6 +1,6 @@
-namespace ValorRiseClient.Messages;
 using Riptide;
-using ValorRise;
+
+namespace ValorRise.Client.Messages;
 
 internal class NewCharacterAuthResponse : IMessageHandler
 {

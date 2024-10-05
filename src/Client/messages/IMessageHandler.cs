@@ -1,5 +1,6 @@
-namespace ValorRiseClient.Messages;
 using Riptide;
+
+namespace ValorRise.Client.Messages;
 
 internal interface IMessageHandler
 {

@@ -1,4 +1,4 @@
-namespace ValorRiseClient;
+namespace ValorRise;
 
 public static class Validator
 {

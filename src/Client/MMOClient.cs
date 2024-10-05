@@ -1,18 +1,12 @@
-namespace ValorRiseClient;
 using Riptide;
 using Riptide.Utils;
 
-public enum ClientType
-{
-    Client,
-    Gateway,
-    GameServer
-}
+namespace ValorRise.Client;
 
 public class MMOClient
 {
     private static MMOClient _instance;
-    private readonly Client _client;
+    private readonly Riptide.Client _client;
     private readonly EventBus _eventBus;
     private readonly MessageDispatcher _dispatcher;
 
@@ -22,12 +16,12 @@ public class MMOClient
 
     public static EventBus EventBus => _instance._eventBus;
 
-    private MMOClient(ClientType type)
+    private MMOClient()
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
-        _client = new Client();
+        _client = new Riptide.Client();
         _eventBus = new EventBus();
-        _dispatcher = new MessageDispatcher(_eventBus, type);
+        _dispatcher = new MessageDispatcher(_eventBus);
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
         _client.Connected += (s, e) => Connected?.Invoke(this, e);
@@ -35,9 +29,9 @@ public class MMOClient
         _client.ConnectionFailed += (s, e) => ConnectionFailed?.Invoke(this, e);
     }
 
-    public static MMOClient Init(ClientType type)
+    public static MMOClient Init()
     {
-        return _instance ??= new MMOClient(type);
+        return _instance ??= new MMOClient();
     }
 
     public void Connect(string address, ushort port)
