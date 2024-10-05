@@ -2,10 +2,55 @@ using MongoDB.Bson;
 using Riptide;
 using ValorRise.Server.Entities;
 
-namespace ValorRise.Server;
+namespace ValorRise;
 
 public static class MessageFactory
 {
+    public static class FromClient
+    {
+        public static class ToGateway
+        {
+            public static Message LoginRequest(string username, string password)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginRequest);
+                message.AddString(username);
+                message.AddString(password);
+                return message;
+            }
+
+            public static Message RegisterRequest(string username, string password)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterRequest);
+                message.AddString(username);
+                message.AddString(password);
+                return message;
+            }
+
+            public static Message NewCharacterRequest(string name)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterRequest);
+                message.AddString(name);
+                return message;
+            }
+
+            public static Message CharacterSelectRequest(ObjectId characterId)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectRequest);
+                message.AddObjectId(characterId);
+                return message;
+            }
+        }
+        public static class ToGameServer
+        {
+            public static Message VerifyTokenRequest(string token)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.VerifyTokenRequest);
+                message.AddString(token);
+                return message;
+            }
+        }
+    }
+
     public static class FromGateway
     {
         public static class ToClient
@@ -27,9 +72,10 @@ public static class MessageFactory
             public static Message CharactersInfoResponse(CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse);
-                foreach (var character in characters)
+                message.AddByte((byte)characters.Length);
+                for (int i = 0; i < characters.Length; i++)
                 {
-                    message.AddCharacterInfo(character);
+                    message.AddCharacterInfo(characters[i]);
                 }
                 return message;
             }
@@ -46,6 +92,44 @@ public static class MessageFactory
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse);
                 message.AddString(token);
                 message.AddString(ipAddress);
+                return message;
+            }
+        }
+        public static class ToAuthenticate
+        {
+            public static Message RegisterAuthRequest(ushort clientId, string username, string password)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.RegisterAuthRequest);
+                message.AddUShort(clientId);
+                message.AddString(username);
+                message.AddString(password);
+                return message;
+            }
+
+            public static Message LoginAuthRequest(ushort clientId, string username, string password)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.LoginAuthRequest);
+                message.AddUShort(clientId);
+                message.AddString(username);
+                message.AddString(password);
+                return message;
+            }
+
+            public static Message NewCharacterAuthRequest(ushort clientId, ObjectId userId, string name)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.NewCharacterAuthRequest);
+                message.AddUShort(clientId);
+                message.AddObjectId(userId);
+                message.AddString(name);
+                return message;
+            }
+
+            public static Message CharacterSelectAuthRequest(ushort clientId, ObjectId userId, ObjectId characterId)
+            {
+                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.CharacterSelectAuthRequest);
+                message.AddUShort(clientId);
+                message.AddObjectId(userId);
+                message.AddObjectId(characterId);
                 return message;
             }
         }
@@ -72,13 +156,14 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoAuthResponse(ushort clientId, List<CharacterInfo> characters)
+            public static Message CharactersInfoAuthResponse(ushort clientId, CharacterInfo[] characters)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
                 message.AddUShort(clientId);
-                foreach (var character in characters)
+                message.AddByte((byte)characters.Length);
+                for (int i = 0; i < characters.Length; i++)
                 {
-                    message.AddCharacterInfo(character);
+                    message.AddCharacterInfo(characters[i]);
                 }
                 return message;
             }
@@ -107,6 +192,13 @@ public static class MessageFactory
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.PlayerToken);
                 message.AddString(token);
                 message.AddCharacter(character);
+                return message;
+            }
+            public static Message GameServerInfoResponse(ushort mapId, ushort port)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.GameServerInfoResponse);
+                message.AddUShort(mapId);
+                message.AddUShort(port);
                 return message;
             }
         }
@@ -138,6 +230,15 @@ public static class MessageFactory
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity);
                 entity.Serialize(message);
+                return message;
+            }
+        }
+        public static class ToAuthenticate
+        {
+            public static Message GameServerInfoRequest(string ipAddress)
+            {
+                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.GameServerInfoRequest);
+                message.AddString(ipAddress);
                 return message;
             }
         }

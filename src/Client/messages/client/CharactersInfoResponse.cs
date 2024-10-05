@@ -7,7 +7,8 @@ internal class CharactersInfoResponse : IMessageHandler
 {
     public void HandleMessage(Message message)
     {
-        var characterinfos = message.GetCharacterInfos(3);
+        var count = message.GetByte();
+        var characterinfos = message.GetCharacterInfos(count);
 
         var args = new CharactersInfoResponseEvent(characterinfos);
         MMOClient.EventBus.Publish(args);

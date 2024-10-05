@@ -8,7 +8,8 @@ internal class CharactersInfoAuthResponse : IMessageHandler
     public void HandleMessage(Message message)
     {
         ushort clientId = message.GetUShort();
-        var characters = message.GetCharacterInfos(3);
+        var count = message.GetByte();
+        var characters = message.GetCharacterInfos(count);
 
         var args = new CharactersInfoAuthResponseEvent(clientId, characters);
         MMOClient.EventBus.Publish(args);
