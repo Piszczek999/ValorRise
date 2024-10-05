@@ -2,15 +2,9 @@ using Riptide;
 
 namespace ValorRise.Server.Messages;
 
+[Message((ushort)MessageType.ToGateway.LoginRequest)]
 internal class LoginRequest : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public LoginRequest(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(ushort clientId, Message message)
     {
         string username = message.GetString();
@@ -18,7 +12,7 @@ internal class LoginRequest : IMessageHandler
 
         if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
         var args = new LoginRequestEvent(client, username, password);
-        _eventBus.Publish(args);
+        MMOServer.EventBus.Publish(args);
     }
 }
 

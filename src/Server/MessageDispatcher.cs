@@ -1,31 +1,19 @@
-using ValorRise.Server.Messages;
 using Riptide;
 
 namespace ValorRise.Server;
 
 internal class MessageDispatcher
 {
-    private readonly Dictionary<ushort, IMessageHandler> _messageHandlers;
-    private readonly EventBus _eventBus;
+    private readonly Dictionary<ushort, IMessageHandler> _messageHandlers = new();
 
-    public MessageDispatcher(EventBus eventBus)
+    public MessageDispatcher()
     {
-        _eventBus = eventBus;
+        RegisterMessageHandlers();
+    }
 
-        _messageHandlers = new Dictionary<ushort, IMessageHandler>
-        {
-            {(ushort)MessageType.ToGateway.LoginRequest, new LoginRequest(_eventBus)},
-            {(ushort)MessageType.ToGateway.RegisterRequest, new RegisterRequest(_eventBus)},
-            {(ushort)MessageType.ToGateway.NewCharacterRequest, new NewCharacterRequest(_eventBus)},
-            {(ushort)MessageType.ToGateway.CharacterSelectRequest, new CharacterSelectRequest(_eventBus)},
-
-            {(ushort)MessageType.ToAuthenticate.LoginAuthRequest, new LoginAuthRequest(_eventBus)},
-            {(ushort)MessageType.ToAuthenticate.RegisterAuthRequest, new RegisterAuthRequest(_eventBus)},
-            {(ushort)MessageType.ToAuthenticate.NewCharacterAuthRequest, new NewCharacterAuthRequest(_eventBus)},
-            {(ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest, new CharacterSelectAuthRequest(_eventBus)},
-
-            {(ushort)MessageType.ToGameServer.VerifyTokenRequest, new VerifyTokenRequest(_eventBus)},
-        };
+    public void Register(ushort messageId, IMessageHandler handler)
+    {
+        _messageHandlers[messageId] = handler;
     }
 
     public void Dispatch(ushort clientId, Message message, ushort messageId)
@@ -37,6 +25,27 @@ internal class MessageDispatcher
         else
         {
             Logger.Warning($"Unhandled message type: {messageId}");
+        }
+    }
+
+    private void RegisterMessageHandlers()
+    {
+        var handlerTypes = typeof(IMessageHandler).Assembly.GetTypes()
+             .Where(t => typeof(IMessageHandler).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+        foreach (var handlerType in handlerTypes)
+        {
+            var attribute = (MessageAttribute)Attribute.GetCustomAttribute(handlerType, typeof(MessageAttribute));
+
+            if (attribute != null)
+            {
+                var handler = (IMessageHandler)Activator.CreateInstance(handlerType);
+                Register(attribute.MessageId, handler);
+            }
+            else
+            {
+                Logger.Warning($"Handler {handlerType.Name} does not have a MessageAttribute and will not be registered.");
+            }
         }
     }
 }

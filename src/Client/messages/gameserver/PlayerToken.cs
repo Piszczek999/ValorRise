@@ -2,22 +2,16 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToGameServer.PlayerToken)]
 internal class PlayerToken : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public PlayerToken(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         string token = message.GetString();
         Character character = message.GetCharacter();
 
         var args = new PlayerTokenEvent(token, character);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

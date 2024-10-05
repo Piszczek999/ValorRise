@@ -21,7 +21,7 @@ public class MMOClient
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _client = new Riptide.Client();
         _eventBus = new EventBus();
-        _dispatcher = new MessageDispatcher(_eventBus);
+        _dispatcher = new MessageDispatcher();
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
         _client.Connected += (s, e) => Connected?.Invoke(this, e);

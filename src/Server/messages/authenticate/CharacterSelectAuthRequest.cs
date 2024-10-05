@@ -3,15 +3,9 @@ using Riptide;
 
 namespace ValorRise.Server.Messages;
 
+[Message((ushort)MessageType.ToAuthenticate.CharacterSelectAuthRequest)]
 internal class CharacterSelectAuthRequest : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public CharacterSelectAuthRequest(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(ushort gatewayId, Message message)
     {
         ushort clientId = message.GetUShort();
@@ -20,7 +14,7 @@ internal class CharacterSelectAuthRequest : IMessageHandler
 
         if (!MMOServer.TryGetClient(gatewayId, out var gateway)) throw new InvalidOperationException("Gateway not found for specified clientId");
         var args = new CharacterSelectAuthRequestEvent(gateway, clientId, userId, characterId);
-        _eventBus.Publish(args);
+        MMOServer.EventBus.Publish(args);
     }
 }
 

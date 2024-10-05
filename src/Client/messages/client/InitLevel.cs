@@ -2,21 +2,15 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToClient.InitLevel)]
 internal class InitLevel : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public InitLevel(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         ushort mapId = message.GetUShort();
 
         var args = new InitLevelEvent(mapId);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

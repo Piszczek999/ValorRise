@@ -22,7 +22,7 @@ public class MMOServer
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _server = new Riptide.Server();
         _eventBus = new EventBus();
-        _dispatcher = new MessageDispatcher(_eventBus);
+        _dispatcher = new MessageDispatcher();
         _entityManager = new EntityManager();
 
         _server.MessageReceived += (s, e) => _dispatcher.Dispatch(e.FromConnection.Id, e.Message, e.MessageId);

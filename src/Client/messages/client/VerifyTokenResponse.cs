@@ -2,21 +2,15 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToClient.VerifyTokenResponse)]
 internal class VerifyTokenResponse : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public VerifyTokenResponse(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         bool result = message.GetBool();
 
         var args = new VerifyTokenResponseEvent(result);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

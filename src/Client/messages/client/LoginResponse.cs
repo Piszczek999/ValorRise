@@ -2,21 +2,15 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToClient.LoginResponse)]
 internal class LoginResponse : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public LoginResponse(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         LoginResult result = (LoginResult)message.GetByte();
 
         var args = new LoginResponseEvent(result);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

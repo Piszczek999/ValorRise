@@ -3,15 +3,9 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToGateway.LoginAuthResponse)]
 internal class LoginAuthResponse : IMessageHandler
 {
-  private readonly EventBus _eventBus;
-
-  public LoginAuthResponse(EventBus eventBus)
-  {
-    _eventBus = eventBus;
-  }
-
   public void HandleMessage(Message message)
   {
     ushort clientId = message.GetUShort();
@@ -19,7 +13,7 @@ internal class LoginAuthResponse : IMessageHandler
     ObjectId userId = message.GetObjectId();
 
     var args = new LoginAuthResponseEvent(clientId, result, userId);
-    _eventBus.Publish(args);
+    MMOClient.EventBus.Publish(args);
   }
 }
 

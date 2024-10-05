@@ -2,15 +2,9 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToGateway.CharacterSelectAuthResponse)]
 internal class CharacterSelectAuthResponse : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public CharacterSelectAuthResponse(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         ushort clientId = message.GetUShort();
@@ -18,7 +12,7 @@ internal class CharacterSelectAuthResponse : IMessageHandler
         string ipAddress = message.GetString();
 
         var args = new CharacterSelectAuthResponseEvent(clientId, token, ipAddress);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

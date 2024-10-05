@@ -3,21 +3,15 @@ using ValorRise.Client.Entities;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToClient.SpawnEntity)]
 internal class SpawnEntity : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public SpawnEntity(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         Entity entity = Entity.Deserialize(message);
 
         var args = new SpawnEntityEvent(entity);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 

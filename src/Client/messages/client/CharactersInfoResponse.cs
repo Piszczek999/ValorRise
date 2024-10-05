@@ -2,21 +2,15 @@ using Riptide;
 
 namespace ValorRise.Client.Messages;
 
+[Message((ushort)MessageType.ToClient.CharactersInfoResponse)]
 internal class CharactersInfoResponse : IMessageHandler
 {
-    private readonly EventBus _eventBus;
-
-    public CharactersInfoResponse(EventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public void HandleMessage(Message message)
     {
         var characterinfos = message.GetCharacterInfos(3);
 
         var args = new CharactersInfoResponseEvent(characterinfos);
-        _eventBus.Publish(args);
+        MMOClient.EventBus.Publish(args);
     }
 }
 
