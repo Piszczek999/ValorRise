@@ -9,13 +9,16 @@ public abstract class Entity
     public EntityType EntityType { get; set; }
     public ObjectId Id { get; set; }
     public string Name { get; set; }
-    public Vector2 Position { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
 
-    public virtual void Serialize(Message message)
+    public virtual Message Serialize(Message message)
     {
-        message.AddUShort((ushort)EntityType);
-        message.AddObjectId(Id);
-        message.AddString(Name);
-        message.AddVector2(Position);
+        return message
+        .AddUShort((ushort)EntityType)
+        .AddObjectId(Id)
+        .AddString(Name)
+        .AddFloat(X)
+        .AddFloat(Y);
     }
 }

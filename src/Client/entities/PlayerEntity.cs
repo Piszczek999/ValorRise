@@ -12,9 +12,10 @@ public class PlayerEntity : LivingEntity
             EntityType = EntityType.Player,
             Id = message.GetObjectId(),
             Name = message.GetString(),
-            Position = message.GetVector2(),
-            Health = message.GetDouble(),
-            MaxHealth = message.GetDouble(),
+            X = message.GetFloat(),
+            Y = message.GetFloat(),
+            Health = message.GetFloat(),
+            MaxHealth = message.GetFloat(),
         };
         return player;
     }

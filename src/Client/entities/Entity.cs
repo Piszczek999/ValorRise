@@ -9,7 +9,8 @@ public abstract class Entity
     public EntityType EntityType { get; set; }
     public ObjectId Id { get; set; }
     public string Name { get; set; }
-    public Vector2 Position { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
 
     public static Entity Deserialize(Message message)
     {

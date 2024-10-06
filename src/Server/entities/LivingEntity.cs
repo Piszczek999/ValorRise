@@ -4,10 +4,10 @@ namespace ValorRise.Server.Entities;
 
 public class LivingEntity : Entity
 {
-    public double Health { get; set; }
-    public double MaxHealth { get; set; }
+    public float Health { get; set; }
+    public float MaxHealth { get; set; }
 
-    public void TakeDamage(double damage)
+    public void TakeDamage(float damage)
     {
         Health -= damage;
         if (Health <= 0)
@@ -19,15 +19,15 @@ public class LivingEntity : Entity
         // Implement death behavior
     }
 
-    public void Heal(double healAmount)
+    public void Heal(float healAmount)
     {
         Health = Math.Min(Health + healAmount, MaxHealth);
     }
 
-    public override void Serialize(Message message)
+    public override Message Serialize(Message message)
     {
-        base.Serialize(message);
-        message.AddDouble(Health);
-        message.AddDouble(MaxHealth);
+        return base.Serialize(message)
+        .AddFloat(Health)
+        .AddFloat(MaxHealth);
     }
 }

@@ -10,7 +10,7 @@ internal class PlayerToken : IMessageHandler
     public void HandleMessage(Message message)
     {
         string token = message.GetString();
-        Character character = message.GetCharacter();
+        var character = Character.Deserialize(message);
 
         var args = new PlayerTokenEvent(token, character);
         _eventHandler.InvokeEvent(args);

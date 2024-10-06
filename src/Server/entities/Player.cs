@@ -22,8 +22,8 @@ public class Player : LivingEntity
         _connection.Send(message);
     }
 
-    public override void Serialize(Message message)
+    public override Message Serialize(Message message)
     {
-        base.Serialize(message);
+        return base.Serialize(message);
     }
 }

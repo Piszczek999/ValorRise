@@ -69,14 +69,10 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharactersInfoResponse(CharacterInfo[] characters)
+            public static Message CharactersInfoResponse(CharacterInfo[] characterInfos)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse);
-                message.AddByte((byte)characters.Length);
-                for (int i = 0; i < characters.Length; i++)
-                {
-                    message.AddCharacterInfo(characters[i]);
-                }
+                CharacterInfo.SerializeMany(message, characterInfos);
                 return message;
             }
 
@@ -161,11 +157,7 @@ public static class MessageFactory
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
                 message.AddUShort(clientId);
-                message.AddByte((byte)characters.Length);
-                for (int i = 0; i < characters.Length; i++)
-                {
-                    message.AddCharacterInfo(characters[i]);
-                }
+                CharacterInfo.SerializeMany(message, characters);
                 return message;
             }
 
@@ -193,7 +185,7 @@ public static class MessageFactory
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.PlayerToken);
                 message.AddString(token);
-                message.AddCharacter(character);
+                character.Serialize(message);
                 return message;
             }
             public static Message GameServerInfoResponse(ushort mapId, ushort port)
@@ -225,7 +217,7 @@ public static class MessageFactory
             public static Message InitMainPlayer(Character character)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitMainPlayer);
-                message.AddCharacter(character);
+                character.Serialize(message);
                 return message;
             }
             public static Message SpawnEntity(Entity entity)
