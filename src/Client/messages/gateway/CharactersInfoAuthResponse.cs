@@ -10,7 +10,7 @@ internal class CharactersInfoAuthResponse : IMessageHandler
     public void HandleMessage(Message message)
     {
         ushort clientId = message.GetUShort();
-        var characters = CharacterInfo.DeserializeMany(message);
+        var characters = message.GetSerializables<CharacterInfo>();
 
         var args = new CharactersInfoAuthResponseEvent(clientId, characters);
         _eventHandler.InvokeEvent(args);

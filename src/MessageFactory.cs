@@ -6,235 +6,225 @@ namespace ValorRise;
 
 public static class MessageFactory
 {
+    #region FromClient
     public static class FromClient
     {
         public static class ToGateway
         {
             public static Message LoginRequest(string username, string password)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginRequest);
-                message.AddString(username);
-                message.AddString(password);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginRequest)
+                    .AddString(username)
+                    .AddString(password);
             }
 
             public static Message RegisterRequest(string username, string password)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterRequest);
-                message.AddString(username);
-                message.AddString(password);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterRequest)
+                    .AddString(username)
+                    .AddString(password);
             }
 
             public static Message NewCharacterRequest(string name)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterRequest);
-                message.AddString(name);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterRequest)
+                    .AddString(name);
             }
 
             public static Message CharacterSelectRequest(ObjectId characterId)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectRequest);
-                message.AddObjectId(characterId);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectRequest)
+                    .AddObjectId(characterId);
             }
         }
         public static class ToGameServer
         {
             public static Message VerifyTokenRequest(string token)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.VerifyTokenRequest);
-                message.AddString(token);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.VerifyTokenRequest)
+                    .AddString(token);
+            }
+
+            public static Message PlayerMove(float x, float y)
+            {
+                return Message.Create(MessageSendMode.Unreliable, MessageType.ToGameServer.PlayerMove)
+                    .AddFloat(x)
+                    .AddFloat(y);
             }
         }
     }
-
+    #endregion
+    #region FromGateway
     public static class FromGateway
     {
         public static class ToClient
         {
             public static Message RegisterResponse(RegisterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResponse);
-                message.AddByte((byte)result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.RegisterResponse)
+                    .AddByte((byte)result);
             }
 
             public static Message LoginResponse(LoginResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResponse);
-                message.AddByte((byte)result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.LoginResponse)
+                    .AddByte((byte)result);
             }
 
             public static Message CharactersInfoResponse(CharacterInfo[] characterInfos)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse);
-                CharacterInfo.SerializeMany(message, characterInfos);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharactersInfoResponse)
+                    .AddSerializables(characterInfos);
             }
 
             public static Message NewCharacterResponse(NewCharacterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResponse);
-                message.AddByte((byte)result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.NewCharacterResponse)
+                    .AddByte((byte)result);
             }
 
             public static Message CharacterSelectResponse(string token, string ipAddress, ushort port)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse);
-                message.AddString(token);
-                message.AddString(ipAddress);
-                message.AddUShort(port);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse)
+                    .AddString(token)
+                    .AddString(ipAddress)
+                    .AddUShort(port);
             }
         }
         public static class ToAuthenticate
         {
             public static Message RegisterAuthRequest(ushort clientId, string username, string password)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.RegisterAuthRequest);
-                message.AddUShort(clientId);
-                message.AddString(username);
-                message.AddString(password);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.RegisterAuthRequest)
+                    .AddUShort(clientId)
+                    .AddString(username)
+                    .AddString(password);
             }
 
             public static Message LoginAuthRequest(ushort clientId, string username, string password)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.LoginAuthRequest);
-                message.AddUShort(clientId);
-                message.AddString(username);
-                message.AddString(password);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.LoginAuthRequest)
+                    .AddUShort(clientId)
+                    .AddString(username)
+                    .AddString(password);
             }
 
             public static Message NewCharacterAuthRequest(ushort clientId, ObjectId userId, string name)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.NewCharacterAuthRequest);
-                message.AddUShort(clientId);
-                message.AddObjectId(userId);
-                message.AddString(name);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.NewCharacterAuthRequest)
+                    .AddUShort(clientId)
+                    .AddObjectId(userId)
+                    .AddString(name);
             }
 
             public static Message CharacterSelectAuthRequest(ushort clientId, ObjectId userId, ObjectId characterId)
             {
-                Message message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.CharacterSelectAuthRequest);
-                message.AddUShort(clientId);
-                message.AddObjectId(userId);
-                message.AddObjectId(characterId);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.CharacterSelectAuthRequest)
+                    .AddUShort(clientId)
+                    .AddObjectId(userId)
+                    .AddObjectId(characterId);
             }
         }
     }
-
+    #endregion
+    #region FromAuthenticate
     public static class FromAuthenticate
     {
         public static class ToGateway
         {
             public static Message LoginAuthResponse(ushort clientId, LoginResult result, ObjectId userId = default)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginAuthResponse);
-                message.AddUShort(clientId);
-                message.AddByte((byte)result);
-                message.AddObjectId(userId);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.LoginAuthResponse)
+                    .AddUShort(clientId)
+                    .AddByte((byte)result)
+                    .AddObjectId(userId);
             }
 
             public static Message RegisterAuthResponse(ushort clientId, RegisterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterAuthResponse);
-                message.AddUShort(clientId);
-                message.AddByte((byte)result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.RegisterAuthResponse)
+                    .AddUShort(clientId)
+                    .AddByte((byte)result);
             }
 
             public static Message CharactersInfoAuthResponse(ushort clientId, CharacterInfo[] characters)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse);
-                message.AddUShort(clientId);
-                CharacterInfo.SerializeMany(message, characters);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharactersInfoAuthResponse)
+                    .AddUShort(clientId)
+                    .AddSerializables(characters);
             }
 
             public static Message NewCharacterAuthResponse(ushort clientId, NewCharacterResult result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterAuthResponse);
-                message.AddUShort(clientId);
-                message.AddByte((byte)result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.NewCharacterAuthResponse)
+                    .AddUShort(clientId)
+                    .AddByte((byte)result);
             }
 
             public static Message CharacterSelectAuthResponse(ushort clientId, string token, string ipAddress, ushort port)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectAuthResponse);
-                message.AddUShort(clientId);
-                message.AddString(token);
-                message.AddString(ipAddress);
-                message.AddUShort(port);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectAuthResponse)
+                    .AddUShort(clientId)
+                    .AddString(token)
+                    .AddString(ipAddress)
+                    .AddUShort(port);
             }
         }
         public static class ToGameServer
         {
             public static Message PlayerToken(string token, Character character)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.PlayerToken);
-                message.AddString(token);
-                character.Serialize(message);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.PlayerToken)
+                    .AddString(token)
+                    .AddSerializable(character);
             }
+
             public static Message GameServerInfoResponse(ushort mapId, ushort port)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.GameServerInfoResponse);
-                message.AddUShort(mapId);
-                message.AddUShort(port);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToGameServer.GameServerInfoResponse)
+                    .AddUShort(mapId)
+                    .AddUShort(port);
             }
         }
     }
-
+    #endregion
+    #region FromGameServer
     public static class FromGameServer
     {
         public static class ToClient
         {
             public static Message VerifyTokenResponse(bool result)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.VerifyTokenResponse);
-                message.AddBool(result);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.VerifyTokenResponse)
+                    .AddBool(result);
             }
+
             public static Message InitLevel(ushort mapId)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitLevel);
-                message.AddUShort(mapId);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitLevel)
+                    .AddUShort(mapId);
             }
-            public static Message InitMainPlayer(Character character)
+
+            public static Message InitMainPlayer(Player player)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitMainPlayer);
-                character.Serialize(message);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.InitMainPlayer)
+                    .AddSerializable(player);
             }
+
             public static Message SpawnEntity(Entity entity)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity);
-                entity.Serialize(message);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity)
+                    .AddSerializable(entity);
             }
         }
         public static class ToAuthenticate
         {
             public static Message GameServerInfoRequest(string ipAddress)
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.GameServerInfoRequest);
-                message.AddString(ipAddress);
-                return message;
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToAuthenticate.GameServerInfoRequest)
+                    .AddString(ipAddress);
             }
         }
     }
+    #endregion
 }

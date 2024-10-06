@@ -14,7 +14,7 @@ public class Player : LivingEntity
 
     public void Disconnect()
     {
-        _connection.TimeoutTime = 0;
+        _connection.Disconnect();
     }
 
     public void Send(Message message)
@@ -22,8 +22,13 @@ public class Player : LivingEntity
         _connection.Send(message);
     }
 
-    public override Message Serialize(Message message)
+    public override void Serialize(Message message)
     {
-        return base.Serialize(message);
+        base.Serialize(message);
+    }
+
+    public override void Deserialize(Message message)
+    {
+        base.Deserialize(message);
     }
 }

@@ -9,7 +9,7 @@ internal class CharactersInfoResponse : IMessageHandler
 
     public void HandleMessage(Message message)
     {
-        var characterinfos = CharacterInfo.DeserializeMany(message);
+        var characterinfos = message.GetSerializables<CharacterInfo>();
 
         var args = new CharactersInfoResponseEvent(characterinfos);
         _eventHandler.InvokeEvent(args);

@@ -16,12 +16,13 @@ public static class MessageType
         InitLevel,
         InitMainPlayer,
         SpawnEntity,
-        MoveEntity,
+        EntityMove,
     }
     public enum ToGameServer : ushort
     {
         // From Client
         VerifyTokenRequest = 2000,
+        PlayerMove,
 
         // From Authenticate
         GameServerInfoResponse,

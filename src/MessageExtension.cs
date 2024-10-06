@@ -9,8 +9,7 @@ public static class MessageExtensions
   #region ObjectId
   public static Message AddObjectId(this Message message, ObjectId value)
   {
-    message.AddString(value.ToString());
-    return message;
+    return message.AddString(value.ToString());
   }
 
   public static ObjectId GetObjectId(this Message message)

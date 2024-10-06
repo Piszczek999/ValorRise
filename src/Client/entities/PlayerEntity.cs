@@ -5,6 +5,11 @@ namespace ValorRise.Client.Entities;
 
 public class PlayerEntity : LivingEntity
 {
+    public override void Serialize(Message message)
+    {
+        base.Serialize(message);
+    }
+
     public static new PlayerEntity Deserialize(Message message)
     {
         var player = new PlayerEntity

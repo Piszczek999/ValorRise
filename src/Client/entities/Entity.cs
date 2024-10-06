@@ -1,4 +1,3 @@
-using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
 
@@ -12,14 +11,20 @@ public abstract class Entity
     public float X { get; set; }
     public float Y { get; set; }
 
+    public virtual void Serialize(Message message) => message
+        .AddUShort((ushort)EntityType)
+        .AddObjectId(Id)
+        .AddString(Name)
+        .AddFloat(X)
+        .AddFloat(Y);
+
     public static Entity Deserialize(Message message)
     {
         EntityType entityType = (EntityType)message.GetUShort();
-        Entity entity = entityType switch
+        return entityType switch
         {
             EntityType.Player => PlayerEntity.Deserialize(message),
-            _ => throw new InvalidOperationException(""),
+            _ => throw new InvalidOperationException("Unsupported entity type"),
         };
-        return entity;
     }
 }

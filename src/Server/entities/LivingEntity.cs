@@ -24,10 +24,17 @@ public class LivingEntity : Entity
         Health = Math.Min(Health + healAmount, MaxHealth);
     }
 
-    public override Message Serialize(Message message)
+    public override void Serialize(Message message)
     {
-        return base.Serialize(message)
-        .AddFloat(Health)
-        .AddFloat(MaxHealth);
+        base.Serialize(message);
+        message.AddFloat(Health)
+               .AddFloat(MaxHealth);
+    }
+
+    public override void Deserialize(Message message)
+    {
+        base.Deserialize(message);
+        Health = message.GetFloat();
+        MaxHealth = message.GetFloat();
     }
 }
