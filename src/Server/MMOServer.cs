@@ -6,22 +6,25 @@ namespace ValorRise.Server;
 public class MMOServer
 {
     private static MMOServer _instance;
-    private readonly Riptide.Server _server;
-    private readonly EntityManager _entityManager;
-    private readonly MessageDispatcher _dispatcher;
-    private readonly EventBus _eventBus;
+    private Riptide.Server _server;
+    private EntityManager _entityManager;
+    private MessageDispatcher _dispatcher;
+    private GlobalEventHandler _globalEventHandler;
 
     public event EventHandler<ServerConnectedEventArgs> ClientConnected;
     public event EventHandler<ServerDisconnectedEventArgs> ClientDisconnected;
 
-    public static EventBus EventBus => _instance._eventBus;
+    public static MMOServer Server => _instance;
+    public static GlobalEventHandler GlobalEventHandler => _instance._globalEventHandler;
     public static EntityManager EntityManager => _instance._entityManager;
 
-    private MMOServer()
+    private MMOServer() { }
+
+    private void Initialize()
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _server = new Riptide.Server();
-        _eventBus = new EventBus();
+        _globalEventHandler = new GlobalEventHandler();
         _dispatcher = new MessageDispatcher();
         _entityManager = new EntityManager();
 
@@ -32,7 +35,9 @@ public class MMOServer
 
     public static MMOServer Init()
     {
-        return _instance ??= new MMOServer();
+        _instance ??= new MMOServer();
+        _instance.Initialize();
+        return _instance;
     }
 
     public void Start(ushort port, ushort maxClients)

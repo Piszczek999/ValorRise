@@ -5,26 +5,28 @@ namespace ValorRise.Server.Messages;
 [Message((ushort)MessageType.ToGateway.RegisterRequest)]
 internal class RegisterRequest : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOServer.GlobalEventHandler;
+
     public void HandleMessage(ushort clientId, Message message)
     {
         string username = message.GetString();
         string password = message.GetString();
 
-        if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
-        var args = new RegisterRequestEvent(client, username, password);
-        MMOServer.EventBus.Publish(args);
+        var args = new RegisterRequestEvent(clientId, username, password);
+        _eventHandler.InvokeEvent(args);
     }
 }
 
 public class RegisterRequestEvent : EventArgs
 {
-    public Connection Client { get; }
+    public ushort ClientId { get; }
+    public Connection Client { get => MMOServer.TryGetClient(ClientId, out var client) ? client : null; }
     public string Username { get; }
     public string Password { get; }
 
-    public RegisterRequestEvent(Connection client, string username, string password)
+    public RegisterRequestEvent(ushort clientId, string username, string password)
     {
-        Client = client;
+        ClientId = clientId;
         Username = username;
         Password = password;
     }

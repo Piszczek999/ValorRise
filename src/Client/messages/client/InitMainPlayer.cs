@@ -1,25 +1,28 @@
 using Riptide;
+using ValorRise.Client.Entities;
 
 namespace ValorRise.Client.Messages;
 
 [Message((ushort)MessageType.ToClient.InitMainPlayer)]
 internal class InitMainPlayer : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
-        Character character = message.GetCharacter();
+        var playerEntity = (PlayerEntity)Entity.Deserialize(message);
 
-        var args = new InitMainPlayerEvent(character);
-        MMOClient.EventBus.Publish(args);
+        var args = new InitMainPlayerEvent(playerEntity);
+        _eventHandler.InvokeEvent(args);
     }
 }
 
 public class InitMainPlayerEvent : EventArgs
 {
-    public Character Character { get; }
+    public PlayerEntity PlayerEntity { get; }
 
-    public InitMainPlayerEvent(Character character)
+    public InitMainPlayerEvent(PlayerEntity playerEntity)
     {
-        Character = character;
+        PlayerEntity = playerEntity;
     }
 }

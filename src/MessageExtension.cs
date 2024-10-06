@@ -14,6 +14,7 @@ public static class MessageExtensions
     message.AddString(character.Name);
     message.AddInt(character.Level);
     message.AddInt(character.Exp);
+    message.AddUShort(character.MapId);
     message.AddDouble(character.X);
     message.AddDouble(character.Y);
     message.AddString(character.CreatedAt.ToString());
@@ -30,6 +31,7 @@ public static class MessageExtensions
       Name = message.GetString(),
       Level = message.GetInt(),
       Exp = message.GetInt(),
+      MapId = message.GetUShort(),
       X = message.GetDouble(),
       Y = message.GetDouble(),
       CreatedAt = DateTime.Parse(message.GetString())

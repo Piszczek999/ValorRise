@@ -6,6 +6,8 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToGateway.LoginAuthResponse)]
 internal class LoginAuthResponse : IMessageHandler
 {
+  private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
   public void HandleMessage(Message message)
   {
     ushort clientId = message.GetUShort();
@@ -13,7 +15,7 @@ internal class LoginAuthResponse : IMessageHandler
     ObjectId userId = message.GetObjectId();
 
     var args = new LoginAuthResponseEvent(clientId, result, userId);
-    MMOClient.EventBus.Publish(args);
+    _eventHandler.InvokeEvent(args);
   }
 }
 

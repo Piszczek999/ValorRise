@@ -6,21 +6,24 @@ namespace ValorRise.Client;
 public class MMOClient
 {
     private static MMOClient _instance;
-    private readonly Riptide.Client _client;
-    private readonly EventBus _eventBus;
-    private readonly MessageDispatcher _dispatcher;
+    private Riptide.Client _client;
+    private GlobalEventHandler _globalEventHandler;
+    private MessageDispatcher _dispatcher;
 
     public event EventHandler Connected;
     public event EventHandler<DisconnectedEventArgs> Disonnected;
     public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
 
-    public static EventBus EventBus => _instance._eventBus;
+    public static MMOClient Client => _instance;
+    public static GlobalEventHandler GlobalEventHandler => _instance._globalEventHandler;
 
-    private MMOClient()
+    private MMOClient() { }
+
+    private void Initialize()
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _client = new Riptide.Client();
-        _eventBus = new EventBus();
+        _globalEventHandler = new GlobalEventHandler();
         _dispatcher = new MessageDispatcher();
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
@@ -31,31 +34,16 @@ public class MMOClient
 
     public static MMOClient Init()
     {
-        return _instance ??= new MMOClient();
+        _instance ??= new MMOClient();
+        _instance.Initialize();
+        return _instance;
     }
 
-    public void Connect(string address, ushort port)
-    {
-        _client.Connect($"{address}:{port}", useMessageHandlers: false);
-    }
+    public void Connect(string address, ushort port) => _client.Connect($"{address}:{port}", useMessageHandlers: false);
 
-    public void Connect(string address)
-    {
-        _client.Connect(address, useMessageHandlers: false);
-    }
+    public void Disconnect() => _client.Disconnect();
 
-    public void Disconnect()
-    {
-        _client.Disconnect();
-    }
+    public void Update() => _client.Update();
 
-    public void Update()
-    {
-        _client.Update();
-    }
-
-    public static void Send(Message message)
-    {
-        _instance._client.Send(message);
-    }
+    public static void Send(Message message) => _instance._client.Send(message);
 }

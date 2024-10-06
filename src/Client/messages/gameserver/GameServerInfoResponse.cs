@@ -5,13 +5,15 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToGameServer.GameServerInfoResponse)]
 internal class GameServerInfoResponse : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         ushort mapId = message.GetUShort();
         ushort port = message.GetUShort();
 
         var args = new GameServerInfoResponseEvent(mapId, port);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

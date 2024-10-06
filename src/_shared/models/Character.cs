@@ -20,6 +20,9 @@ public class Character
     [BsonElement("exp")]
     public int Exp { get; set; }
 
+    [BsonElement("mapId")]
+    public ushort MapId { get; set; }
+
     [BsonElement("x")]
     public double X { get; set; }
 

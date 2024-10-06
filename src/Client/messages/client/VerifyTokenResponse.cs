@@ -5,12 +5,14 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToClient.VerifyTokenResponse)]
 internal class VerifyTokenResponse : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         bool result = message.GetBool();
 
         var args = new VerifyTokenResponseEvent(result);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

@@ -16,7 +16,7 @@ public abstract class Entity
         EntityType entityType = (EntityType)message.GetUShort();
         Entity entity = entityType switch
         {
-            EntityType.Player => Player.Deserialize(message),
+            EntityType.Player => PlayerEntity.Deserialize(message),
             _ => throw new InvalidOperationException(""),
         };
         return entity;

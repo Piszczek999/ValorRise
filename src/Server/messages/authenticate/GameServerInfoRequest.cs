@@ -5,24 +5,26 @@ namespace ValorRise.Server.Messages;
 [Message((ushort)MessageType.ToAuthenticate.GameServerInfoRequest)]
 internal class GameServerInfoRequest : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOServer.GlobalEventHandler;
+
     public void HandleMessage(ushort gameServerId, Message message)
     {
         string ipAddress = message.GetString();
 
-        if (!MMOServer.TryGetClient(gameServerId, out var gameServer)) throw new InvalidOperationException("Gateway not found for specified clientId");
-        var args = new GameServerInfoRequestEvent(gameServer, ipAddress);
-        MMOServer.EventBus.Publish(args);
+        var args = new GameServerInfoRequestEvent(gameServerId, ipAddress);
+        _eventHandler.InvokeEvent(args);
     }
 }
 
 public class GameServerInfoRequestEvent : EventArgs
 {
-    public Connection GameServer { get; }
+    public ushort GameServerId { get; }
+    public Connection GameServer { get => MMOServer.TryGetClient(GameServerId, out var gameServer) ? gameServer : null; }
     public string IpAddress { get; }
 
-    public GameServerInfoRequestEvent(Connection gameServer, string ipAddress)
+    public GameServerInfoRequestEvent(ushort gameServerId, string ipAddress)
     {
-        GameServer = gameServer;
+        GameServerId = gameServerId;
         IpAddress = ipAddress;
     }
 }

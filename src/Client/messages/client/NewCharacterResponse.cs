@@ -5,12 +5,14 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToClient.NewCharacterResponse)]
 internal class NewCharacterResponse : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         NewCharacterResult result = (NewCharacterResult)message.GetByte();
 
         var args = new NewCharacterResponseEvent(result);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

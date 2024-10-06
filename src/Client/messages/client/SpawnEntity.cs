@@ -6,12 +6,14 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToClient.SpawnEntity)]
 internal class SpawnEntity : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         Entity entity = Entity.Deserialize(message);
 
         var args = new SpawnEntityEvent(entity);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

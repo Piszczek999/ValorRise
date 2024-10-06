@@ -3,11 +3,11 @@ using ValorRise;
 
 namespace ValorRise.Client.Entities;
 
-public class Player : LivingEntity
+public class PlayerEntity : LivingEntity
 {
-    public static new Player Deserialize(Message message)
+    public static new PlayerEntity Deserialize(Message message)
     {
-        var player = new Player
+        var player = new PlayerEntity
         {
             EntityType = EntityType.Player,
             Id = message.GetObjectId(),

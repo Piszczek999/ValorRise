@@ -5,6 +5,8 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToGateway.CharactersInfoAuthResponse)]
 internal class CharactersInfoAuthResponse : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         ushort clientId = message.GetUShort();
@@ -12,7 +14,7 @@ internal class CharactersInfoAuthResponse : IMessageHandler
         var characters = message.GetCharacterInfos(count);
 
         var args = new CharactersInfoAuthResponseEvent(clientId, characters);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

@@ -5,13 +5,15 @@ namespace ValorRise.Client.Messages;
 [Message((ushort)MessageType.ToGameServer.PlayerToken)]
 internal class PlayerToken : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOClient.GlobalEventHandler;
+
     public void HandleMessage(Message message)
     {
         string token = message.GetString();
         Character character = message.GetCharacter();
 
         var args = new PlayerTokenEvent(token, character);
-        MMOClient.EventBus.Publish(args);
+        _eventHandler.InvokeEvent(args);
     }
 }
 

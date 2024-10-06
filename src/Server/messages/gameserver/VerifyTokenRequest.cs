@@ -5,24 +5,26 @@ namespace ValorRise.Server.Messages;
 [Message((ushort)MessageType.ToGameServer.VerifyTokenRequest)]
 internal class VerifyTokenRequest : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOServer.GlobalEventHandler;
+
     public void HandleMessage(ushort clientId, Message message)
     {
         string token = message.GetString();
 
-        if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
-        var args = new VerifyTokenRequestEvent(client, token);
-        MMOServer.EventBus.Publish(args);
+        var args = new VerifyTokenRequestEvent(clientId, token);
+        _eventHandler.InvokeEvent(args);
     }
 }
 
 public class VerifyTokenRequestEvent : EventArgs
 {
-    public Connection Client { get; }
+    public ushort ClientId { get; }
+    public Connection Client { get => MMOServer.TryGetClient(ClientId, out var client) ? client : null; }
     public string Token { get; }
 
-    public VerifyTokenRequestEvent(Connection client, string token)
+    public VerifyTokenRequestEvent(ushort clientId, string token)
     {
-        Client = client;
+        ClientId = clientId;
         Token = token;
     }
 }

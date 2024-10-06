@@ -87,11 +87,12 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharacterSelectResponse(string token, string ipAddress)
+            public static Message CharacterSelectResponse(string token, string ipAddress, ushort port)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToClient.CharacterSelectResponse);
                 message.AddString(token);
                 message.AddString(ipAddress);
+                message.AddUShort(port);
                 return message;
             }
         }
@@ -176,12 +177,13 @@ public static class MessageFactory
                 return message;
             }
 
-            public static Message CharacterSelectAuthResponse(ushort clientId, string token, string ipAddress)
+            public static Message CharacterSelectAuthResponse(ushort clientId, string token, string ipAddress, ushort port)
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageType.ToGateway.CharacterSelectAuthResponse);
                 message.AddUShort(clientId);
                 message.AddString(token);
                 message.AddString(ipAddress);
+                message.AddUShort(port);
                 return message;
             }
         }

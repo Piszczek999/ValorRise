@@ -6,24 +6,26 @@ namespace ValorRise.Server.Messages;
 [Message((ushort)MessageType.ToGateway.CharacterSelectRequest)]
 internal class CharacterSelectRequest : IMessageHandler
 {
+    private GlobalEventHandler _eventHandler = MMOServer.GlobalEventHandler;
+
     public void HandleMessage(ushort clientId, Message message)
     {
         ObjectId characterId = message.GetObjectId();
 
-        if (!MMOServer.TryGetClient(clientId, out var client)) throw new InvalidOperationException("Client not found for specified clientId");
-        var args = new CharacterSelectRequestEvent(client, characterId);
-        MMOServer.EventBus.Publish(args);
+        var args = new CharacterSelectRequestEvent(clientId, characterId);
+        _eventHandler.InvokeEvent(args);
     }
 }
 
 public class CharacterSelectRequestEvent : EventArgs
 {
-    public Connection Client { get; }
+    public ushort ClientId { get; }
+    public Connection Client { get => MMOServer.TryGetClient(ClientId, out var client) ? client : null; }
     public ObjectId CharacterId { get; }
 
-    public CharacterSelectRequestEvent(Connection client, ObjectId characterId)
+    public CharacterSelectRequestEvent(ushort clientId, ObjectId characterId)
     {
-        Client = client;
+        ClientId = clientId;
         CharacterId = characterId;
     }
 }
