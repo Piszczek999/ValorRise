@@ -1,3 +1,4 @@
+using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
 using ValorRise.Server.Entities;
@@ -215,6 +216,13 @@ public static class MessageFactory
             {
                 return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.SpawnEntity)
                     .AddSerializable(entity);
+            }
+
+            public static Message EntityMove(ObjectId entityId, Vector2 newPosition)
+            {
+                return Message.Create(MessageSendMode.Reliable, MessageType.ToClient.EntityMove)
+                    .AddObjectId(entityId)
+                    .AddVector2(newPosition);
             }
         }
         public static class ToAuthenticate

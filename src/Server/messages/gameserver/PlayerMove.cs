@@ -1,4 +1,5 @@
 using Riptide;
+using ValorRise.Server.Entities;
 
 namespace ValorRise.Server.Messages;
 
@@ -21,6 +22,7 @@ public class PlayerMoveEvent : EventArgs
 {
     public ushort ClientId { get; }
     public Connection Client { get => MMOServer.TryGetClient(ClientId, out var client) ? client : null; }
+    public Player Player { get => MMOServer.PlayerManager.TryGetPlayer(ClientId, out var player) ? player : null; }
     public float X { get; }
     public float Y { get; }
 

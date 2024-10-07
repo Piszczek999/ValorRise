@@ -7,6 +7,7 @@ public class MMOClient
 {
     private static MMOClient _instance;
     private Riptide.Client _client;
+    private EntityManager _entityManager;
     private GlobalEventHandler _globalEventHandler;
     private MessageDispatcher _dispatcher;
 
@@ -16,6 +17,7 @@ public class MMOClient
 
     public static MMOClient Client => _instance;
     public static GlobalEventHandler GlobalEventHandler => _instance._globalEventHandler;
+    public static EntityManager EntityManager => _instance._entityManager;
 
     private MMOClient() { }
 
@@ -25,6 +27,7 @@ public class MMOClient
         _client = new Riptide.Client();
         _globalEventHandler = new GlobalEventHandler();
         _dispatcher = new MessageDispatcher();
+        _entityManager = new EntityManager();
 
         _client.MessageReceived += (s, e) => _dispatcher.Dispatch(e.Message, e.MessageId);
         _client.Connected += (s, e) => Connected?.Invoke(this, e);

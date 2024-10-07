@@ -17,8 +17,7 @@ public class PlayerEntity : LivingEntity
             EntityType = EntityType.Player,
             Id = message.GetObjectId(),
             Name = message.GetString(),
-            X = message.GetFloat(),
-            Y = message.GetFloat(),
+            Position = message.GetVector2(),
             Health = message.GetFloat(),
             MaxHealth = message.GetFloat(),
         };

@@ -1,3 +1,4 @@
+using System.Numerics;
 using MongoDB.Bson;
 using Riptide;
 
@@ -11,10 +12,9 @@ internal class EntityMove : IMessageHandler
     public void HandleMessage(Message message)
     {
         ObjectId entityId = message.GetObjectId();
-        float x = message.GetFloat();
-        float y = message.GetFloat();
+        Vector2 newPosition = message.GetVector2();
 
-        var args = new EntityMoveEvent(entityId, x, y);
+        var args = new EntityMoveEvent(entityId, newPosition);
         _eventHandler.InvokeEvent(args);
     }
 }
@@ -22,13 +22,11 @@ internal class EntityMove : IMessageHandler
 public class EntityMoveEvent : EventArgs
 {
     public ObjectId EntityId { get; }
-    public float X { get; }
-    public float Y { get; }
+    public Vector2 NewPosition { get; }
 
-    public EntityMoveEvent(ObjectId entityId, float x, float y)
+    public EntityMoveEvent(ObjectId entityId, Vector2 newPosition)
     {
         EntityId = entityId;
-        X = x;
-        Y = y;
+        NewPosition = newPosition;
     }
 }
