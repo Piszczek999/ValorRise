@@ -1,6 +1,6 @@
 using Riptide;
 
-namespace ValorRise;
+namespace ValorRise.Packets;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class PacketAttribute : Attribute

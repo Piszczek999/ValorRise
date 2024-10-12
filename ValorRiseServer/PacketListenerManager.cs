@@ -1,13 +1,12 @@
 using System.Reflection;
 using ValorRise;
 using ValorRise.Packets;
-using ValorRise.Packets.Play.Client;
 
 namespace ValorRiseServer;
 
 public class PacketListenerManager : IPacketListenerManager
 {
-    private readonly Dictionary<Type, Action<IClientPacket, PlayerConnection>> _listeners = new();
+    private readonly Dictionary<Type, Action<IPacket, PlayerConnection>> _listeners = new();
 
     public PacketListenerManager()
     {
@@ -24,14 +23,9 @@ public class PacketListenerManager : IPacketListenerManager
                 var attribute = method.GetCustomAttribute<PacketListenerAttribute>();
                 var packetType = attribute.PacketType;
 
-                Action<IClientPacket, PlayerConnection> action = (packet, connection) =>
+                Action<IPacket, PlayerConnection> action = (packet, connection) =>
                 {
-                    if (packet is not ClientPlayerMovementPacket specificPacket)
-                    {
-                        throw new InvalidCastException($"Invalid packet type: expected {packetType.Name}, got {packet.GetType().Name}");
-                    }
-
-                    method.Invoke(instance, new object[] { specificPacket, connection });
+                    method.Invoke(instance, new object[] { packet, connection });
                 };
 
                 RegisterListener(packetType, action);
@@ -39,20 +33,20 @@ public class PacketListenerManager : IPacketListenerManager
         }
     }
 
-    public void RegisterListener(Type packetType, Action<IClientPacket, PlayerConnection> listener)
+    public void RegisterListener(Type packetType, Action<IPacket, PlayerConnection> listener)
     {
         _listeners[packetType] = listener;
     }
 
-    public void ProcessClientMessage(IClientPacket clientPacket, PlayerConnection connection)
+    public void ProcessPacket(IPacket packet, PlayerConnection connection)
     {
-        var packetType = clientPacket.GetType();
+        var packetType = packet.GetType();
 
         if (_listeners.TryGetValue(packetType, out var listener))
         {
             try
             {
-                listener(clientPacket, connection);
+                listener(packet, connection);
             }
             catch (Exception ex)
             {

@@ -2,7 +2,7 @@ using Riptide;
 
 namespace ValorRise.Packets;
 
-public interface ISendablePacket
+public interface IPacket
 {
     void Write(Message message);
 }

@@ -1,6 +1,6 @@
 namespace ValorRise.Packets;
 
-public interface IClientPacket : ISendablePacket
+public interface IClientPacket : IPacket
 {
 
 }

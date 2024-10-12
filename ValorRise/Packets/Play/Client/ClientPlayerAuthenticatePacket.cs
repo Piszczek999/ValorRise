@@ -1,4 +1,3 @@
-using System.Numerics;
 using Riptide;
 
 namespace ValorRise.Packets.Play.Client;
