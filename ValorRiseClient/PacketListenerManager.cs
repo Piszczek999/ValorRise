@@ -2,11 +2,11 @@ using System.Reflection;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseServer;
+namespace ValorRiseClient;
 
 public class PacketListenerManager : IPacketListenerManager
 {
-    private readonly Dictionary<Type, Action<IPacket, PlayerConnection>> _listeners = new();
+    private readonly Dictionary<Type, Action<IPacket>> _listeners = new();
 
     public PacketListenerManager()
     {
@@ -27,10 +27,9 @@ public class PacketListenerManager : IPacketListenerManager
                 }
 
                 var packetType = parameters[0].ParameterType;
-
-                Action<IPacket, PlayerConnection> action = (packet, connection) =>
+                Action<IPacket> action = (packet) =>
                 {
-                    method.Invoke(instance, new object[] { packet, connection });
+                    method.Invoke(instance, new object[] { packet });
                 };
 
                 RegisterListener(packetType, action);
@@ -38,12 +37,12 @@ public class PacketListenerManager : IPacketListenerManager
         }
     }
 
-    public void RegisterListener(Type packetType, Action<IPacket, PlayerConnection> listener)
+    public void RegisterListener(Type packetType, Action<IPacket> listener)
     {
         _listeners[packetType] = listener;
     }
 
-    public void ProcessPacket(IPacket packet, PlayerConnection connection)
+    public void ProcessPacket(IPacket packet)
     {
         var packetType = packet.GetType();
 
@@ -51,7 +50,7 @@ public class PacketListenerManager : IPacketListenerManager
         {
             try
             {
-                listener(packet, connection);
+                listener(packet);
             }
             catch (Exception ex)
             {

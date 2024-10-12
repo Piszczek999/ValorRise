@@ -2,7 +2,7 @@ using ValorRiseServer.Entities;
 
 namespace ValorRiseServer;
 
-public class AuthenticateEvent : IPlayerEvent
+public class AuthenticateEvent : IEvent
 {
     public PlayerConnection Connection { get; }
     public string Token { get; }

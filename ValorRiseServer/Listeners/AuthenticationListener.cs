@@ -4,7 +4,7 @@ namespace ValorRiseServer;
 
 public class AuthenticationListener
 {
-    [PacketListener(typeof(ClientPlayerAuthenticatePacket))]
+    [PacketListener]
     public void PlayerAuthenticateListener(ClientPlayerAuthenticatePacket packet, PlayerConnection connection)
     {
         var player = ValorServer.VerificationManager.VerifyToken(connection, packet.Token);

@@ -4,9 +4,10 @@ namespace ValorRiseServer;
 
 public class PlayerMovementListener
 {
-    [PacketListener(typeof(ClientPlayerMovementPacket))]
-    public void ClientPlayerMovementListener(ClientPlayerMovementPacket message, PlayerConnection connection)
+    [PacketListener]
+    public void ClientPlayerMovementListener(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
-        connection.Player.Destination = message.Destination;
+        connection.Player.Destination = packet.Destination;
+        ValorServer.GlobalEventNode.Invoke(new PlayerMoveClickEvent(connection.Player, packet.Destination));
     }
 }
