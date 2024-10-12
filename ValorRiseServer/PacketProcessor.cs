@@ -9,7 +9,7 @@ namespace ValorRiseServer;
 public class PacketProcessor : IPacketProcessor
 {
     private IPacketListenerManager _listenerManager;
-    public Dictionary<ushort, Func<Message, IPacket>> _packetConstructors = new();
+    private Dictionary<ushort, Func<Message, IPacket>> _packetConstructors = new();
 
     public PacketProcessor(IPacketListenerManager listenerManager)
     {

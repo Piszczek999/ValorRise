@@ -31,14 +31,7 @@ public class ValorServer
 
         _server.MessageReceived += (s, e) => _packetProcessor.Process(_connections[e.FromConnection.Id], e.MessageId, e.Message);
         _server.ClientConnected += ClientConnected;
-        _server.ClientDisconnected += (s, e) => _connections.Remove(e.Client.Id);
-    }
-
-    private void ClientConnected(object sender, ServerConnectedEventArgs e)
-    {
-        var playerConnection = new PlayerConnection(e.Client);
-        _connections.TryAdd(e.Client.Id, playerConnection);
-        _verificationManager.Start(playerConnection);
+        _server.ClientDisconnected += ClientDisconnected;
     }
 
     public static ValorServer Init()
@@ -55,6 +48,20 @@ public class ValorServer
             .BuildServiceProvider();
 
         return _instance = serviceProvider.GetService<ValorServer>();
+    }
+
+    private void ClientConnected(object sender, ServerConnectedEventArgs e)
+    {
+        var playerConnection = new PlayerConnection(e.Client);
+        _connections.TryAdd(e.Client.Id, playerConnection);
+        _verificationManager.Start(playerConnection);
+    }
+
+    private void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
+    {
+        _connections.TryGetValue(e.Client.Id, out var connection);
+        _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
+        _connections.Remove(e.Client.Id);
     }
 
     public void Start(ushort port, ushort maxClients)
@@ -78,7 +85,7 @@ public class ValorServer
         {
             if (moveable.UpdatePosition(delta))
             {
-                _globalEventNode.Invoke(new EntityMovedEvent((Entity)moveable));
+                _globalEventNode.Invoke(new EntityMoveEvent((Entity)moveable));
             }
         }
     }

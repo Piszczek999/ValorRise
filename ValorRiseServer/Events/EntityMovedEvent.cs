@@ -2,11 +2,11 @@ using ValorRiseServer.Entities;
 
 namespace ValorRiseServer;
 
-public class EntityMovedEvent : IEntityEvent
+public class EntityMoveEvent : IEntityEvent
 {
     public Entity Entity { get; }
 
-    public EntityMovedEvent(Entity entity)
+    public EntityMoveEvent(Entity entity)
     {
         Entity = entity;
     }
