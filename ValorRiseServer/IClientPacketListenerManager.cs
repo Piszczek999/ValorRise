@@ -2,7 +2,7 @@ using ValorRise.Packets;
 
 namespace ValorRiseServer;
 
-public interface IPacketListenerManager
+public interface IClientPacketListenerManager
 {
     /// <summary>
     /// Registers a listener for a specific ClientPacket type.

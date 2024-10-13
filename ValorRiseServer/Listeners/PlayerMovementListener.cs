@@ -7,7 +7,20 @@ public class PlayerMovementListener
     [PacketListener]
     public void ClientPlayerMovementListener(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
-        connection.Player.Destination = packet.Destination;
-        ValorServer.GlobalEventNode.Invoke(new PlayerMoveClickEvent(connection.Player, packet.Destination));
+        var player = connection.Player;
+        if (player.Position == packet.Destination)
+        {
+            return;
+        }
+
+        var @event = new PlayerMoveClickEvent(connection.Player, packet.Destination);
+        ValorServer.GlobalEventNode.Invoke(@event);
+
+        if (@event.IsCancelled)
+        {
+            return;
+        }
+
+        connection.Player.Destination = @event.ClickPosition;
     }
 }

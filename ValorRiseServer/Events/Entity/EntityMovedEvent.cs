@@ -2,9 +2,11 @@ using ValorRiseServer.Entities;
 
 namespace ValorRiseServer;
 
-public class EntityMoveEvent : IEntityEvent
+public class EntityMoveEvent : IEntityEvent, ICancellableEvent
 {
     public Entity Entity { get; }
+
+    public bool IsCancelled { get; set; }
 
     public EntityMoveEvent(Entity entity)
     {

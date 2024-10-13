@@ -1,6 +1,8 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
+using ValorRise.Packets;
 
 namespace ValorRiseClient;
 
@@ -8,7 +10,7 @@ public class ValorClient
 {
     private static ValorClient _instance;
     private readonly Client _client;
-    private readonly IPacketProcessor _packetProcessor;
+    private readonly IServerPacketProcessor _packetProcessor;
     private readonly IPacketListenerManager _listenerManager;
 
     public static ValorClient Server => _instance;
@@ -18,7 +20,7 @@ public class ValorClient
     public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
     public event EventHandler<DisconnectedEventArgs> Disconnected;
 
-    private ValorClient(IPacketProcessor packetProcessor, IPacketListenerManager packetListenerManager)
+    private ValorClient(IServerPacketProcessor packetProcessor, IPacketListenerManager packetListenerManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
@@ -36,7 +38,7 @@ public class ValorClient
         if (_instance != null) return _instance;
 
         var serviceProvider = new ServiceCollection()
-            .AddSingleton<IPacketProcessor, PacketProcessor>()
+            .AddSingleton<IServerPacketProcessor, ServerPacketProcessor>()
             .AddSingleton<IPacketListenerManager, PacketListenerManager>()
             .AddSingleton<ValorClient>()
             .BuildServiceProvider();
@@ -57,5 +59,21 @@ public class ValorClient
     public void Update()
     {
         _client.Update();
+    }
+
+    public void SendPacket(IClientPacket packet)
+    {
+        var attribute = packet.GetType().GetCustomAttribute<PacketAttribute>();
+        if (attribute == null)
+        {
+            throw new InvalidOperationException($"Packet type {packet.GetType().Name} does not have a PacketAttribute.");
+        }
+
+        var packetId = attribute.PacketId;
+        var sendMode = attribute.SendMode;
+
+        var message = Message.Create(sendMode, packetId);
+        packet.Write(message);
+        _client.Send(message);
     }
 }

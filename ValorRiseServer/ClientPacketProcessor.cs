@@ -3,15 +3,15 @@ using Riptide;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseClient;
+namespace ValorRiseServer;
 
 
-public class PacketProcessor : IPacketProcessor
+internal class ClientPacketProcessor : IClientPacketProcessor
 {
-    private IPacketListenerManager _listenerManager;
-    private Dictionary<ushort, Func<Message, IPacket>> _packetConstructors = new();
+    private IClientPacketListenerManager _listenerManager;
+    private Dictionary<ushort, Func<Message, IClientPacket>> _packetConstructors = new();
 
-    public PacketProcessor(IPacketListenerManager listenerManager)
+    public ClientPacketProcessor(IClientPacketListenerManager listenerManager)
     {
         _listenerManager = listenerManager;
 
@@ -20,7 +20,7 @@ public class PacketProcessor : IPacketProcessor
 
         // Retrieve all types that implement IPacket from all loaded assemblies
         var packetTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(IPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
+            .Where(type => typeof(IClientPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
 
         foreach (var packetType in packetTypes)
         {
@@ -32,7 +32,7 @@ public class PacketProcessor : IPacketProcessor
         }
     }
 
-    public void Process(ushort packetId, Message buffer)
+    public void Process(PlayerConnection connection, ushort packetId, Message buffer)
     {
         if (!_packetConstructors.TryGetValue(packetId, out var constructor))
         {
@@ -43,7 +43,12 @@ public class PacketProcessor : IPacketProcessor
         try
         {
             var packet = constructor(buffer);
-            _listenerManager.ProcessPacket(packet);
+            if (connection.Player != null)
+            {
+                var playerPacketEvent = new PlayerPacketEvent(connection.Player, packet);
+                ValorServer.GlobalEventNode.Invoke(playerPacketEvent);
+            }
+            _listenerManager.ProcessPacket(packet, connection);
         }
         catch (Exception ex)
         {
@@ -57,7 +62,7 @@ public class PacketProcessor : IPacketProcessor
         if (constructor == null)
             throw new InvalidOperationException($"No valid constructor found for {packetType.Name}.");
 
-        IPacket constructorDelegate(Message message) => (IPacket)constructor.Invoke(new object[] { message });
+        IClientPacket constructorDelegate(Message message) => (IClientPacket)constructor.Invoke(new object[] { message });
 
         if (!_packetConstructors.TryAdd(packetId, constructorDelegate))
         {

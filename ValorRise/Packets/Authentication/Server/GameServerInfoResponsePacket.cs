@@ -3,9 +3,9 @@ using Riptide;
 namespace ValorRise.Packets.Authentication.Server;
 
 [Packet(PacketType.GameServerInfoResponse, MessageSendMode.Reliable)]
-public record GameServerInfoResponse(ushort MapId, ushort Port) : IServerPacket
+public record GameServerInfoResponsePacket(ushort MapId, ushort Port) : IServerPacket
 {
-    public GameServerInfoResponse(Message packet) : this(packet.GetUShort(), packet.GetUShort())
+    public GameServerInfoResponsePacket(Message packet) : this(packet.GetUShort(), packet.GetUShort())
     {
 
     }

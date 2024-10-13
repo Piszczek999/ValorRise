@@ -10,9 +10,11 @@ public class AuthenticationListener
         var player = ValorServer.VerificationManager.VerifyToken(connection, packet.Token);
         if (player != null)
         {
+            var @event = new PlayerJoinEvent(player);
+            ValorServer.GlobalEventNode.Invoke(@event);
+
             connection.Player = player;
-            ValorServer.EntityManager.AddEntity(player);
-            ValorServer.GlobalEventNode.Invoke(new PlayerJoinEvent(player));
+            ValorServer.EntityManager.AddEntity(@event.Player);
         }
     }
 }

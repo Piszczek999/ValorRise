@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace ValorRiseServer;
+namespace ValorRise;
 
 public static class Vector2Extensions
 {

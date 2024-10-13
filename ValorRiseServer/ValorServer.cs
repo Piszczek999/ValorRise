@@ -10,7 +10,7 @@ public class ValorServer
     private static ValorServer _instance;
     private readonly Server _server;
     private readonly Dictionary<ushort, PlayerConnection> _connections = new();
-    private readonly IPacketProcessor _packetProcessor;
+    private readonly IClientPacketProcessor _packetProcessor;
     private readonly IEventNode<IEvent> _globalEventNode;
     private readonly ITokenVerificationManager _verificationManager;
     private readonly IEntityManager _entityManager;
@@ -20,7 +20,7 @@ public class ValorServer
     public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
     public static IEntityManager EntityManager => _instance._entityManager;
 
-    private ValorServer(IPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
+    private ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
@@ -40,8 +40,8 @@ public class ValorServer
 
         var serviceProvider = new ServiceCollection()
             .AddSingleton<IEventNode<IEvent>, EventNode<IEvent>>()
-            .AddSingleton<IPacketProcessor, PacketProcessor>()
-            .AddSingleton<IPacketListenerManager, PacketListenerManager>()
+            .AddSingleton<IClientPacketProcessor, ClientPacketProcessor>()
+            .AddSingleton<IClientPacketListenerManager, ClientPacketListenerManager>()
             .AddSingleton<ITokenVerificationManager, TokenVerificationManager>()
             .AddSingleton<IEntityManager, EntityManager>()
             .AddSingleton<ValorServer>()

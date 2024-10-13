@@ -4,11 +4,11 @@ using ValorRise.Packets;
 
 namespace ValorRiseServer;
 
-public class PacketListenerManager : IPacketListenerManager
+public class ClientPacketListenerManager : IClientPacketListenerManager
 {
     private readonly Dictionary<Type, Action<IPacket, PlayerConnection>> _listeners = new();
 
-    public PacketListenerManager()
+    public ClientPacketListenerManager()
     {
         var listenerTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
@@ -21,7 +21,7 @@ public class PacketListenerManager : IPacketListenerManager
             foreach (var method in methods)
             {
                 var parameters = method.GetParameters();
-                if (parameters.Length > 1 || !typeof(IPacket).IsAssignableFrom(parameters[0].ParameterType))
+                if (parameters.Length > 2 || !typeof(IPacket).IsAssignableFrom(parameters[0].ParameterType))
                 {
                     throw new Exception($"method {method.Name} has to have only one param of type IPacket.");
                 }
