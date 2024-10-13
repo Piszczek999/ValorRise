@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
-using ValorRiseServer.Entities;
 
 namespace ValorRiseServer;
 
@@ -9,29 +8,27 @@ public class ValorServer
 {
     private static ValorServer _instance;
     private readonly Server _server;
-    private readonly Dictionary<ushort, PlayerConnection> _connections = new();
     private readonly IClientPacketProcessor _packetProcessor;
-    private readonly IEventNode<IEvent> _globalEventNode;
-    private readonly ITokenVerificationManager _verificationManager;
-    private readonly IEntityManager _entityManager;
+    private readonly IClientPacketListenerManager _packetListenerManager;
+    private readonly Dictionary<ushort, ClientConnection> _connections = new();
 
     public static ValorServer Server => _instance;
-    public static IEventNode<IEvent> GlobalEventNode => _instance._globalEventNode;
-    public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
-    public static IEntityManager EntityManager => _instance._entityManager;
+    public static IClientPacketListenerManager PacketListenerManager => _instance._packetListenerManager;
+    public event EventHandler<ServerConnectedEventArgs> ClientConnected;
+    public event EventHandler<ServerDisconnectedEventArgs> ClientDisconnected;
 
-    private ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
+    private ValorServer(IClientPacketProcessor packetProcessor, IClientPacketListenerManager packetListenerManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
-        _verificationManager = verificationManager;
-        _globalEventNode = globalEventNode;
-        _entityManager = entityManager;
+        _packetListenerManager = packetListenerManager;
         _server = new Server();
 
         _server.MessageReceived += (s, e) => _packetProcessor.Process(_connections[e.FromConnection.Id], e.MessageId, e.Message);
         _server.ClientConnected += ClientConnected;
+        _server.ClientConnected += (s, e) => _connections.TryAdd(e.Client.Id, new ClientConnection(e.Client));
         _server.ClientDisconnected += ClientDisconnected;
+        _server.ClientDisconnected += (s, e) => _connections.Remove(e.Client.Id);
     }
 
     public static ValorServer Init()
@@ -39,29 +36,12 @@ public class ValorServer
         if (_instance != null) return _instance;
 
         var serviceProvider = new ServiceCollection()
-            .AddSingleton<IEventNode<IEvent>, EventNode<IEvent>>()
             .AddSingleton<IClientPacketProcessor, ClientPacketProcessor>()
             .AddSingleton<IClientPacketListenerManager, ClientPacketListenerManager>()
-            .AddSingleton<ITokenVerificationManager, TokenVerificationManager>()
-            .AddSingleton<IEntityManager, EntityManager>()
             .AddSingleton<ValorServer>()
             .BuildServiceProvider();
 
         return _instance = serviceProvider.GetService<ValorServer>();
-    }
-
-    private void ClientConnected(object sender, ServerConnectedEventArgs e)
-    {
-        var playerConnection = new PlayerConnection(e.Client);
-        _connections.TryAdd(e.Client.Id, playerConnection);
-        _verificationManager.Start(playerConnection);
-    }
-
-    private void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
-    {
-        _connections.TryGetValue(e.Client.Id, out var connection);
-        _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
-        _connections.Remove(e.Client.Id);
     }
 
     public void Start(ushort port, ushort maxClients)
@@ -79,20 +59,9 @@ public class ValorServer
         _server.Update();
     }
 
-    public void PhysicsUpdate(double delta)
+    public static bool TryGetClient(ushort clientId, out ClientConnection client)
     {
-        foreach (IMoveable moveable in _entityManager.GetEntities().OfType<IMoveable>())
-        {
-            if (moveable.UpdatePosition(delta))
-            {
-                _globalEventNode.Invoke(new EntityMoveEvent((Entity)moveable));
-            }
-        }
-    }
-
-    public static bool TryGetClient(ushort clientId, out Connection client)
-    {
-        return _instance._server.TryGetClient(clientId, out client);
+        return _instance._connections.TryGetValue(clientId, out client);
     }
 
     public static void SendToAll(Message packet)

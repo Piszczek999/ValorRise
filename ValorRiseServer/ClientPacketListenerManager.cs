@@ -1,4 +1,5 @@
 using System.Reflection;
+using Riptide;
 using ValorRise;
 using ValorRise.Packets;
 
@@ -6,44 +7,20 @@ namespace ValorRiseServer;
 
 public class ClientPacketListenerManager : IClientPacketListenerManager
 {
-    private readonly Dictionary<Type, Action<IPacket, PlayerConnection>> _listeners = new();
+    private readonly Dictionary<Type, Action<IClientPacket, ClientConnection>> _listeners = new();
 
-    public ClientPacketListenerManager()
+    public void RegisterListener<T>(Action<T, ClientConnection> listener) where T : IClientPacket
     {
-        var listenerTypes = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(type => type.GetMethods().Any(m => m.GetCustomAttribute<PacketListenerAttribute>() != null && !type.IsInterface));
-
-        foreach (var type in listenerTypes)
+        var type = typeof(T);
+        Action<IClientPacket, ClientConnection> action = (packet, conn) =>
         {
-            var instance = Activator.CreateInstance(type);
-            var methods = type.GetMethods().Where(m => m.GetCustomAttribute<PacketListenerAttribute>() != null);
-            foreach (var method in methods)
-            {
-                var parameters = method.GetParameters();
-                if (parameters.Length > 2 || !typeof(IPacket).IsAssignableFrom(parameters[0].ParameterType))
-                {
-                    throw new Exception($"method {method.Name} has to have only one param of type IPacket.");
-                }
-
-                var packetType = parameters[0].ParameterType;
-
-                Action<IPacket, PlayerConnection> action = (packet, connection) =>
-                {
-                    method.Invoke(instance, new object[] { packet, connection });
-                };
-
-                RegisterListener(packetType, action);
-            }
-        }
+            if (packet is IClientPacket clientPacket)
+                listener((T)clientPacket, conn);
+        };
+        _listeners[type] = action;
     }
 
-    public void RegisterListener(Type packetType, Action<IPacket, PlayerConnection> listener)
-    {
-        _listeners[packetType] = listener;
-    }
-
-    public void ProcessPacket(IPacket packet, PlayerConnection connection)
+    public void ProcessPacket(IClientPacket packet, ClientConnection connection)
     {
         var packetType = packet.GetType();
 

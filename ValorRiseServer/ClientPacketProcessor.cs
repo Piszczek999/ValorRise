@@ -32,7 +32,7 @@ internal class ClientPacketProcessor : IClientPacketProcessor
         }
     }
 
-    public void Process(PlayerConnection connection, ushort packetId, Message buffer)
+    public void Process(ClientConnection connection, ushort packetId, Message buffer)
     {
         if (!_packetConstructors.TryGetValue(packetId, out var constructor))
         {
@@ -43,11 +43,6 @@ internal class ClientPacketProcessor : IClientPacketProcessor
         try
         {
             var packet = constructor(buffer);
-            if (connection.Player != null)
-            {
-                var playerPacketEvent = new PlayerPacketEvent(connection.Player, packet);
-                ValorServer.GlobalEventNode.Invoke(playerPacketEvent);
-            }
             _listenerManager.ProcessPacket(packet, connection);
         }
         catch (Exception ex)

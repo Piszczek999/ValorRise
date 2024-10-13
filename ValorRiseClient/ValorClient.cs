@@ -11,16 +11,16 @@ public class ValorClient
     private static ValorClient _instance;
     private readonly Client _client;
     private readonly IServerPacketProcessor _packetProcessor;
-    private readonly IPacketListenerManager _listenerManager;
+    private readonly IServerPacketListenerManager _listenerManager;
 
-    public static ValorClient Server => _instance;
-    public static IPacketListenerManager ListenerManager => _instance._listenerManager;
+    public static ValorClient Client => _instance;
+    public static IServerPacketListenerManager ListenerManager => _instance._listenerManager;
 
     public event EventHandler Connected;
     public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
     public event EventHandler<DisconnectedEventArgs> Disconnected;
 
-    private ValorClient(IServerPacketProcessor packetProcessor, IPacketListenerManager packetListenerManager)
+    private ValorClient(IServerPacketProcessor packetProcessor, IServerPacketListenerManager packetListenerManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
@@ -39,7 +39,7 @@ public class ValorClient
 
         var serviceProvider = new ServiceCollection()
             .AddSingleton<IServerPacketProcessor, ServerPacketProcessor>()
-            .AddSingleton<IPacketListenerManager, PacketListenerManager>()
+            .AddSingleton<IServerPacketListenerManager, ServerPacketListenerManager>()
             .AddSingleton<ValorClient>()
             .BuildServiceProvider();
 

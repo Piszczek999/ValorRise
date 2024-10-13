@@ -1,15 +1,16 @@
+using MongoDB.Bson;
 using Riptide;
 
 namespace ValorRise.Packets.Authentication.Client;
 
 [Packet(PacketType.CharacterSelectRequest, MessageSendMode.Reliable)]
-public record CharacterSelectRequestPacket(string Name) : IClientPacket
+public record CharacterSelectRequestPacket(ObjectId CharacterId) : IClientPacket
 {
-    public CharacterSelectRequestPacket(Message packet) : this(packet.GetString())
+    public CharacterSelectRequestPacket(Message packet) : this(packet.GetObjectId())
     {
 
     }
 
     public void Write(Message packet) => packet
-        .AddString(Name);
+        .AddObjectId(CharacterId);
 }
