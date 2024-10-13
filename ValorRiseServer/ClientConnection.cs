@@ -9,6 +9,7 @@ public class ClientConnection
 {
     private readonly Connection _connection;
     public ObjectId UserId { get; set; }
+    public ushort Id => _connection.Id;
 
     public ClientConnection(Connection connection)
     {

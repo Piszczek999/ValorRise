@@ -21,7 +21,7 @@ public class ValorServer
     public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
     public static IEntityManager EntityManager => _instance._entityManager;
 
-    private ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
+    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;

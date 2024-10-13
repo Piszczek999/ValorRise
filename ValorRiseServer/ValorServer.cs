@@ -17,7 +17,7 @@ public class ValorServer
     public event EventHandler<ServerConnectedEventArgs> ClientConnected;
     public event EventHandler<ServerDisconnectedEventArgs> ClientDisconnected;
 
-    private ValorServer(IClientPacketProcessor packetProcessor, IClientPacketListenerManager packetListenerManager)
+    public ValorServer(IClientPacketProcessor packetProcessor, IClientPacketListenerManager packetListenerManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;

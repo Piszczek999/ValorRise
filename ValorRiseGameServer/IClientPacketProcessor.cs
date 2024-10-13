@@ -2,7 +2,7 @@ using Riptide;
 
 namespace ValorRiseGameServer;
 
-internal interface IClientPacketProcessor
+public interface IClientPacketProcessor
 {
     /// <summary>
     /// Registers a handler for a specific packet type.

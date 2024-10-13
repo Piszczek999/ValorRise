@@ -20,7 +20,7 @@ public class ValorClient
     public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
     public event EventHandler<DisconnectedEventArgs> Disconnected;
 
-    private ValorClient(IServerPacketProcessor packetProcessor, IServerPacketListenerManager packetListenerManager)
+    public ValorClient(IServerPacketProcessor packetProcessor, IServerPacketListenerManager packetListenerManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
