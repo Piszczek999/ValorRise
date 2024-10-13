@@ -1,4 +1,5 @@
 using Riptide;
+using ValorRise.Enums;
 
 namespace ValorRise.Packets.Play.Client;
 

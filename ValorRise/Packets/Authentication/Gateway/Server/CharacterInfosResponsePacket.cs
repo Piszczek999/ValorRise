@@ -1,4 +1,5 @@
 using Riptide;
+using ValorRise.Enums;
 using ValorRise.Models;
 
 namespace ValorRise.Packets.Authentication.Gateway;

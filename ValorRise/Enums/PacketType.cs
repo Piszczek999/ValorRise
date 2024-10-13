@@ -1,4 +1,4 @@
-namespace ValorRise;
+namespace ValorRise.Enums;
 
 public enum PacketType
 {

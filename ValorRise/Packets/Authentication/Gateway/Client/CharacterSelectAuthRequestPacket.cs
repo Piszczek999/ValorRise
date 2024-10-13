@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using Riptide;
+using ValorRise.Enums;
 
 namespace ValorRise.Packets.Authentication.Gateway;
 
