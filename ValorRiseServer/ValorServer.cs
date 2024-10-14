@@ -25,9 +25,9 @@ public class ValorServer
         _server = new Server();
 
         _server.MessageReceived += (s, e) => _packetProcessor.Process(_connections[e.FromConnection.Id], e.MessageId, e.Message);
-        _server.ClientConnected += ClientConnected;
+        _server.ClientConnected += (s, e) => ClientConnected?.Invoke(s, e);
         _server.ClientConnected += (s, e) => _connections.TryAdd(e.Client.Id, new ClientConnection(e.Client));
-        _server.ClientDisconnected += ClientDisconnected;
+        _server.ClientDisconnected += (s, e) => ClientDisconnected?.Invoke(s, e);
         _server.ClientDisconnected += (s, e) => _connections.Remove(e.Client.Id);
     }
 

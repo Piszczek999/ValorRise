@@ -1,7 +1,7 @@
 using Riptide;
 using ValorRise.Enums;
 
-namespace ValorRise.Packets.Play.Client;
+namespace ValorRise.Packets.Loading.Client;
 
 [Packet(PacketType.PlayerAuthenticate, MessageSendMode.Reliable)]
 public record ClientPlayerAuthenticatePacket(string Token) : IClientPacket

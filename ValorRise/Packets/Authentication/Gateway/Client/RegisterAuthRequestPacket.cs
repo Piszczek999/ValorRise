@@ -12,6 +12,7 @@ public record RegisterAuthRequestPacket(ushort ClientId, string Username, string
     }
 
     public void Write(Message packet) => packet
+        .AddUShort(ClientId)
         .AddString(Username)
         .AddString(Password);
 }

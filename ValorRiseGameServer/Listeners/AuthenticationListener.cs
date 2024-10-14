@@ -1,4 +1,4 @@
-using ValorRise.Packets.Play.Client;
+using ValorRise.Packets.Loading.Client;
 using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer.Listeners;

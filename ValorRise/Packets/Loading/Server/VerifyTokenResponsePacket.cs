@@ -6,9 +6,9 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Loading.Server;
 
 [Packet(PacketType.VerifyTokenResponse, MessageSendMode.Reliable)]
-public record VerifyTokenResponse(bool Result) : IServerPacket
+public record VerifyTokenResponsePacket(bool Result) : IServerPacket
 {
-    public VerifyTokenResponse(Message packet) : this(packet.GetBool())
+    public VerifyTokenResponsePacket(Message packet) : this(packet.GetBool())
     { }
 
     public void Write(Message packet) => packet

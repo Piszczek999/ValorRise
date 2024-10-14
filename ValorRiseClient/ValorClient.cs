@@ -28,9 +28,9 @@ public class ValorClient
         _client = new Client();
 
         _client.MessageReceived += (s, e) => _packetProcessor.Process(e.MessageId, e.Message);
-        _client.Connected += Connected;
-        _client.Disconnected += Disconnected;
-        _client.ConnectionFailed += ConnectionFailed;
+        _client.Connected += (s, e) => Connected?.Invoke(s, e);
+        _client.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
+        _client.ConnectionFailed += (s, e) => ConnectionFailed?.Invoke(s, e);
     }
 
     public static ValorClient Init()
