@@ -8,9 +8,7 @@ namespace ValorRise.Packets.Authentication.Server;
 public record LoginAuthResponsePacket(ushort ClientId, LoginResult Result, ObjectId UserId = default) : IServerPacket
 {
     public LoginAuthResponsePacket(Message packet) : this(packet.GetUShort(), (LoginResult)packet.GetByte(), packet.GetObjectId())
-    {
-
-    }
+    { }
 
     public void Write(Message packet) => packet
         .AddUShort(ClientId)

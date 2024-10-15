@@ -31,7 +31,7 @@ public class ServerPacketListenerManager : IServerPacketListenerManager
             }
             catch (Exception ex)
             {
-                Logger.Error("Listener exception", ex);
+                Logger.Error($"Listener exception at {listener.GetMethodInfo().Name}", ex);
             }
         }
         else

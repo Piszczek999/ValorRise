@@ -8,9 +8,7 @@ namespace ValorRise.Packets.Authentication.Server;
 public record CharacterTokenPacket(string Token, Character Character) : IServerPacket
 {
     public CharacterTokenPacket(Message packet) : this(packet.GetString(), packet.GetSerializable<Character>())
-    {
-
-    }
+    { }
 
     public void Write(Message packet) => packet
         .AddString(Token)

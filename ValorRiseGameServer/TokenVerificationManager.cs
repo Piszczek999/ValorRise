@@ -1,14 +1,20 @@
+using ValorRise.Models;
 using ValorRiseGameServer.Entities;
 
 namespace ValorRiseGameServer;
 
 public class TokenVerificationManager : ITokenVerificationManager
 {
-    private readonly Dictionary<string, Player> ExpectedTokens = new();
-    private readonly Dictionary<PlayerConnection, long> AwaitingVerifications = new();
+    private readonly Dictionary<string, Character> _expectedTokens = new();
+    private readonly Dictionary<PlayerConnection, long> _awaitingVerifications = new();
 
     private long _lastVerificationCheckTime = 0;
     private long _lastTokenCheckTime = 0;
+
+    public void InitToken(string token, Character character)
+    {
+        _expectedTokens.Add(token, character);
+    }
 
     public void Update()
     {
@@ -31,22 +37,22 @@ public class TokenVerificationManager : ITokenVerificationManager
 
     public void Start(PlayerConnection connection)
     {
-        AwaitingVerifications[connection] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        _awaitingVerifications[connection] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
-    public Player VerifyToken(PlayerConnection connection, string token)
+    public Character VerifyToken(PlayerConnection connection, string token)
     {
-        long tokenTime = long.Parse(token[^64..]); // Right 64 chars
+        long tokenTime = long.Parse(token[64..]); // Right 64 chars
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        if (currentTime - tokenTime <= 30 && ExpectedTokens.TryGetValue(token, out Player player))
+        if (currentTime - tokenTime <= 30 && _expectedTokens.TryGetValue(token, out Character character))
         {
-            AwaitingVerifications.Remove(connection);
-            ExpectedTokens.Remove(token);
-            return player; // Token verified
+            _awaitingVerifications.Remove(connection);
+            _expectedTokens.Remove(token);
+            return character; // Token verified
         }
 
-        AwaitingVerifications.Remove(connection);
+        _awaitingVerifications.Remove(connection);
         return null; // Token not verified
     }
 
@@ -65,7 +71,7 @@ public class TokenVerificationManager : ITokenVerificationManager
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         List<PlayerConnection> clientsToRemove = new();
 
-        foreach (var client in AwaitingVerifications)
+        foreach (var client in _awaitingVerifications)
         {
             if (currentTime - client.Value >= timeoutDuration)
             {
@@ -75,7 +81,7 @@ public class TokenVerificationManager : ITokenVerificationManager
 
         foreach (var client in clientsToRemove)
         {
-            AwaitingVerifications.Remove(client);
+            _awaitingVerifications.Remove(client);
             client.Disconnect();
         }
     }
@@ -85,7 +91,7 @@ public class TokenVerificationManager : ITokenVerificationManager
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         List<string> tokensToRemove = new();
 
-        foreach (var token in ExpectedTokens.Keys)
+        foreach (var token in _expectedTokens.Keys)
         {
             long tokenTime = long.Parse(token.Substring(token.Length - 64)); // Right 64 chars
             if (currentTime - tokenTime >= timeoutDuration)
@@ -96,7 +102,7 @@ public class TokenVerificationManager : ITokenVerificationManager
 
         foreach (var token in tokensToRemove)
         {
-            ExpectedTokens.Remove(token);
+            _expectedTokens.Remove(token);
         }
     }
 }

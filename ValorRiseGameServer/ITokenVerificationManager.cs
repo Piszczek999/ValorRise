@@ -1,3 +1,4 @@
+using ValorRise.Models;
 using ValorRiseGameServer.Entities;
 
 namespace ValorRiseGameServer;
@@ -14,6 +15,13 @@ public interface ITokenVerificationManager
     void Update();
 
     /// <summary>
+    /// Adds a new token to the token verification manager
+    /// </summary>
+    /// <param name="token">The token to be verified.</param>
+    /// <param name="character">Character associated with token</param>
+    void InitToken(string token, Character character);
+
+    /// <summary>
     /// Starts the verification process for a given player connection.
     /// This method should be called when a player connects
     /// and is expected to verify their token.
@@ -28,7 +36,7 @@ public interface ITokenVerificationManager
     /// <param name="connection">The player connection requesting token verification.</param>
     /// <param name="token">The token to be verified.</param>
     /// <returns>
-    /// The verified <see cref="Player"/> if the token is valid; otherwise, <c>null</c>.
+    /// The verified <see cref="Character"/> if the token is valid; otherwise, <c>null</c>.
     /// </returns>
-    Player VerifyToken(PlayerConnection connection, string token);
+    Character VerifyToken(PlayerConnection connection, string token);
 }

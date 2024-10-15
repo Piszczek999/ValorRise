@@ -4,15 +4,16 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Authentication.Gateway;
 
 [Packet(PacketType.CharacterSelectResponse, MessageSendMode.Reliable)]
-public record CharacterSelectResponsePacket(string Token, string IpAddress, ushort Port) : IServerPacket
+public record CharacterSelectResponsePacket(CharacterSelectResult Result, string Token = "", string HostAddress = "") : IServerPacket
 {
-    public CharacterSelectResponsePacket(Message packet) : this(packet.GetString(), packet.GetString(), packet.GetUShort())
-    {
-
-    }
+    public CharacterSelectResponsePacket(Message packet) : this(
+        (CharacterSelectResult)packet.GetByte(),
+        packet.GetString(),
+        packet.GetString())
+    { }
 
     public void Write(Message packet) => packet
+        .AddByte((byte)Result)
         .AddString(Token)
-        .AddString(IpAddress)
-        .AddUShort(Port);
+        .AddString(HostAddress);
 }

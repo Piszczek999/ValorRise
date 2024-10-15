@@ -19,7 +19,12 @@ public class EventNode<TEvent> : IEventNode<TEvent> where TEvent : IEvent
         {
             _listeners[type] = new List<Action<TEvent>>();
         }
-        _listeners[type].Add(listener as Action<TEvent>);
+        Action<TEvent> action = (e) =>
+        {
+            if (e is TEvent @event)
+                listener((T)@event);
+        };
+        _listeners[type].Add(action);
     }
 
     public void RemoveListener<T>(Action<T> listener) where T : TEvent

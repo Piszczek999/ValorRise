@@ -6,7 +6,7 @@ namespace ValorRiseGameServer.Listeners;
 public class PlayerMovementListener
 {
     [PacketListener]
-    public void ClientPlayerMovementListener(ClientPlayerMovementPacket packet, PlayerConnection connection)
+    public void PlayerMoveClick(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
         var player = connection.Player;
         if (player.Position == packet.Destination)

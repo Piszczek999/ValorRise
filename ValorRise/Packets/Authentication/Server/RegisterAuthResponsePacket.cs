@@ -7,9 +7,7 @@ namespace ValorRise.Packets.Authentication.Server;
 public record RegisterAuthResponsePacket(ushort ClientId, RegisterResult Result) : IServerPacket
 {
     public RegisterAuthResponsePacket(Message packet) : this(packet.GetUShort(), (RegisterResult)packet.GetByte())
-    {
-
-    }
+    { }
 
     public void Write(Message packet) => packet
         .AddUShort(ClientId)

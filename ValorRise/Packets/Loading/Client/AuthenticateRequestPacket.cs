@@ -4,9 +4,9 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Loading.Client;
 
 [Packet(PacketType.PlayerAuthenticate, MessageSendMode.Reliable)]
-public record ClientPlayerAuthenticatePacket(string Token) : IClientPacket
+public record AuthenticateRequestPacket(string Token) : IClientPacket
 {
-    public ClientPlayerAuthenticatePacket(Message packet) : this(
+    public AuthenticateRequestPacket(Message packet) : this(
         packet.GetString())
     { }
 

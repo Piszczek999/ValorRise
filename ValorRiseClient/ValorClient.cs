@@ -46,9 +46,9 @@ public class ValorClient
         return _instance = serviceProvider.GetService<ValorClient>();
     }
 
-    public void Connect(string ipAddress, ushort port)
+    public void Connect(string hostAddress)
     {
-        _client.Connect($"{ipAddress}:{port}", useMessageHandlers: false);
+        _client.Connect(hostAddress, useMessageHandlers: false);
     }
 
     public void Disconnect()
