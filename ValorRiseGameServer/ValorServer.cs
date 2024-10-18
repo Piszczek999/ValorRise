@@ -1,6 +1,9 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
+using ValorRise.Packets;
+using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
 using ValorRiseGameServer.Events;
 
@@ -87,6 +90,7 @@ public class ValorServer
             if (moveable.UpdatePosition(delta))
             {
                 _globalEventNode.Invoke(new EntityMoveEvent((Entity)moveable));
+                SendToAll(new EntityMovePacket(((Entity)moveable).Id, ((Entity)moveable).Position));
             }
         }
     }
@@ -96,14 +100,36 @@ public class ValorServer
         return _instance._server.TryGetClient(clientId, out client);
     }
 
-    public static void SendToAll(Message packet)
+    public static void SendToAll(IServerPacket packet)
     {
-        _instance._server.SendToAll(packet);
+        var attribute = packet.GetType().GetCustomAttribute<PacketAttribute>();
+        if (attribute == null)
+        {
+            throw new InvalidOperationException($"Packet type {packet.GetType().Name} does not have a PacketAttribute.");
+        }
+
+        var packetId = attribute.PacketId;
+        var sendMode = attribute.SendMode;
+
+        var message = Message.Create(sendMode, packetId);
+        packet.Write(message);
+        _instance._server.SendToAll(message);
     }
 
-    public static void SendToAll(Message packet, ushort exceptToClientId)
+    public static void SendToAll(IServerPacket packet, ushort exceptToClientId)
     {
-        _instance._server.SendToAll(packet, exceptToClientId);
+        var attribute = packet.GetType().GetCustomAttribute<PacketAttribute>();
+        if (attribute == null)
+        {
+            throw new InvalidOperationException($"Packet type {packet.GetType().Name} does not have a PacketAttribute.");
+        }
+
+        var packetId = attribute.PacketId;
+        var sendMode = attribute.SendMode;
+
+        var message = Message.Create(sendMode, packetId);
+        packet.Write(message);
+        _instance._server.SendToAll(message, exceptToClientId);
     }
 
     public void DisconnectPlayer(ushort connectionId)

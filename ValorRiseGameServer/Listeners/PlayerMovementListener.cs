@@ -1,3 +1,4 @@
+using ValorRise;
 using ValorRise.Packets.Play.Client;
 using ValorRiseGameServer.Events;
 
@@ -8,20 +9,28 @@ public class PlayerMovementListener
     [PacketListener]
     public void PlayerMoveClick(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
-        var player = connection.Player;
-        if (player.Position == packet.Destination)
+        try
         {
-            return;
+            var player = connection.Player;
+            Logger.Debug($"{player.Position} - {packet.Destination}");
+            if (player.Position == packet.Destination)
+            {
+                return;
+            }
+
+            var @event = new PlayerMoveClickEvent(connection.Player, packet.Destination);
+            ValorServer.GlobalEventNode.Invoke(@event);
+
+            if (@event.IsCancelled)
+            {
+                return;
+            }
+
+            connection.Player.Destination = @event.ClickPosition;
         }
-
-        var @event = new PlayerMoveClickEvent(connection.Player, packet.Destination);
-        ValorServer.GlobalEventNode.Invoke(@event);
-
-        if (@event.IsCancelled)
+        catch (Exception ex)
         {
-            return;
+            Logger.Error($"Error processing PlayerMoveClick packet: {ex.Message}");
         }
-
-        connection.Player.Destination = @event.ClickPosition;
     }
 }

@@ -68,6 +68,7 @@ public class Player : LivingEntity
             MaxMana = character.MaxMana,
             Position = character.Position,
             MapId = character.MapId,
+            Speed = 100f
         };
     }
 }

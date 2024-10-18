@@ -55,7 +55,7 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
             }
             catch (Exception ex)
             {
-                Logger.Error($"Listener exception at {listener.GetMethodInfo().Name}", ex);
+                Logger.Error($"Listener exception at {listener.Method.Name}", ex);
             }
         }
         else

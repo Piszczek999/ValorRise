@@ -1,3 +1,4 @@
+using ValorRise;
 using ValorRise.Packets.Loading.Client;
 using ValorRise.Packets.Loading.Server;
 using ValorRiseGameServer.Entities;
@@ -10,20 +11,26 @@ public class AuthenticationListener
     [PacketListener]
     public void PlayerAuthenticateListener(AuthenticateRequestPacket packet, PlayerConnection connection)
     {
-        var character = ValorServer.VerificationManager.VerifyToken(connection, packet.Token);
-        var result = character != null;
-        if (result)
+        try
         {
-            var player = Player.FromCharacter(character, connection);
+            var character = ValorServer.VerificationManager.VerifyToken(connection, packet.Token);
+            var result = character != null;
+            if (result)
+            {
+                var player = Player.FromCharacter(character, connection);
 
-            var @event = new PlayerJoinEvent(player);
-            ValorServer.GlobalEventNode.Invoke(@event);
+                var @event = new PlayerJoinEvent(player);
+                ValorServer.GlobalEventNode.Invoke(@event);
+                connection.Player = player;
+                ValorServer.EntityManager.AddEntity(player);
 
-            connection.Player = player;
-            ValorServer.EntityManager.AddEntity(player);
-
-            player.SendInfoPackets();
+                player.SendInfoPackets();
+            }
+            connection.SendPacket(new AuthenticateResponsePacket(result));
         }
-        connection.SendPacket(new AuthenticateResponsePacket(result));
+        catch (Exception ex)
+        {
+            Logger.Error("Error in PlayerAuthenticateListener: " + ex);
+        }
     }
 }
