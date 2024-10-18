@@ -1,6 +1,7 @@
 using ValorRise;
 using ValorRise.Packets.Loading.Client;
 using ValorRise.Packets.Loading.Server;
+using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
 using ValorRiseGameServer.Events;
 
@@ -24,8 +25,14 @@ public class AuthenticationListener
                 connection.Player = player;
                 ValorServer.EntityManager.AddEntity(player);
 
-                player.SendInfoPackets();
+                player.SendSpawnInfoPackets();
+                ValorServer.SendToAll(new SpawnEntityPacket(player.Id, player.EntityType, player.Position, player.Destination), connection.ConnectionId);
             }
+            else
+            {
+                connection.Disconnect();
+            }
+
             connection.SendPacket(new AuthenticateResponsePacket(result));
         }
         catch (Exception ex)

@@ -8,7 +8,7 @@ namespace ValorRise.Packets.Play.Client;
 public record ClientPlayerMovementPacket(Vector2 Destination) : IClientPacket
 {
     public ClientPlayerMovementPacket(Message packet) : this(
-        packet.GetVector2())
+        Destination: packet.GetVector2())
     { }
 
     public void Write(Message packet) => packet

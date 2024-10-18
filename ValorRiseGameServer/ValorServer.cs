@@ -64,6 +64,11 @@ public class ValorServer
     private void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
     {
         _connections.TryGetValue(e.Client.Id, out var connection);
+        if (connection.Player != null)
+        {
+            _entityManager.RemoveEntity(connection.Player.Id);
+            SendToAll(new DespawnEntityPacket(connection.Player.Id));
+        }
         _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
         _connections.Remove(e.Client.Id);
     }

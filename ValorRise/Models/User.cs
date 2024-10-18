@@ -8,6 +8,7 @@ public class User
     public DateTime? LockoutEnd { get; set; }
 
     public ObjectId Id { get; set; }
+    public bool IsLogged { get; set; }
     public string Username { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }

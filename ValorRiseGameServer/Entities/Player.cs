@@ -3,6 +3,7 @@ using ValorRise.Enums;
 using ValorRise.Models;
 using ValorRise.Packets;
 using ValorRise.Packets.Loading.Server;
+using ValorRise.Packets.Play.Server;
 
 namespace ValorRiseGameServer.Entities;
 
@@ -36,7 +37,7 @@ public class Player : LivingEntity
         _connection.SendPacket(packet);
     }
 
-    public void SendInfoPackets()
+    public void SendSpawnInfoPackets()
     {
         SendPacket(new MapInfoPacket(MapId));
         SendPacket(new PlayerInfoPacket(
@@ -51,6 +52,11 @@ public class Player : LivingEntity
             MaxMana: MaxMana,
             Gold: Gold
         ));
+
+        foreach (var entity in ValorServer.EntityManager.GetEntities().Where(e => e.Id != Id))
+        {
+            SendPacket(new SpawnEntityPacket(entity.Id, entity.EntityType, entity.Position, entity.Position));
+        }
     }
 
     public static Player FromCharacter(Character character, PlayerConnection connection)

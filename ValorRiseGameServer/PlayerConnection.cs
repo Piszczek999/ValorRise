@@ -9,6 +9,7 @@ public class PlayerConnection
 {
     private readonly Connection _connection;
     public Player Player { get; set; }
+    public ushort ConnectionId { get => _connection.Id; }
 
     public PlayerConnection(Connection connection)
     {
