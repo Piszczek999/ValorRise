@@ -6,7 +6,6 @@ using ValorRise.Packets;
 using ValorRise.Packets.Authentication.GameServer;
 using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
-using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer;
 
@@ -16,21 +15,18 @@ public class ValorServer
     private readonly Server _server;
     private readonly Dictionary<ushort, PlayerConnection> _connections = new();
     private readonly IClientPacketProcessor _packetProcessor;
-    private readonly IEventNode<IEvent> _globalEventNode;
     private readonly ITokenVerificationManager _verificationManager;
     private readonly IEntityManager _entityManager;
 
     public static ValorServer Server => _instance;
-    public static IEventNode<IEvent> GlobalEventNode => _instance._globalEventNode;
     public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
     public static IEntityManager EntityManager => _instance._entityManager;
 
-    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEventNode<IEvent> globalEventNode, IEntityManager entityManager)
+    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEntityManager entityManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
         _verificationManager = verificationManager;
-        _globalEventNode = globalEventNode;
         _entityManager = entityManager;
         _server = new Server();
 
@@ -44,7 +40,6 @@ public class ValorServer
         if (_instance != null) return _instance;
 
         var serviceProvider = new ServiceCollection()
-            .AddSingleton<IEventNode<IEvent>, EventNode<IEvent>>()
             .AddSingleton<IClientPacketProcessor, ClientPacketProcessor>()
             .AddSingleton<IClientPacketListenerManager, ClientPacketListenerManager>()
             .AddSingleton<ITokenVerificationManager, TokenVerificationManager>()
@@ -69,7 +64,6 @@ public class ValorServer
         {
             _entityManager.RemoveEntity(connection.Player.Id);
             SendToAll(new DespawnEntityPacket(connection.Player.Id));
-            _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
         }
         var character = connection.Player.ToCharacter();
         ValorClient.Client.SendPacket(new CharacterLogoutPacket(character));
@@ -98,7 +92,6 @@ public class ValorServer
         {
             if (moveable.UpdatePosition(delta))
             {
-                _globalEventNode.Invoke(new EntityMoveEvent((Entity)moveable));
                 SendToAll(new EntityMovePacket(((Entity)moveable).Id, ((Entity)moveable).Position));
             }
         }

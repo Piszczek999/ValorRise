@@ -2,7 +2,6 @@ using System.Reflection;
 using Riptide;
 using ValorRise;
 using ValorRise.Packets;
-using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer;
 
@@ -56,11 +55,6 @@ public class ClientPacketProcessor : IClientPacketProcessor
         try
         {
             var packet = constructor(buffer);
-            if (connection.Player != null)
-            {
-                var playerPacketEvent = new PlayerPacketEvent(connection.Player, packet);
-                ValorServer.GlobalEventNode.Invoke(playerPacketEvent);
-            }
             _listenerManager.ProcessPacket(packet, connection);
         }
         catch (Exception ex)

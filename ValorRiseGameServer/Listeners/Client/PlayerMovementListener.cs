@@ -1,6 +1,5 @@
 using ValorRise;
 using ValorRise.Packets.Play.Client;
-using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer.Listeners;
 
@@ -18,15 +17,7 @@ public class PlayerMovementListener
                 return;
             }
 
-            var @event = new PlayerMoveClickEvent(connection.Player, packet.Destination);
-            ValorServer.GlobalEventNode.Invoke(@event);
-
-            if (@event.IsCancelled)
-            {
-                return;
-            }
-
-            connection.Player.Destination = @event.ClickPosition;
+            connection.Player.Destination = packet.Destination;
         }
         catch (Exception ex)
         {
