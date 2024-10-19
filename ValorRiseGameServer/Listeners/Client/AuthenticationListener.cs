@@ -9,7 +9,7 @@ namespace ValorRiseGameServer.Listeners;
 
 public class AuthenticationListener
 {
-    [PacketListener]
+    [ClientPacketListener]
     public void PlayerAuthenticateListener(AuthenticateRequestPacket packet, PlayerConnection connection)
     {
         try

@@ -6,7 +6,7 @@ namespace ValorRiseGameServer.Listeners;
 
 public class PlayerMovementListener
 {
-    [PacketListener]
+    [ClientPacketListener]
     public void PlayerMoveClick(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
         try

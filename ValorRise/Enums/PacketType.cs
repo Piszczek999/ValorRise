@@ -16,6 +16,7 @@ public enum PacketType
     MapInfo,
     PlayerInfo,
     SpawnEntity,
+    DespawnEntity,
     EntityMove,
 
     #endregion
@@ -59,6 +60,9 @@ public enum PacketType
 
     // From GameServer
     GameServerInfoRequest,
+    UserLogout,
+    CharacterLogout,
+    CharacterSwitchServer,
 
     #endregion
 }

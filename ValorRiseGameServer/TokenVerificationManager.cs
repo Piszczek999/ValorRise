@@ -3,6 +3,34 @@ using ValorRiseGameServer.Entities;
 
 namespace ValorRiseGameServer;
 
+public interface ITokenVerificationManager
+{
+    /// <summary>
+    /// Updates the state of the token verification manager,
+    /// checking for expired verifications and tokens.
+    /// This method should be called periodically (e.g., every second).
+    /// </summary>
+    void Update();
+
+    /// <summary>
+    /// Adds a new token to the token verification manager
+    /// </summary>
+    void InitToken(string token, Character character);
+
+    /// <summary>
+    /// Starts the verification process for a given player connection.
+    /// This method should be called when a player connects
+    /// and is expected to verify their token.
+    /// </summary>
+    void Start(PlayerConnection connection);
+
+    /// <summary>
+    /// Verifies a token for a given player connection.
+    /// If the token is valid and not expired, the associated player is returned.
+    /// </summary>
+    Character VerifyToken(PlayerConnection connection, string token);
+}
+
 public class TokenVerificationManager : ITokenVerificationManager
 {
     private readonly Dictionary<string, Character> _expectedTokens = new();

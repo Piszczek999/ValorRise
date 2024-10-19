@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
 using ValorRise.Packets;
+using ValorRise.Packets.Authentication.GameServer;
 using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
 using ValorRiseGameServer.Events;
@@ -68,8 +69,11 @@ public class ValorServer
         {
             _entityManager.RemoveEntity(connection.Player.Id);
             SendToAll(new DespawnEntityPacket(connection.Player.Id));
+            _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
         }
-        _globalEventNode.Invoke(new PlayerLeaveEvent(connection.Player));
+        var character = connection.Player.ToCharacter();
+        ValorClient.Client.SendPacket(new CharacterLogoutPacket(character));
+
         _connections.Remove(e.Client.Id);
     }
 

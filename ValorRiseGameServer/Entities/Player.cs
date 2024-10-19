@@ -77,4 +77,23 @@ public class Player : LivingEntity
             Speed = 100f
         };
     }
+
+    public Character ToCharacter()
+    {
+        return new Character()
+        {
+            Id = Id,
+            UserId = UserId,
+            Name = Name,
+            Level = Level,
+            Exp = Exp,
+            Gold = Gold,
+            Health = Health,
+            MaxHealth = MaxHealth,
+            Mana = Mana,
+            MaxMana = MaxMana,
+            Position = Position,
+            MapId = MapId,
+        };
+    }
 }

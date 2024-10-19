@@ -2,6 +2,32 @@ using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer;
 
+/// <summary>
+/// Interface for an event node that handles events of type <typeparamref name="TEvent"/>.
+/// </summary>
+public interface IEventNode<TEvent> where TEvent : IEvent
+{
+    /// <summary>
+    /// Adds a child event node.
+    /// </summary>
+    void AddChild<T>(EventNode<T> child) where T : TEvent;
+
+    /// <summary>
+    /// Adds a listener for a specific event type.
+    /// </summary>
+    void AddListener<T>(Action<T> listener) where T : TEvent;
+
+    /// <summary>
+    /// Removes a listener for a specific event type.
+    /// </summary>
+    void RemoveListener<T>(Action<T> listener) where T : TEvent;
+
+    /// <summary>
+    /// Dispatches an event to this node and its children.
+    /// </summary>
+    void Invoke(TEvent @event);
+}
+
 public class EventNode<TEvent> : IEventNode<TEvent> where TEvent : IEvent
 {
     private readonly Dictionary<Type, List<Action<TEvent>>> _listeners = new();

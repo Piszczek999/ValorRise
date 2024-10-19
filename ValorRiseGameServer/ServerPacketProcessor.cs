@@ -2,11 +2,10 @@ using System.Reflection;
 using Riptide;
 using ValorRise;
 using ValorRise.Packets;
-using ValorRiseGameServer.Events;
 
 namespace ValorRiseGameServer;
 
-public interface IClientPacketProcessor
+public interface IServerPacketProcessor
 {
     /// <summary>
     /// Registers a handler for a specific packet type.
@@ -16,15 +15,15 @@ public interface IClientPacketProcessor
     /// <summary>
     /// Processes an incoming packet by identifying its type and handling it accordingly.
     /// </summary>
-    void Process(PlayerConnection connection, ushort packetId, Message packet);
+    void Process(ushort packetId, Message packet);
 }
 
-public class ClientPacketProcessor : IClientPacketProcessor
+public class ServerPacketProcessor : IServerPacketProcessor
 {
-    private IClientPacketListenerManager _listenerManager;
-    private Dictionary<ushort, Func<Message, IClientPacket>> _packetConstructors = new();
+    private IServerPacketListenerManager _listenerManager;
+    private Dictionary<ushort, Func<Message, IServerPacket>> _packetConstructors = new();
 
-    public ClientPacketProcessor(IClientPacketListenerManager listenerManager)
+    public ServerPacketProcessor(IServerPacketListenerManager listenerManager)
     {
         _listenerManager = listenerManager;
 
@@ -33,7 +32,7 @@ public class ClientPacketProcessor : IClientPacketProcessor
 
         // Retrieve all types that implement IPacket from all loaded assemblies
         var packetTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(IClientPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
+            .Where(type => typeof(IServerPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
 
         foreach (var packetType in packetTypes)
         {
@@ -45,7 +44,7 @@ public class ClientPacketProcessor : IClientPacketProcessor
         }
     }
 
-    public void Process(PlayerConnection connection, ushort packetId, Message buffer)
+    public void Process(ushort packetId, Message buffer)
     {
         if (!_packetConstructors.TryGetValue(packetId, out var constructor))
         {
@@ -56,12 +55,7 @@ public class ClientPacketProcessor : IClientPacketProcessor
         try
         {
             var packet = constructor(buffer);
-            if (connection.Player != null)
-            {
-                var playerPacketEvent = new PlayerPacketEvent(connection.Player, packet);
-                ValorServer.GlobalEventNode.Invoke(playerPacketEvent);
-            }
-            _listenerManager.ProcessPacket(packet, connection);
+            _listenerManager.ProcessPacket(packet);
         }
         catch (Exception ex)
         {
@@ -75,7 +69,7 @@ public class ClientPacketProcessor : IClientPacketProcessor
         if (constructor == null)
             throw new InvalidOperationException($"No valid constructor found for {packetType.Name}.");
 
-        IClientPacket constructorDelegate(Message message) => (IClientPacket)constructor.Invoke(new object[] { message });
+        IServerPacket constructorDelegate(Message message) => (IServerPacket)constructor.Invoke(new object[] { message });
 
         if (!_packetConstructors.TryAdd(packetId, constructorDelegate))
         {

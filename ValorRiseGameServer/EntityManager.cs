@@ -3,6 +3,14 @@ using ValorRiseGameServer.Entities;
 
 namespace ValorRiseGameServer;
 
+public interface IEntityManager
+{
+    Entity AddEntity(Entity entity);
+    bool RemoveEntity(ObjectId id);
+    Entity GetEntity(ObjectId id);
+    IEnumerable<Entity> GetEntities();
+}
+
 public class EntityManager : IEntityManager
 {
     private readonly Dictionary<ObjectId, Entity> _entities = new();

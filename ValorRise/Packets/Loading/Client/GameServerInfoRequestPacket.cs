@@ -1,7 +1,7 @@
 using Riptide;
 using ValorRise.Enums;
 
-namespace ValorRise.Packets.Play.Server;
+namespace ValorRise.Packets.Loading.Client;
 
 [Packet(PacketType.GameServerInfoRequest, MessageSendMode.Reliable)]
 public record GameServerInfoRequestPacket(string IpAddress) : IClientPacket

@@ -5,7 +5,7 @@ using ValorRise.Enums;
 
 namespace ValorRise.Packets.Play.Server;
 
-[Packet(PacketType.SpawnEntity, MessageSendMode.Reliable)]
+[Packet(PacketType.DespawnEntity, MessageSendMode.Reliable)]
 public record DespawnEntityPacket(ObjectId Id) : IServerPacket
 {
     public DespawnEntityPacket(Message packet) : this(packet.GetObjectId()) { }

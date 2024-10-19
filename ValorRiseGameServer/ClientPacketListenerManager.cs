@@ -4,6 +4,19 @@ using ValorRise.Packets;
 
 namespace ValorRiseGameServer;
 
+public interface IClientPacketListenerManager
+{
+    /// <summary>
+    /// Registers a listener for a specific ClientPacket type.
+    /// </summary>
+    void RegisterListener(Type packetType, Action<IPacket, PlayerConnection> listener);
+
+    /// <summary>
+    /// Processes a ClientPacket by invoking all registered listeners for its type.
+    /// </summary>
+    void ProcessPacket(IPacket clientPacket, PlayerConnection connection);
+}
+
 public class ClientPacketListenerManager : IClientPacketListenerManager
 {
     private readonly Dictionary<Type, Action<IPacket, PlayerConnection>> _listeners = new();
@@ -12,12 +25,12 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
     {
         var listenerTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
-            .Where(type => type.GetMethods().Any(m => m.GetCustomAttribute<PacketListenerAttribute>() != null && !type.IsInterface));
+            .Where(type => type.GetMethods().Any(m => m.GetCustomAttribute<ClientPacketListenerAttribute>() != null && !type.IsInterface));
 
         foreach (var type in listenerTypes)
         {
             var instance = Activator.CreateInstance(type);
-            var methods = type.GetMethods().Where(m => m.GetCustomAttribute<PacketListenerAttribute>() != null);
+            var methods = type.GetMethods().Where(m => m.GetCustomAttribute<ClientPacketListenerAttribute>() != null);
             foreach (var method in methods)
             {
                 var parameters = method.GetParameters();
@@ -55,12 +68,12 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
             }
             catch (Exception ex)
             {
-                Logger.Error($"Listener exception at {listener.Method.Name}", ex);
+                Logger.Error($"ClientListener exception", ex);
             }
         }
         else
         {
-            Logger.Warning($"No listeners registered for message type: {packetType.Name}");
+            Logger.Warning($"No ClientListeners registered for message type: {packetType.Name}");
         }
     }
 }
