@@ -2,10 +2,10 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
-using ValorRise;
 using ValorRise.Packets;
+using ValorRise.Packets.Loading.Client;
 
-namespace ValorRiseClient;
+namespace ValorRiseGateway;
 
 public class ValorClient
 {
@@ -15,10 +15,6 @@ public class ValorClient
 
     public static ValorClient Client => _instance;
 
-    public event EventHandler Connected;
-    public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
-    public event EventHandler<DisconnectedEventArgs> Disconnected;
-
     public ValorClient(IServerPacketProcessor packetProcessor)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
@@ -26,9 +22,7 @@ public class ValorClient
         _client = new Client();
 
         _client.MessageReceived += (s, e) => _packetProcessor.Process(e.MessageId, e.Message);
-        _client.Connected += (s, e) => Connected?.Invoke(s, e);
-        _client.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
-        _client.ConnectionFailed += (s, e) => ConnectionFailed?.Invoke(s, e);
+        _client.Connect("127.0.0.1:1302", useMessageHandlers: false);
     }
 
     public static ValorClient Init()
@@ -46,7 +40,6 @@ public class ValorClient
 
     public void Connect(string hostAddress)
     {
-        Logger.Debug("Connecting to " + hostAddress);
         _client.Connect(hostAddress, useMessageHandlers: false);
     }
 

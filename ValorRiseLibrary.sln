@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorRiseGameServer", "Valo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorRiseClient", "ValorRiseClient\ValorRiseClient.csproj", "{B8CB4312-CEE0-4B8D-890F-7FEF6BE025CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorRiseServer", "ValorRiseServer\ValorRiseServer.csproj", "{1D714DB5-4FE3-4A6D-8F74-2F06BD877295}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorRiseAuthenticate", "ValorRiseAuthenticate\ValorRiseAuthenticate.csproj", "{1D714DB5-4FE3-4A6D-8F74-2F06BD877295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorRiseGateway", "ValorRiseGateway\ValorRiseGateway.csproj", "{4062175C-68E6-4279-B112-6C9489D05C7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{CB4A38BA-8B00-4618-BA2C-67CE36BC906A}"
 EndProject
@@ -83,6 +85,10 @@ Global
 		{CB4A38BA-8B00-4618-BA2C-67CE36BC906A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB4A38BA-8B00-4618-BA2C-67CE36BC906A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB4A38BA-8B00-4618-BA2C-67CE36BC906A}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4062175C-68E6-4279-B112-6C9489D05C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4062175C-68E6-4279-B112-6C9489D05C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4062175C-68E6-4279-B112-6C9489D05C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4062175C-68E6-4279-B112-6C9489D05C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		SolutionGuid = {BF3F1E7A-2BC5-4ABD-810C-69A5DBB1EF12}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{4062175C-68E6-4279-B112-6C9489D05C7B} = {045765B7-B1A8-4375-ACEA-CF0AE29A402E}
 		{1D714DB5-4FE3-4A6D-8F74-2F06BD877295} = {045765B7-B1A8-4375-ACEA-CF0AE29A402E}
 		{619F6383-EFDC-47C5-B925-C51115512F07} = {045765B7-B1A8-4375-ACEA-CF0AE29A402E}
 		{B8CB4312-CEE0-4B8D-890F-7FEF6BE025CB} = {045765B7-B1A8-4375-ACEA-CF0AE29A402E}

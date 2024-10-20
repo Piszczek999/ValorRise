@@ -1,26 +1,25 @@
 using System.Reflection;
-using Microsoft.Extensions.Logging;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseGameServer;
+namespace ValorRiseGateway;
 
 public interface IClientPacketListenerManager
 {
     /// <summary>
     /// Registers a listener for a specific ClientPacket type.
     /// </summary>
-    void RegisterListener(Type packetType, Action<IClientPacket, PlayerConnection> listener);
+    void RegisterListener(Type packetType, Action<IClientPacket, ClientConnection> listener);
 
     /// <summary>
     /// Processes a ClientPacket by invoking all registered listeners for its type.
     /// </summary>
-    void ProcessPacket(IClientPacket clientPacket, PlayerConnection connection);
+    void ProcessPacket(IClientPacket clientPacket, ClientConnection connection);
 }
 
 public class ClientPacketListenerManager : IClientPacketListenerManager
 {
-    private readonly Dictionary<Type, Action<IClientPacket, PlayerConnection>> _listeners = new();
+    private readonly Dictionary<Type, Action<IClientPacket, ClientConnection>> _listeners = new();
 
     public ClientPacketListenerManager()
     {
@@ -42,7 +41,7 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
 
                 var packetType = parameters[0].ParameterType;
 
-                Action<IClientPacket, PlayerConnection> action = (packet, connection) =>
+                Action<IClientPacket, ClientConnection> action = (packet, connection) =>
                 {
                     method.Invoke(instance, new object[] { packet, connection });
                 };
@@ -52,12 +51,12 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
         }
     }
 
-    public void RegisterListener(Type packetType, Action<IClientPacket, PlayerConnection> listener)
+    public void RegisterListener(Type packetType, Action<IClientPacket, ClientConnection> listener)
     {
         _listeners[packetType] = listener;
     }
 
-    public void ProcessPacket(IClientPacket packet, PlayerConnection connection)
+    public void ProcessPacket(IClientPacket packet, ClientConnection connection)
     {
         var packetType = packet.GetType();
 
@@ -69,12 +68,12 @@ public class ClientPacketListenerManager : IClientPacketListenerManager
             }
             catch (Exception ex)
             {
-                Logger.Error($"ClientListener exception", ex);
+                Logger.Error($"Listener exception at {listener.GetMethodInfo().Name}", ex);
             }
         }
         else
         {
-            Logger.Warning($"No ClientListeners registered for message type: {packetType.Name}");
+            Logger.Warning($"No listeners registered for message type: {packetType.Name}");
         }
     }
 }

@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using Riptide;
 using ValorRise.Packets;
 
-namespace ValorRiseServer;
+namespace ValorRiseAuthenticate;
 
 public class ClientConnection
 {

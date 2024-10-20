@@ -26,4 +26,13 @@ public class CharacterInfo : IMessageSerializable
         Level = message.GetInt();
         CreatedAt = DateTime.Parse(message.GetString());
     }
+
+    public static CharacterInfo FromCharacter(Character character) => new CharacterInfo
+    {
+        Id = character.Id,
+        UserId = character.UserId,
+        Name = character.Name,
+        Level = character.Level,
+        CreatedAt = character.CreatedAt,
+    };
 }

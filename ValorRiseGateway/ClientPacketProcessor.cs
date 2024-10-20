@@ -3,32 +3,27 @@ using Riptide;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseClient;
+namespace ValorRiseGateway;
 
-public interface IServerPacketProcessor
+public interface IClientPacketProcessor
 {
     /// <summary>
     /// Registers a handler for a specific packet type.
     /// </summary>
-    /// <param name="packetId">The identifier of the packet type.</param>
-    /// <param name="handler">The handler that will process the packet.</param>
     void Register(ushort packetId, Type handler);
 
     /// <summary>
     /// Processes an incoming packet by identifying its type and handling it accordingly.
     /// </summary>
-    /// <param name="connection">The connection from which the packet was received.</param>
-    /// <param name="packetId">The identifier of the packet type.</param>
-    /// <param name="packet">The packet data to be processed.</param>
-    void Process(ushort packetId, Message packet);
+    void Process(ClientConnection connection, ushort packetId, Message packet);
 }
 
-public class ServerPacketProcessor : IServerPacketProcessor
+public class ClientPacketProcessor : IClientPacketProcessor
 {
-    private IServerPacketListenerManager _listenerManager;
-    private Dictionary<ushort, Func<Message, IServerPacket>> _packetConstructors = new();
+    private IClientPacketListenerManager _listenerManager;
+    private Dictionary<ushort, Func<Message, IClientPacket>> _packetConstructors = new();
 
-    public ServerPacketProcessor(IServerPacketListenerManager listenerManager)
+    public ClientPacketProcessor(IClientPacketListenerManager listenerManager)
     {
         _listenerManager = listenerManager;
 
@@ -37,7 +32,7 @@ public class ServerPacketProcessor : IServerPacketProcessor
 
         // Retrieve all types that implement IPacket from all loaded assemblies
         var packetTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(IServerPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
+            .Where(type => typeof(IClientPacket).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface);
 
         foreach (var packetType in packetTypes)
         {
@@ -49,7 +44,7 @@ public class ServerPacketProcessor : IServerPacketProcessor
         }
     }
 
-    public void Process(ushort packetId, Message buffer)
+    public void Process(ClientConnection connection, ushort packetId, Message buffer)
     {
         if (!_packetConstructors.TryGetValue(packetId, out var constructor))
         {
@@ -60,7 +55,7 @@ public class ServerPacketProcessor : IServerPacketProcessor
         try
         {
             var packet = constructor(buffer);
-            _listenerManager.ProcessPacket(packet);
+            _listenerManager.ProcessPacket(packet, connection);
         }
         catch (Exception ex)
         {
@@ -74,7 +69,7 @@ public class ServerPacketProcessor : IServerPacketProcessor
         if (constructor == null)
             throw new InvalidOperationException($"No valid constructor found for {packetType.Name}.");
 
-        IServerPacket constructorDelegate(Message message) => (IServerPacket)constructor.Invoke(new object[] { message });
+        IClientPacket constructorDelegate(Message message) => (IClientPacket)constructor.Invoke(new object[] { message });
 
         if (!_packetConstructors.TryAdd(packetId, constructorDelegate))
         {

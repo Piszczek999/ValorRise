@@ -2,7 +2,7 @@ using System.Reflection;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseClient;
+namespace ValorRiseGateway;
 
 public interface IServerPacketListenerManager
 {
@@ -23,8 +23,8 @@ public class ServerPacketListenerManager : IServerPacketListenerManager
 
     public ServerPacketListenerManager()
     {
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        var listenerTypes = assemblies.SelectMany(assembly => assembly.GetTypes())
+        var listenerTypes = Assembly.GetExecutingAssembly()
+            .GetTypes()
             .Where(type => type.GetMethods().Any(m => m.GetCustomAttribute<ServerPacketListenerAttribute>() != null && !type.IsInterface));
 
         foreach (var type in listenerTypes)
@@ -68,12 +68,12 @@ public class ServerPacketListenerManager : IServerPacketListenerManager
             }
             catch (Exception ex)
             {
-                Logger.Error($"Listener exception at {listener.GetMethodInfo().Name}", ex);
+                Logger.Error($"ServerListener exception", ex);
             }
         }
         else
         {
-            Logger.Warning($"No listeners registered for message type: {packetType.Name}");
+            Logger.Warning($"No ServerListeners registered for message type: {packetType.Name}");
         }
     }
 }

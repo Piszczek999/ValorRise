@@ -3,8 +3,20 @@ using Riptide;
 using ValorRise;
 using ValorRise.Packets;
 
-namespace ValorRiseServer;
+namespace ValorRiseAuthenticate;
 
+public interface IClientPacketProcessor
+{
+    /// <summary>
+    /// Registers a handler for a specific packet type.
+    /// </summary>
+    void Register(ushort packetId, Type handler);
+
+    /// <summary>
+    /// Processes an incoming packet by identifying its type and handling it accordingly.
+    /// </summary>
+    void Process(ClientConnection connection, ushort packetId, Message packet);
+}
 
 internal class ClientPacketProcessor : IClientPacketProcessor
 {

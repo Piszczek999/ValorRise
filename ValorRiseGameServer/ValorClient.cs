@@ -23,7 +23,7 @@ public class ValorClient
 
         _client.MessageReceived += (s, e) => _packetProcessor.Process(e.MessageId, e.Message);
         _client.Connected += (s, e) => SendPacket(new GameServerInfoRequestPacket("127.0.0.1"));
-        _client.Connect("127.0.0.1:1302");
+        _client.Connect("127.0.0.1:1302", useMessageHandlers: false);
     }
 
     public static ValorClient Init()

@@ -73,6 +73,7 @@ public class Player : LivingEntity
             Mana = character.Mana,
             MaxMana = character.MaxMana,
             Position = character.Position,
+            Destination = character.Position,
             MapId = character.MapId,
             Speed = 100f
         };

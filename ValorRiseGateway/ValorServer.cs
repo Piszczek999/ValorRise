@@ -1,8 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
 using Riptide;
 using Riptide.Utils;
+using ValorRise.Packets.Authentication.GameServer;
 
-namespace ValorRiseServer;
+namespace ValorRiseGateway;
 
 public class ValorServer
 {
@@ -14,8 +16,6 @@ public class ValorServer
 
     public static ValorServer Server => _instance;
     public static IClientPacketListenerManager PacketListenerManager => _instance._packetListenerManager;
-    public event EventHandler<ServerConnectedEventArgs> ClientConnected;
-    public event EventHandler<ServerDisconnectedEventArgs> ClientDisconnected;
 
     public ValorServer(IClientPacketProcessor packetProcessor, IClientPacketListenerManager packetListenerManager)
     {
@@ -25,10 +25,10 @@ public class ValorServer
         _server = new Server();
 
         _server.MessageReceived += (s, e) => _packetProcessor.Process(_connections[e.FromConnection.Id], e.MessageId, e.Message);
-        _server.ClientConnected += (s, e) => ClientConnected?.Invoke(s, e);
-        _server.ClientConnected += (s, e) => _connections.TryAdd(e.Client.Id, new ClientConnection(e.Client));
-        _server.ClientDisconnected += (s, e) => ClientDisconnected?.Invoke(s, e);
-        _server.ClientDisconnected += (s, e) => _connections.Remove(e.Client.Id);
+        _server.ClientConnected += ClientConnected;
+        _server.ClientDisconnected += ClientDisconnected;
+
+        _server.Start(1301, 500, useMessageHandlers: false);
     }
 
     public static ValorServer Init()
@@ -44,9 +44,18 @@ public class ValorServer
         return _instance = serviceProvider.GetService<ValorServer>();
     }
 
-    public void Start(ushort port, ushort maxClients)
+    private void ClientConnected(object sender, ServerConnectedEventArgs e)
     {
-        _server.Start(port, maxClients, useMessageHandlers: false);
+        _connections.TryAdd(e.Client.Id, new ClientConnection(e.Client));
+    }
+
+    private void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
+    {
+        if (_connections.TryGetValue(e.Client.Id, out var connection) && connection.UserId != ObjectId.Empty)
+        {
+            ValorClient.Client.SendPacket(new UserLogoutPacket(connection.UserId));
+        }
+        _connections.Remove(e.Client.Id);
     }
 
     public void Stop()
@@ -64,14 +73,14 @@ public class ValorServer
         return _instance._connections.TryGetValue(clientId, out client);
     }
 
-    public static void SendToAll(Message packet)
+    public void SendToAll(Message packet)
     {
-        _instance._server.SendToAll(packet);
+        _server.SendToAll(packet);
     }
 
-    public static void SendToAll(Message packet, ushort exceptToClientId)
+    public void SendToAll(Message packet, ushort exceptToClientId)
     {
-        _instance._server.SendToAll(packet, exceptToClientId);
+        _server.SendToAll(packet, exceptToClientId);
     }
 
     public void DisconnectPlayer(ushort connectionId)
