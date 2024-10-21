@@ -17,17 +17,20 @@ public class ValorServer
     private readonly IClientPacketProcessor _packetProcessor;
     private readonly ITokenVerificationManager _verificationManager;
     private readonly IEntityManager _entityManager;
+    private readonly MapManager _mapManager;
 
     public static ValorServer Server => _instance;
     public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
     public static IEntityManager EntityManager => _instance._entityManager;
+    public static MapManager MapManager => _instance._mapManager;
 
-    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEntityManager entityManager)
+    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEntityManager entityManager, MapManager mapManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
         _verificationManager = verificationManager;
         _entityManager = entityManager;
+        _mapManager = mapManager;
         _server = new Server();
 
         _server.MessageReceived += (s, e) => _packetProcessor.Process(_connections[e.FromConnection.Id], e.MessageId, e.Message);
@@ -44,6 +47,7 @@ public class ValorServer
             .AddSingleton<IClientPacketListenerManager, ClientPacketListenerManager>()
             .AddSingleton<ITokenVerificationManager, TokenVerificationManager>()
             .AddSingleton<IEntityManager, EntityManager>()
+            .AddSingleton<MapManager>()
             .AddSingleton<ValorServer>()
             .BuildServiceProvider();
 

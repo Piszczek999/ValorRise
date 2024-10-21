@@ -6,7 +6,7 @@ using ValorRiseAuthenticate.MongoDB;
 
 namespace ValorRiseAuthenticate.Listeners;
 
-public class LoginAuthRequest
+public class LoginAuthRequestListener
 {
     private static readonly int _maxFailedAttempts = 5;
     private static readonly TimeSpan _lockoutDuration = TimeSpan.FromMinutes(5);

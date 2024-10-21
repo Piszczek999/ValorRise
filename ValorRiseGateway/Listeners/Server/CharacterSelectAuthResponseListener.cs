@@ -12,13 +12,9 @@ public class CharacterSelectAuthResponseListener
     public void CharacterSelectAuthResponse(CharacterSelectAuthResponsePacket packet)
     {
         if (!ValorServer.TryGetClient(packet.ClientId, out var connection)) return;
-        Logger.Debug($"Result sent: {packet.Result}");
-        Logger.Debug($"Token sent: {packet.Token}");
-        Logger.Debug($"Host address sent: {packet.HostAddress}");
 
         if (packet.Result == CharacterSelectResult.Success)
         {
-            Logger.Debug($"Success");
             connection.UserId = ObjectId.Empty; // clear user id to prevent logging out
             var newPacket = new CharacterSelectResponsePacket(packet.Result, packet.Token, packet.HostAddress);
             connection.SendPacket(newPacket);
@@ -26,7 +22,6 @@ public class CharacterSelectAuthResponseListener
         }
         else
         {
-            Logger.Debug($"Failed");
             var newPacket = new CharacterSelectResponsePacket(packet.Result);
             connection.SendPacket(newPacket);
         }

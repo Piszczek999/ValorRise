@@ -6,7 +6,7 @@ using ValorRiseAuthenticate.MongoDB;
 
 namespace ValorRiseAuthenticate.Listeners;
 
-public class UserLogout
+public class UserLogoutListener
 {
     [ClientPacketListener]
     public async void Listener(UserLogoutPacket packet, ClientConnection connection)

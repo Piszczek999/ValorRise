@@ -5,7 +5,7 @@ using ValorRiseAuthenticate.MongoDB;
 
 namespace ValorRiseAuthenticate.Listeners;
 
-public class CharacterLogout
+public class CharacterLogoutListener
 {
     [ClientPacketListener]
     public async void Listener(CharacterLogoutPacket packet, ClientConnection connection)

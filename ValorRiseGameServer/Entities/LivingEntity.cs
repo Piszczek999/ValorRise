@@ -10,6 +10,8 @@ public abstract class LivingEntity : Entity, IMoveable
     public float MaxHealth { get; set; }
     public bool IsDead { get; set; }
     public bool IsInvulnerable { get; set; }
+
+    //IMoveable
     public Vector2 Destination { get; set; }
     public bool IsCollidable { get; set; }
     public float Speed { get; set; }
@@ -36,6 +38,8 @@ public abstract class LivingEntity : Entity, IMoveable
 
     public virtual bool UpdatePosition(double deltaTime)
     {
+        var collisionMap = ValorServer.MapManager.CollisionMap;
+
         Vector2 toTarget = Destination - Position;
 
         float distanceToTarget = toTarget.Length();
@@ -53,15 +57,39 @@ public abstract class LivingEntity : Entity, IMoveable
         float distanceToMove = Speed * (float)deltaTime;
 
         // Move in the direction of the target, but do not overshoot
+        Vector2 potentialPosition;
         if (distanceToMove >= distanceToTarget)
         {
-            Position = Destination;
+            potentialPosition = Destination;
         }
         else
         {
-            // Move towards the target
-            Position += direction * distanceToMove;
+            potentialPosition = Position + direction * distanceToMove;
         }
+
+        // Check if the target position collides with walls
+        bool isBlocked(Vector2 position) =>
+            collisionMap.Tiles[(int)(position.Y / collisionMap.TileSize), (int)(position.X / collisionMap.TileSize)];
+
+        bool xBlocked = isBlocked(new Vector2(potentialPosition.X, Position.Y));
+        bool yBlocked = isBlocked(new Vector2(Position.X, potentialPosition.Y));
+
+        if (xBlocked && yBlocked)
+        {
+            // Both directions blocked, stop movement
+            return false;
+        }
+        else if (xBlocked)
+        {
+            potentialPosition.X = Position.X; // Slide along Y-axis
+        }
+        else if (yBlocked)
+        {
+            potentialPosition.Y = Position.Y; // Slide along X-axis
+        }
+
+        // No collision or sliding is possible, update position
+        Position = potentialPosition;
         return true;
     }
 }

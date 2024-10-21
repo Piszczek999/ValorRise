@@ -5,17 +5,17 @@ public static class Logger
 {
     public static void Debug(string message)
     {
-        RiptideLogger.Log(LogType.Debug, message);
+        RiptideLogger.Log(LogType.Debug, "Debug", message);
     }
 
     public static void Info(string message)
     {
-        RiptideLogger.Log(LogType.Info, message);
+        RiptideLogger.Log(LogType.Info, "Info", message);
     }
 
     public static void Warning(string message)
     {
-        RiptideLogger.Log(LogType.Warning, message);
+        RiptideLogger.Log(LogType.Warning, "Warning", message);
     }
 
     public static void Error(string message, Exception ex = null)

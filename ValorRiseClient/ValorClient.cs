@@ -46,7 +46,6 @@ public class ValorClient
 
     public void Connect(string hostAddress)
     {
-        Logger.Debug("Connecting to " + hostAddress);
         _client.Connect(hostAddress, useMessageHandlers: false);
     }
 

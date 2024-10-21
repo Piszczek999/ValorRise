@@ -10,6 +10,7 @@ public class GameServerInfoResponseListener
     {
         if (packet.Port != 0)
         {
+            ValorServer.MapManager.LoadMap(packet.MapId);
             ValorServer.Server.Start(packet.Port, 500);
             // Init map here
         }

@@ -11,7 +11,6 @@ public class PlayerMovementListener
         try
         {
             var player = connection.Player;
-            Logger.Debug($"{player.Position} - {packet.Destination}");
             if (player.Position == packet.Destination)
             {
                 return;

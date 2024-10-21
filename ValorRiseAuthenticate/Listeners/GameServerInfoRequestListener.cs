@@ -4,7 +4,7 @@ using ValorRise.Packets.Loading.Client;
 
 namespace ValorRiseAuthenticate.Listeners;
 
-public class GameServerInfoRequest
+public class GameServerInfoRequestListener
 {
     [ClientPacketListener]
     public void Listener(GameServerInfoRequestPacket packet, ClientConnection connection)

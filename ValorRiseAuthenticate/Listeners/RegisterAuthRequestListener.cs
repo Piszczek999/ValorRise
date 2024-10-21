@@ -9,7 +9,7 @@ using ValorRiseAuthenticate.MongoDB;
 
 namespace ValorRiseAuthenticate.Listeners;
 
-public class RegisterAuthRequest
+public class RegisterAuthRequestListener
 {
     [ClientPacketListener]
     public async void Listener(RegisterAuthRequestPacket packet, ClientConnection connection)
