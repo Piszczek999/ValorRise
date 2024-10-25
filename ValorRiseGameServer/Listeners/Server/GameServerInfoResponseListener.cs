@@ -6,7 +6,7 @@ namespace ValorRiseGameServer.Listeners.Server;
 public class GameServerInfoResponseListener
 {
     [ServerPacketListener]
-    public void Listener(GameServerInfoResponsePacket packet)
+    public void GameServerInfoResponse(GameServerInfoResponsePacket packet)
     {
         if (packet.Port != 0)
         {

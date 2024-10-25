@@ -17,7 +17,8 @@ public enum PacketType
     PlayerInfo,
     SpawnEntity,
     DespawnEntity,
-    EntityMove,
+    WorldState,
+    FetchServerTimeResponse,
 
     #endregion
 
@@ -25,6 +26,7 @@ public enum PacketType
 
     // From Client
     PlayerAuthenticate = 2000,
+    FetchServerTime,
     PlayerMovement,
 
     // From Authenticate

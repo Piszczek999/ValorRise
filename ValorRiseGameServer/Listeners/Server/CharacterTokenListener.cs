@@ -6,7 +6,7 @@ namespace ValorRiseGameServer.Listeners.Server;
 public class CharacterTokenListener
 {
     [ServerPacketListener]
-    public void Listener(CharacterTokenPacket packet)
+    public void CharacterToken(CharacterTokenPacket packet)
     {
         ValorServer.VerificationManager.InitToken(packet.Token, packet.Character);
     }

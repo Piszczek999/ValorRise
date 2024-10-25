@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Riptide;
 using Riptide.Utils;
+using ValorRise;
 using ValorRise.Packets;
 using ValorRise.Packets.Authentication.GameServer;
 using ValorRise.Packets.Play.Server;
@@ -92,13 +93,18 @@ public class ValorServer
 
     public void PhysicsUpdate(double delta)
     {
-        foreach (IMoveable moveable in _entityManager.GetEntities().OfType<IMoveable>())
+        List<EntityState> entityStates = new();
+
+        foreach (var entity in _entityManager.GetEntities())
         {
-            if (moveable.UpdatePosition(delta))
-            {
-                SendToAll(new EntityMovePacket(((Entity)moveable).Id, ((Entity)moveable).Position));
-            }
+            if (entity is not IMoveable moveable || moveable.Position == moveable.Destination) continue;
+
+            moveable.UpdatePosition(delta);
+
+            entityStates.Add(new EntityState { Id = entity.Id, Position = entity.Position });
         }
+
+        SendToAll(new WorldStatePacket(entityStates.ToArray()));
     }
 
     public static bool TryGetClient(ushort clientId, out Connection client)

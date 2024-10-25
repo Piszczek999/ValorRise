@@ -8,19 +8,12 @@ public class PlayerMovementListener
     [ClientPacketListener]
     public void PlayerMoveClick(ClientPlayerMovementPacket packet, PlayerConnection connection)
     {
-        try
-        {
-            var player = connection.Player;
-            if (player.Position == packet.Destination)
-            {
-                return;
-            }
+        var player = connection.Player;
 
-            connection.Player.Destination = packet.Destination;
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Error processing PlayerMoveClick packet: {ex.Message}");
-        }
+        if (player == null) return;
+        if (packet.Timestamp <= player.LastUpdateTimestamp) return;
+        if (player.Position == packet.Destination) return;
+
+        player.Destination = packet.Destination;
     }
 }

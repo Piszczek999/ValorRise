@@ -14,10 +14,12 @@ public class ValorClient
     private readonly IServerPacketProcessor _packetProcessor;
 
     public static ValorClient Client => _instance;
+    public static short SmoothRTT => _instance._client.SmoothRTT;
+    public static short RTT => _instance._client.RTT;
 
-    public event EventHandler Connected;
-    public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
-    public event EventHandler<DisconnectedEventArgs> Disconnected;
+    public static event EventHandler Connected;
+    public static event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
+    public static event EventHandler<DisconnectedEventArgs> Disconnected;
 
     public ValorClient(IServerPacketProcessor packetProcessor)
     {
@@ -44,22 +46,22 @@ public class ValorClient
         return _instance = serviceProvider.GetService<ValorClient>();
     }
 
-    public void Connect(string hostAddress)
+    public static void Connect(string hostAddress)
     {
-        _client.Connect(hostAddress, useMessageHandlers: false);
+        _instance._client.Connect(hostAddress, useMessageHandlers: false);
     }
 
-    public void Disconnect()
+    public static void Disconnect()
     {
-        _client.Disconnect();
+        _instance._client.Disconnect();
     }
 
-    public void Update()
+    public static void Update()
     {
-        _client.Update();
+        _instance._client.Update();
     }
 
-    public void SendPacket(IClientPacket packet)
+    public static void SendPacket(IClientPacket packet)
     {
         var attribute = packet.GetType().GetCustomAttribute<PacketAttribute>();
         if (attribute == null)
@@ -72,6 +74,6 @@ public class ValorClient
 
         var message = Message.Create(sendMode, packetId);
         packet.Write(message);
-        _client.Send(message);
+        _instance._client.Send(message);
     }
 }

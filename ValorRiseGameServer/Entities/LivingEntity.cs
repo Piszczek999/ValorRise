@@ -36,7 +36,7 @@ public abstract class LivingEntity : Entity, IMoveable
         Health = Math.Min(Health + healAmount, MaxHealth);
     }
 
-    public virtual bool UpdatePosition(double deltaTime)
+    public virtual void UpdatePosition(double deltaTime)
     {
         var collisionMap = ValorServer.MapManager.CollisionMap;
 
@@ -48,7 +48,7 @@ public abstract class LivingEntity : Entity, IMoveable
         if (distanceToTarget < 0.01f) // Small threshold to avoid floating point issues
         {
             Position = Destination;
-            return false; // No movement occurred
+            return; // No movement occurred
         }
 
         Vector2 direction = toTarget / distanceToTarget;
@@ -77,7 +77,7 @@ public abstract class LivingEntity : Entity, IMoveable
         if (xBlocked && yBlocked)
         {
             // Both directions blocked, stop movement
-            return false;
+            return;
         }
         else if (xBlocked)
         {
@@ -90,6 +90,5 @@ public abstract class LivingEntity : Entity, IMoveable
 
         // No collision or sliding is possible, update position
         Position = potentialPosition;
-        return true;
     }
 }
