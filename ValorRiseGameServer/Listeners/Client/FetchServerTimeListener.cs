@@ -8,7 +8,7 @@ public class FetchServerTimeListener
     [ClientPacketListener]
     public void FetchServerTime(FetchServerTimePacket packet, PlayerConnection connection)
     {
-        var newPacket = new FetchServerTimeResponsePacket(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), packet.ClientTimestamp);
+        var newPacket = new FetchServerTimeResponsePacket(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         connection.SendPacket(newPacket);
     }
 }
