@@ -15,7 +15,6 @@ public abstract class Entity : Updatable
     public bool IsVisible { get; set; } = true;
     public bool IsActive { get; set; } = true;
     public bool IsCollidable { get; protected set; } = true;
-    public float CollisionRadius { get; protected set; } = 0;
 
     public Entity(EntityType type, ObjectId id, string name, Vector2 position)
     {

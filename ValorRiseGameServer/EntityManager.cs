@@ -1,4 +1,5 @@
 using MongoDB.Bson;
+using Riptide;
 using ValorRise;
 using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
@@ -43,6 +44,11 @@ public class EntityManager : Updatable
             .Select(e => new EntityState { Id = e.Id, Position = e.Position })
             .ToArray();
 
-        ValorServer.SendToAll(new WorldStatePacket(entityStates));
+        int batchSize = (Message.MaxPayloadSize - 4) / EntityState.ByteSize;
+        for (int i = 0; i < entityStates.Length; i += batchSize)
+        {
+            var batch = entityStates.Skip(i).Take(batchSize).ToArray();
+            ValorServer.SendToAll(new WorldStatePacket(batch));
+        }
     }
 }

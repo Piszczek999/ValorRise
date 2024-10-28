@@ -93,6 +93,7 @@ public class ValorServer
 
     public void PhysicsUpdate(double delta)
     {
+        _mapManager.Update(delta);
         _entityManager.PhysicsUpdate(delta);
     }
 

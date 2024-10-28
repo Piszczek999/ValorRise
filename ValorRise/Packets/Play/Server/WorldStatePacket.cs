@@ -37,4 +37,6 @@ public class EntityState : IMessageSerializable
     public void Serialize(Message message) => message
         .AddObjectId(Id)
         .AddVector2(Position);
+
+    public const int ByteSize = 20;
 }

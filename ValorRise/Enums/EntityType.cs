@@ -2,5 +2,6 @@ namespace ValorRise.Enums;
 
 public enum EntityType
 {
-    Player
+    Player,
+    Slime
 }
