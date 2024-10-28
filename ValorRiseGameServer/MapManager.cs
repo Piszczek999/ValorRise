@@ -33,6 +33,11 @@ public class CollisionMap
             }
         }
     }
+
+    public bool CheckCollision(Vector2 position)
+    {
+        return Tiles[(int)(position.Y / TileSize), (int)(position.X / TileSize)];
+    }
 }
 
 public class MapManager

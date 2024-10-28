@@ -4,10 +4,9 @@ namespace ValorRiseGameServer;
 
 public interface IMoveable
 {
-    Vector2 Position { get; set; }
-    Vector2 Destination { get; set; }
-    bool IsCollidable { get; set; }
-    public float Speed { get; set; }
-
-    void UpdatePosition(double delta);
+    Vector2 Position { get; }
+    Vector2 Destination { get; }
+    bool IsCollidable { get; }
+    float Speed { get; }
+    bool IsMoving { get; }
 }

@@ -17,15 +17,15 @@ public class ValorServer
     private readonly Dictionary<ushort, PlayerConnection> _connections = new();
     private readonly IClientPacketProcessor _packetProcessor;
     private readonly ITokenVerificationManager _verificationManager;
-    private readonly IEntityManager _entityManager;
+    private readonly EntityManager _entityManager;
     private readonly MapManager _mapManager;
 
     public static ValorServer Server => _instance;
     public static ITokenVerificationManager VerificationManager => _instance._verificationManager;
-    public static IEntityManager EntityManager => _instance._entityManager;
+    public static EntityManager EntityManager => _instance._entityManager;
     public static MapManager MapManager => _instance._mapManager;
 
-    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, IEntityManager entityManager, MapManager mapManager)
+    public ValorServer(IClientPacketProcessor packetProcessor, ITokenVerificationManager verificationManager, EntityManager entityManager, MapManager mapManager)
     {
         RiptideLogger.Initialize(Console.WriteLine, Console.WriteLine, Console.WriteLine, Console.Error.WriteLine, true);
         _packetProcessor = packetProcessor;
@@ -47,7 +47,7 @@ public class ValorServer
             .AddSingleton<IClientPacketProcessor, ClientPacketProcessor>()
             .AddSingleton<IClientPacketListenerManager, ClientPacketListenerManager>()
             .AddSingleton<ITokenVerificationManager, TokenVerificationManager>()
-            .AddSingleton<IEntityManager, EntityManager>()
+            .AddSingleton<EntityManager>()
             .AddSingleton<MapManager>()
             .AddSingleton<ValorServer>()
             .BuildServiceProvider();
@@ -93,18 +93,7 @@ public class ValorServer
 
     public void PhysicsUpdate(double delta)
     {
-        List<EntityState> entityStates = new();
-
-        foreach (var entity in _entityManager.GetEntities())
-        {
-            if (entity is not IMoveable moveable || moveable.Position == moveable.Destination) continue;
-
-            moveable.UpdatePosition(delta);
-
-            entityStates.Add(new EntityState { Id = entity.Id, Position = entity.Position });
-        }
-
-        SendToAll(new WorldStatePacket(entityStates.ToArray()));
+        _entityManager.PhysicsUpdate(delta);
     }
 
     public static bool TryGetClient(ushort clientId, out Connection client)

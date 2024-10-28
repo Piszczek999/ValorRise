@@ -1,17 +1,11 @@
 using MongoDB.Bson;
+using ValorRise;
+using ValorRise.Packets.Play.Server;
 using ValorRiseGameServer.Entities;
 
 namespace ValorRiseGameServer;
 
-public interface IEntityManager
-{
-    Entity AddEntity(Entity entity);
-    bool RemoveEntity(ObjectId id);
-    Entity GetEntity(ObjectId id);
-    IEnumerable<Entity> GetEntities();
-}
-
-public class EntityManager : IEntityManager
+public class EntityManager : Updatable
 {
     private readonly Dictionary<ObjectId, Entity> _entities = new();
 
@@ -34,5 +28,21 @@ public class EntityManager : IEntityManager
     public IEnumerable<Entity> GetEntities()
     {
         return _entities.Values;
+    }
+
+    public override void PhysicsUpdate(double delta)
+    {
+        foreach (var entity in _entities.Values)
+            entity.PhysicsUpdate(delta);
+
+        var entityStates = _entities.Values
+            .Where(e =>
+                e.IsVisible &&
+                e is IMoveable moveable &&
+                moveable.IsMoving)
+            .Select(e => new EntityState { Id = e.Id, Position = e.Position })
+            .ToArray();
+
+        ValorServer.SendToAll(new WorldStatePacket(entityStates));
     }
 }

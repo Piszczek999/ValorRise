@@ -1,3 +1,4 @@
+using System.Numerics;
 using MongoDB.Bson;
 using ValorRise.Enums;
 using ValorRise.Models;
@@ -20,7 +21,7 @@ public class Player : LivingEntity
 
     private PlayerConnection _connection;
 
-    public Player(PlayerConnection connection, ObjectId id) : base(EntityType.Player, id)
+    public Player(PlayerConnection connection, ObjectId id, string name, Vector2 position) : base(EntityType.Player, id, name, position)
     {
         _connection = connection;
         Destination = Position;
@@ -61,10 +62,9 @@ public class Player : LivingEntity
 
     public static Player FromCharacter(Character character, PlayerConnection connection)
     {
-        return new Player(connection, character.Id)
+        return new Player(connection, character.Id, character.Name, character.Position)
         {
             UserId = character.UserId,
-            Name = character.Name,
             Level = character.Level,
             Exp = character.Exp,
             Gold = character.Gold,
@@ -72,8 +72,6 @@ public class Player : LivingEntity
             MaxHealth = character.MaxHealth,
             Mana = character.Mana,
             MaxMana = character.MaxMana,
-            Position = character.Position,
-            Destination = character.Position,
             MapId = character.MapId,
             Speed = 100f
         };

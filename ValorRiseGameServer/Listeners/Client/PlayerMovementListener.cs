@@ -12,6 +12,7 @@ public class PlayerMovementListener
 
         if (player == null) return;
         if (packet.Timestamp <= player.LastUpdateTimestamp) return;
+        player.LastUpdateTimestamp = packet.Timestamp;
         if (player.Position == packet.Destination) return;
 
         player.Destination = packet.Destination;
