@@ -25,9 +25,10 @@ public enum PacketType
     #region ToGameserver
 
     // From Client
-    PlayerAuthenticate = 2000,
+    Authenticate = 2000,
     FetchServerTime,
-    PlayerMovement,
+    Move,
+    Attack,
 
     // From Authenticate
     GameServerInfoResponse,

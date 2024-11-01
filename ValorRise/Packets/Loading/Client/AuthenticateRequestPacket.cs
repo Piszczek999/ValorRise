@@ -3,7 +3,7 @@ using ValorRise.Enums;
 
 namespace ValorRise.Packets.Loading.Client;
 
-[Packet(PacketType.PlayerAuthenticate, MessageSendMode.Reliable)]
+[Packet(PacketType.Authenticate, MessageSendMode.Reliable)]
 public record AuthenticateRequestPacket(string Token) : IClientPacket
 {
     public AuthenticateRequestPacket(Message packet) : this(

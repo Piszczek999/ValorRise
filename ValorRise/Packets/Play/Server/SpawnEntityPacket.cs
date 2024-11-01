@@ -9,19 +9,16 @@ namespace ValorRise.Packets.Play.Server;
 public record SpawnEntityPacket(
     ObjectId Id,
     EntityType EntityType,
-    Vector2 Position,
-    Vector2 Destination) : IServerPacket
+    Vector2 Position) : IServerPacket
 {
     public SpawnEntityPacket(Message packet) : this(
         packet.GetObjectId(),
         packet.GetEntityType(),
-        packet.GetVector2(),
         packet.GetVector2())
     { }
 
     public void Write(Message packet) => packet
         .AddObjectId(Id)
         .AddEntityType(EntityType)
-        .AddVector2(Position)
-        .AddVector2(Destination);
+        .AddVector2(Position);
 }
