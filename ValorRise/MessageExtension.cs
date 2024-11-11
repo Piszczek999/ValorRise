@@ -10,12 +10,12 @@ public static class MessageExtensions
     #region EntityType
     public static Message AddEntityType(this Message message, EntityType value)
     {
-        return message.AddUShort((ushort)value);
+        return message.AddByte((byte)value);
     }
 
     public static EntityType GetEntityType(this Message message)
     {
-        return (EntityType)message.GetUShort();
+        return (EntityType)message.GetByte();
     }
     #endregion
 

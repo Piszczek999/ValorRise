@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum CharacterSelectResult
+public enum CharacterSelectResult : byte
 {
     Success,
     CharacterNotFound,

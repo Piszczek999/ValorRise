@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum PacketType
+public enum PacketType : ushort
 {
     #region ToClient
 
@@ -15,10 +15,14 @@ public enum PacketType
     VerifyTokenResponse,
     MapInfo,
     PlayerInfo,
-    SpawnEntity,
-    DespawnEntity,
+    EntitySpawn,
+    EntityDespawn,
     WorldState,
     FetchServerTimeResponse,
+    EntityHealth,
+    PlayerFireball,
+    ProjectileHitEntity,
+    EntityAttack,
 
     #endregion
 
@@ -27,8 +31,9 @@ public enum PacketType
     // From Client
     Authenticate = 2000,
     FetchServerTime,
-    Move,
-    Attack,
+    ClientMove,
+    ClientAttack,
+    ClientSpell,
 
     // From Authenticate
     GameServerInfoResponse,

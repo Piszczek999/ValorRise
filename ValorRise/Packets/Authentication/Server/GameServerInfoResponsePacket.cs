@@ -4,12 +4,12 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Authentication.Server;
 
 [Packet(PacketType.GameServerInfoResponse, MessageSendMode.Reliable)]
-public record GameServerInfoResponsePacket(ushort MapId, ushort Port) : IServerPacket
+public record GameServerInfoResponsePacket(byte MapId, ushort Port) : IServerPacket
 {
-    public GameServerInfoResponsePacket(Message packet) : this(packet.GetUShort(), packet.GetUShort())
+    public GameServerInfoResponsePacket(Message packet) : this(packet.GetByte(), packet.GetUShort())
     { }
 
     public void Write(Message packet) => packet
-        .AddUShort(MapId)
+        .AddByte(MapId)
         .AddUShort(Port);
 }

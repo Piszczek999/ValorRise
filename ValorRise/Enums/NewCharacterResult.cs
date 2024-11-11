@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum NewCharacterResult
+public enum NewCharacterResult : byte
 {
     Success,
     CharacterLimitReached,

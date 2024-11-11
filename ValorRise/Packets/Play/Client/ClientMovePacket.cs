@@ -4,15 +4,15 @@ using ValorRise.Enums;
 
 namespace ValorRise.Packets.Play.Client;
 
-[Packet(PacketType.Move, MessageSendMode.Reliable)]
-public record MovePacket(long Timestamp, Vector2 Destination) : IClientPacket
+[Packet(PacketType.ClientMove, MessageSendMode.Reliable)]
+public record ClientMovePacket(long Timestamp, Vector2 Destination) : IClientPacket
 {
-    public MovePacket(Vector2 Destination) : this(
+    public ClientMovePacket(Vector2 Destination) : this(
         DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
         Destination)
     { }
 
-    public MovePacket(Message packet) : this(
+    public ClientMovePacket(Message packet) : this(
         Timestamp: packet.GetLong(),
         Destination: packet.GetVector2())
     { }

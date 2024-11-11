@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum LoginResult
+public enum LoginResult : byte
 {
     Success,
     IncorrectCredentials,
