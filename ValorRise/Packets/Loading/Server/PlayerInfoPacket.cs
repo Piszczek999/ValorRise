@@ -7,27 +7,30 @@ namespace ValorRise.Packets.Loading.Server;
 
 [Packet(PacketType.PlayerInfo, MessageSendMode.Reliable)]
 public record PlayerInfoPacket(
-    ObjectId Id,
+    uint Id,
     byte Level,
     uint Exp,
     uint Gold,
     float Mana,
-    float MaxMana) : IServerPacket
+    float MaxMana,
+    float AttackSpeed) : IServerPacket
 {
     public PlayerInfoPacket(Message packet) : this(
-        packet.GetObjectId(),
+        packet.GetUInt(),
         packet.GetByte(),
         packet.GetUInt(),
         packet.GetUInt(),
+        packet.GetFloat(),
         packet.GetFloat(),
         packet.GetFloat())
     { }
 
     public void Write(Message packet) => packet
-        .AddObjectId(Id)
+        .AddUInt(Id)
         .AddByte(Level)
         .AddUInt(Exp)
         .AddUInt(Gold)
         .AddFloat(Mana)
-        .AddFloat(MaxMana);
+        .AddFloat(MaxMana)
+        .AddFloat(AttackSpeed);
 }

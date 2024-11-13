@@ -6,12 +6,12 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Play.Client;
 
 [Packet(PacketType.ClientAttack, MessageSendMode.Reliable)]
-public record ClientAttackPacket(ObjectId TargetId) : IClientPacket
+public record ClientAttackPacket(uint TargetId) : IClientPacket
 {
     public ClientAttackPacket(Message packet) : this(
-        TargetId: packet.GetObjectId())
+        TargetId: packet.GetUInt())
     { }
 
     public void Write(Message packet) => packet
-        .AddObjectId(TargetId);
+        .AddUInt(TargetId);
 }

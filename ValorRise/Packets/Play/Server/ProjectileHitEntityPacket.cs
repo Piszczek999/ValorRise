@@ -6,14 +6,14 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Play.Server;
 
 [Packet(PacketType.ProjectileHitEntity, MessageSendMode.Reliable)]
-public record ProjectileHitEntityPacket(ObjectId ProjectileId, ObjectId HitEntityId) : IServerPacket
+public record ProjectileHitEntityPacket(uint ProjectileId, uint HitEntityId) : IServerPacket
 {
     public ProjectileHitEntityPacket(Message packet) : this(
-        packet.GetObjectId(),
-        packet.GetObjectId())
+        packet.GetUInt(),
+        packet.GetUInt())
     { }
 
     public void Write(Message packet) => packet
-        .AddObjectId(ProjectileId)
-        .AddObjectId(HitEntityId);
+        .AddUInt(ProjectileId)
+        .AddUInt(HitEntityId);
 }

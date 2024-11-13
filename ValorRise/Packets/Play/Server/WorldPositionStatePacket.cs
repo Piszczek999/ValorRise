@@ -5,17 +5,17 @@ using ValorRise.Enums;
 
 namespace ValorRise.Packets.Play.Server;
 
-[Packet(PacketType.WorldState, MessageSendMode.Unreliable)]
-public record WorldStatePacket(long Timestamp, EntityState[] EntityStates) : IServerPacket
+[Packet(PacketType.WorldPositionState, MessageSendMode.Unreliable)]
+public record WorldPositionStatePacket(long Timestamp, EntityPositionState[] EntityStates) : IServerPacket
 {
-    public WorldStatePacket(EntityState[] EntityStates) : this(
+    public WorldPositionStatePacket(EntityPositionState[] EntityStates) : this(
         DateTimeOffset.Now.ToUnixTimeMilliseconds(),
         EntityStates)
     { }
 
-    public WorldStatePacket(Message buffer) : this(
+    public WorldPositionStatePacket(Message buffer) : this(
         buffer.GetLong(),
-        buffer.GetSerializables<EntityState>())
+        buffer.GetSerializables<EntityPositionState>())
     { }
 
     public void Write(Message buffer) => buffer
@@ -23,20 +23,20 @@ public record WorldStatePacket(long Timestamp, EntityState[] EntityStates) : ISe
         .AddSerializables(EntityStates);
 }
 
-public class EntityState : IMessageSerializable
+public class EntityPositionState : IMessageSerializable
 {
-    public ObjectId Id { get; set; }
+    public uint Id { get; set; }
     public Vector2 Position { get; set; }
 
     public void Deserialize(Message message)
     {
-        Id = message.GetObjectId();
+        Id = message.GetUInt();
         Position = message.GetVector2();
     }
 
     public void Serialize(Message message) => message
-        .AddObjectId(Id)
+        .AddUInt(Id)
         .AddVector2(Position);
 
-    public const int ByteSize = 20;
+    public const int ByteSize = 12;
 }

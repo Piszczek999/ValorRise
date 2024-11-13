@@ -7,10 +7,10 @@ namespace ValorRise.Packets.Play.Server;
 [Packet(PacketType.EntityAttack, MessageSendMode.Reliable)]
 public record EntityAttackPacket(
     long Timestamp,
-    ObjectId AttackerId,
-    ObjectId TargetId) : IServerPacket
+    uint AttackerId,
+    uint TargetId) : IServerPacket
 {
-    public EntityAttackPacket(ObjectId AttackerId, ObjectId TargetId) : this(
+    public EntityAttackPacket(uint AttackerId, uint TargetId) : this(
         DateTimeOffset.Now.ToUnixTimeMilliseconds(),
         AttackerId,
         TargetId)
@@ -18,12 +18,12 @@ public record EntityAttackPacket(
 
     public EntityAttackPacket(Message packet) : this(
         packet.GetLong(),
-        packet.GetObjectId(),
-        packet.GetObjectId())
+        packet.GetUInt(),
+        packet.GetUInt())
     { }
 
     public void Write(Message packet) => packet
         .AddLong(Timestamp)
-        .AddObjectId(AttackerId)
-        .AddObjectId(TargetId);
+        .AddUInt(AttackerId)
+        .AddUInt(TargetId);
 }

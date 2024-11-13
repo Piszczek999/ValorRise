@@ -6,9 +6,9 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Play.Server;
 
 [Packet(PacketType.PlayerFireball, MessageSendMode.Reliable)]
-public record PlayerFireballPacket(long Timestamp, ObjectId CasterId, ObjectId FireballId, Vector2 Direction) : IServerPacket
+public record PlayerFireballPacket(long Timestamp, uint CasterId, uint FireballId, Vector2 Direction) : IServerPacket
 {
-    public PlayerFireballPacket(ObjectId CasterId, ObjectId FireballId, Vector2 Direction) : this(
+    public PlayerFireballPacket(uint CasterId, uint FireballId, Vector2 Direction) : this(
         DateTimeOffset.Now.ToUnixTimeMilliseconds(),
         CasterId,
         FireballId,
@@ -17,14 +17,14 @@ public record PlayerFireballPacket(long Timestamp, ObjectId CasterId, ObjectId F
 
     public PlayerFireballPacket(Message buffer) : this(
         buffer.GetLong(),
-        buffer.GetObjectId(),
-        buffer.GetObjectId(),
+        buffer.GetUInt(),
+        buffer.GetUInt(),
         buffer.GetVector2())
     { }
 
     public void Write(Message buffer) => buffer
         .AddLong(Timestamp)
-        .AddObjectId(CasterId)
-        .AddObjectId(FireballId)
+        .AddUInt(CasterId)
+        .AddUInt(FireballId)
         .AddVector2(Direction);
 }

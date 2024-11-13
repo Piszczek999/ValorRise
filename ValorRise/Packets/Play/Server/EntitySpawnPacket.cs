@@ -7,27 +7,30 @@ namespace ValorRise.Packets.Play.Server;
 
 [Packet(PacketType.EntitySpawn, MessageSendMode.Reliable)]
 public record EntitySpawnPacket(
-    ObjectId Id,
+    uint Id,
     EntityType EntityType,
     Vector2 Position,
     float Health,
     float MaxHealth,
+    float AttackSpeed,
     string Name) : IServerPacket
 {
     public EntitySpawnPacket(Message packet) : this(
-        packet.GetObjectId(),
+        packet.GetUInt(),
         packet.GetEntityType(),
         packet.GetVector2(),
+        packet.GetFloat(),
         packet.GetFloat(),
         packet.GetFloat(),
         packet.GetString())
     { }
 
     public void Write(Message packet) => packet
-        .AddObjectId(Id)
+        .AddUInt(Id)
         .AddEntityType(EntityType)
         .AddVector2(Position)
         .AddFloat(Health)
         .AddFloat(MaxHealth)
+        .AddFloat(AttackSpeed)
         .AddString(Name);
 }

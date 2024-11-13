@@ -6,10 +6,10 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Play.Server;
 
 [Packet(PacketType.EntityDespawn, MessageSendMode.Reliable)]
-public record EntityDespawnPacket(ObjectId Id) : IServerPacket
+public record EntityDespawnPacket(uint Id) : IServerPacket
 {
-    public EntityDespawnPacket(Message packet) : this(packet.GetObjectId()) { }
+    public EntityDespawnPacket(Message packet) : this(packet.GetUInt()) { }
 
     public void Write(Message packet) => packet
-        .AddObjectId(Id);
+        .AddUInt(Id);
 }
