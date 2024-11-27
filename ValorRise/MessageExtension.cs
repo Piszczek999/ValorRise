@@ -7,18 +7,6 @@ namespace ValorRise;
 
 public static class MessageExtensions
 {
-    #region EntityType
-    public static Message AddEntityType(this Message message, EntityType value)
-    {
-        return message.AddByte((byte)value);
-    }
-
-    public static EntityType GetEntityType(this Message message)
-    {
-        return (EntityType)message.GetByte();
-    }
-    #endregion
-
     #region ObjectId
     public static Message AddObjectId(this Message message, ObjectId value)
     {

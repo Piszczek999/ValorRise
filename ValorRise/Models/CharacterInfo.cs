@@ -8,6 +8,7 @@ public class CharacterInfo : IMessageSerializable
 {
     public ObjectId Id { get; set; }
     public ObjectId UserId { get; set; }
+    public byte Slot { get; set; }
     public string Name { get; set; }
     public byte Level { get; set; }
     public Class Class { get; set; }
@@ -16,16 +17,20 @@ public class CharacterInfo : IMessageSerializable
     public void Serialize(Message message) => message
         .AddObjectId(Id)
         .AddObjectId(UserId)
+        .AddByte(Slot)
         .AddString(Name)
         .AddByte(Level)
+        .AddByte((byte)Class)
         .AddString(CreatedAt.ToString());
 
     public void Deserialize(Message message)
     {
         Id = message.GetObjectId();
         UserId = message.GetObjectId();
+        Slot = message.GetByte();
         Name = message.GetString();
         Level = message.GetByte();
+        Class = (Class)message.GetByte();
         CreatedAt = DateTime.Parse(message.GetString());
     }
 

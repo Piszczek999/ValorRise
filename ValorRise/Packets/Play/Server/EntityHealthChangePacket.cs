@@ -1,5 +1,3 @@
-using System.Numerics;
-using MongoDB.Bson;
 using Riptide;
 using ValorRise.Enums;
 
@@ -11,13 +9,13 @@ public record EntityHealthChangePacket(
     float Health,
     float MaxHealth) : IServerPacket
 {
-    public EntityHealthChangePacket(Message packet) : this(
-        packet.GetUInt(),
-        packet.GetFloat(),
-        packet.GetFloat())
+    public EntityHealthChangePacket(Message buffer) : this(
+        buffer.GetUInt(),
+        buffer.GetFloat(),
+        buffer.GetFloat())
     { }
 
-    public void Write(Message packet) => packet
+    public void Write(Message buffer) => buffer
         .AddUInt(Id)
         .AddFloat(Health)
         .AddFloat(MaxHealth);

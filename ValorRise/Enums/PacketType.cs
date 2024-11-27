@@ -16,7 +16,7 @@ public enum PacketType : ushort
     MapInfo,
     PlayerInfo,
     EntitySpawn,
-    EntityDespawn,
+    ObjectDespawn,
     WorldPositionState,
     WorldStatsState,
     FetchServerTimeResponse,
@@ -24,6 +24,9 @@ public enum PacketType : ushort
     PlayerFireball,
     ProjectileHitEntity,
     EntityAttack,
+    AddItem,
+    RemoveItem,
+    ItemSpawn,
 
     #endregion
 

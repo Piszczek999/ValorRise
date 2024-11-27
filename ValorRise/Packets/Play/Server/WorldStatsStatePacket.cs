@@ -6,9 +6,9 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Play.Server;
 
 [Packet(PacketType.WorldStatsState, MessageSendMode.Reliable)]
-public record WorldStatsState(EntityStatsState[] EntityStates) : IServerPacket
+public record WorldStatsStatePacket(EntityStatsState[] EntityStates) : IServerPacket
 {
-    public WorldStatsState(Message buffer) : this(
+    public WorldStatsStatePacket(Message buffer) : this(
         buffer.GetSerializables<EntityStatsState>())
     { }
 
@@ -33,8 +33,8 @@ public class EntityStatsState : IMessageSerializable
 
     public void Serialize(Message message) => message
         .AddUInt(Id)
-        .AddShort((short)Health)
-        .AddShort((short)MaxHealth)
+        .AddShort((short)(Health + 0.5f))
+        .AddShort((short)(MaxHealth + 0.5f))
         .AddShort((short)(AttackSpeed * 100));
 
     public const int ByteSize = 10;

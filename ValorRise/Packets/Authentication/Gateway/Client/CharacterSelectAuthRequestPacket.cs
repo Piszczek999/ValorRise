@@ -7,12 +7,13 @@ namespace ValorRise.Packets.Authentication.Gateway;
 [Packet(PacketType.CharacterSelectAuthRequest, MessageSendMode.Reliable)]
 public record CharacterSelectAuthRequestPacket(ushort ClientId, ObjectId UserId, ObjectId CharacterId) : IClientPacket
 {
-    public CharacterSelectAuthRequestPacket(Message packet) : this(packet.GetUShort(), packet.GetObjectId(), packet.GetObjectId())
-    {
+    public CharacterSelectAuthRequestPacket(Message buffer) : this(
+        buffer.GetUShort(),
+        buffer.GetObjectId(),
+        buffer.GetObjectId())
+    { }
 
-    }
-
-    public void Write(Message packet) => packet
+    public void Write(Message buffer) => buffer
         .AddUShort(ClientId)
         .AddObjectId(UserId)
         .AddObjectId(CharacterId);

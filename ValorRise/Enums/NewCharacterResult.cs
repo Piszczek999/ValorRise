@@ -5,5 +5,6 @@ public enum NewCharacterResult : byte
     Success,
     CharacterLimitReached,
     NameTaken,
-    FailedToCreateCharacter
+    FailedToCreateCharacter,
+    SlotNotEmpty
 }

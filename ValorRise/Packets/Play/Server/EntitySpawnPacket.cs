@@ -1,5 +1,4 @@
 using System.Numerics;
-using MongoDB.Bson;
 using Riptide;
 using ValorRise.Enums;
 
@@ -15,22 +14,22 @@ public record EntitySpawnPacket(
     float AttackSpeed,
     string Name) : IServerPacket
 {
-    public EntitySpawnPacket(Message packet) : this(
-        packet.GetUInt(),
-        packet.GetEntityType(),
-        packet.GetVector2(),
-        packet.GetFloat(),
-        packet.GetFloat(),
-        packet.GetFloat(),
-        packet.GetString())
+    public EntitySpawnPacket(Message buffer) : this(
+        buffer.GetUInt(),
+        (EntityType)buffer.GetByte(),
+        buffer.GetVector2(),
+        buffer.GetShort(),
+        buffer.GetShort(),
+        buffer.GetShort() / 100f,
+        buffer.GetString())
     { }
 
-    public void Write(Message packet) => packet
+    public void Write(Message buffer) => buffer
         .AddUInt(Id)
-        .AddEntityType(EntityType)
+        .AddByte((byte)EntityType)
         .AddVector2(Position)
-        .AddFloat(Health)
-        .AddFloat(MaxHealth)
-        .AddFloat(AttackSpeed)
+        .AddShort((short)(Health + 0.5f))
+        .AddShort((short)(MaxHealth + 0.5f))
+        .AddShort((short)(AttackSpeed * 100))
         .AddString(Name);
 }
