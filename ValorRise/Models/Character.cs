@@ -13,33 +13,13 @@ public class Character : IMessageSerializable
     public Vector2 Position { get; set; }
     public Class Class { get; set; }
     public byte Level { get; set; }
-    public uint Exp { get; set; }
+    public uint Experience { get; set; }
     public uint Gold { get; set; }
     public byte MapId { get; set; }
     public bool IsDead { get; set; }
     public float Health { get; set; }
     public float Mana { get; set; }
-    // public Spell[] Spells { get; set; }
-    public DateTime CreatedAt { get; set; }
-
-    public Character() { }
-    public Character(ObjectId id, ObjectId userId, string name, Class className)
-    {
-        Id = id;
-        UserId = userId;
-        Name = name;
-        Position = Vector2.Zero;
-        Class = className;
-        Level = 1;
-        Exp = 0;
-        Gold = 0;
-        MapId = 0;
-        IsDead = false;
-        Health = 100;
-        Mana = 50;
-        // Spells = new Spell[4];
-        CreatedAt = DateTime.UtcNow;
-    }
+    public ItemDB[] Inventory { get; set; }
 
     public void Serialize(Message message) => message
         .AddObjectId(Id)
@@ -48,14 +28,13 @@ public class Character : IMessageSerializable
         .AddVector2(Position)
         .AddByte((byte)Class)
         .AddByte(Level)
-        .AddUInt(Exp)
+        .AddUInt(Experience)
         .AddUInt(Gold)
         .AddByte(MapId)
         .AddBool(IsDead)
         .AddFloat(Health)
         .AddFloat(Mana)
-        // .AddSerializables(Spells)
-        .AddString(CreatedAt.ToString());
+        .AddSerializables(Inventory ?? Array.Empty<ItemDB>());
 
     public void Deserialize(Message message)
     {
@@ -65,13 +44,13 @@ public class Character : IMessageSerializable
         Position = message.GetVector2();
         Class = (Class)message.GetByte();
         Level = message.GetByte();
-        Exp = message.GetUInt();
+        Experience = message.GetUInt();
         Gold = message.GetUInt();
         MapId = message.GetByte();
         IsDead = message.GetBool();
         Health = message.GetFloat();
         Mana = message.GetFloat();
-        CreatedAt = DateTime.Parse(message.GetString());
+        Inventory = message.GetSerializables<ItemDB>();
     }
 }
 

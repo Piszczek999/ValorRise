@@ -12,7 +12,6 @@ public class CharacterInfo : IMessageSerializable
     public string Name { get; set; }
     public byte Level { get; set; }
     public Class Class { get; set; }
-    public DateTime CreatedAt { get; set; }
 
     public void Serialize(Message message) => message
         .AddObjectId(Id)
@@ -20,8 +19,7 @@ public class CharacterInfo : IMessageSerializable
         .AddByte(Slot)
         .AddString(Name)
         .AddByte(Level)
-        .AddByte((byte)Class)
-        .AddString(CreatedAt.ToString());
+        .AddByte((byte)Class);
 
     public void Deserialize(Message message)
     {
@@ -31,7 +29,6 @@ public class CharacterInfo : IMessageSerializable
         Name = message.GetString();
         Level = message.GetByte();
         Class = (Class)message.GetByte();
-        CreatedAt = DateTime.Parse(message.GetString());
     }
 
     public static CharacterInfo FromCharacter(Character character) => new CharacterInfo
@@ -40,7 +37,6 @@ public class CharacterInfo : IMessageSerializable
         UserId = character.UserId,
         Name = character.Name,
         Level = character.Level,
-        CreatedAt = character.CreatedAt,
         Class = character.Class,
     };
 }

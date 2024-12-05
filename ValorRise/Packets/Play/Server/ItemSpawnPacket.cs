@@ -8,19 +8,19 @@ namespace ValorRise.Packets.Play.Server;
 public record ItemSpawnPacket(
     uint Id,
     Vector2 Position,
-    ItemType ItemType,
+    ItemName ItemName,
     ushort Amount) : IServerPacket
 {
     public ItemSpawnPacket(Message buffer) : this(
         buffer.GetUInt(),
         buffer.GetVector2(),
-        (ItemType)buffer.GetByte(),
+        (ItemName)buffer.GetByte(),
         buffer.GetUShort())
     { }
 
     public void Write(Message buffer) => buffer
         .AddUInt(Id)
         .AddVector2(Position)
-        .AddByte((byte)ItemType)
+        .AddByte((byte)ItemName)
         .AddUShort(Amount);
 }

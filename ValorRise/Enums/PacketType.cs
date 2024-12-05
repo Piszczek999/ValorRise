@@ -24,8 +24,7 @@ public enum PacketType : ushort
     PlayerFireball,
     ProjectileHitEntity,
     EntityAttack,
-    AddItem,
-    RemoveItem,
+    InventoryUpdate,
     ItemSpawn,
 
     #endregion
