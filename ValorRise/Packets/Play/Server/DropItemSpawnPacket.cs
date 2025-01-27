@@ -4,14 +4,14 @@ using ValorRise.Enums;
 
 namespace ValorRise.Packets.Play.Server;
 
-[Packet(PacketType.ItemSpawn, MessageSendMode.Reliable)]
-public record ItemSpawnPacket(
+[Packet(PacketType.DropItemSpawn, MessageSendMode.Reliable)]
+public record DropItemSpawnPacket(
     uint Id,
     Vector2 Position,
     ItemName ItemName,
-    ushort Amount) : IServerPacket
+    ushort Quantity) : IServerPacket
 {
-    public ItemSpawnPacket(Message buffer) : this(
+    public DropItemSpawnPacket(Message buffer) : this(
         buffer.GetUInt(),
         buffer.GetVector2(),
         (ItemName)buffer.GetByte(),
@@ -22,5 +22,5 @@ public record ItemSpawnPacket(
         .AddUInt(Id)
         .AddVector2(Position)
         .AddByte((byte)ItemName)
-        .AddUShort(Amount);
+        .AddUShort(Quantity);
 }

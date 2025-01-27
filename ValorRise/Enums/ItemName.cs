@@ -2,6 +2,8 @@ namespace ValorRise.Enums;
 
 public enum ItemName : byte
 {
+    None,
     Gel,
-    Wand
+    Wand,
+    Spell_Fireball
 }

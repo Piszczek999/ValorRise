@@ -5,13 +5,12 @@ using ValorRise.Enums;
 namespace ValorRise.Packets.Authentication.Gateway;
 
 [Packet(PacketType.NewCharacterAuthRequest, MessageSendMode.Reliable)]
-public record NewCharacterAuthRequestPacket(ushort ClientId, ObjectId UserId, string Name, Class Class, byte Slot) : IClientPacket
+public record NewCharacterAuthRequestPacket(ushort ClientId, ObjectId UserId, string Name, byte Slot) : IClientPacket
 {
     public NewCharacterAuthRequestPacket(Message buffer) : this(
         buffer.GetUShort(),
         buffer.GetObjectId(),
         buffer.GetString(),
-        (Class)buffer.GetByte(),
         buffer.GetByte())
     { }
 
@@ -19,6 +18,5 @@ public record NewCharacterAuthRequestPacket(ushort ClientId, ObjectId UserId, st
         .AddUShort(ClientId)
         .AddObjectId(UserId)
         .AddString(Name)
-        .AddByte((byte)Class)
         .AddByte(Slot);
 }

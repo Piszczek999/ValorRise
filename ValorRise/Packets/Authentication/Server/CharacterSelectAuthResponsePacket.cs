@@ -8,18 +8,21 @@ public record CharacterSelectAuthResponsePacket(
     ushort ClientId,
     CharacterSelectResult Result,
     string Token = "",
-    string HostAddress = "") : IServerPacket
+    string HostAddress = "",
+    byte MapId = 0) : IServerPacket
 {
     public CharacterSelectAuthResponsePacket(Message packet) : this(
         packet.GetUShort(),
         (CharacterSelectResult)packet.GetByte(),
         packet.GetString(),
-        packet.GetString())
+        packet.GetString(),
+        packet.GetByte())
     { }
 
     public void Write(Message packet) => packet
         .AddUShort(ClientId)
         .AddByte((byte)Result)
         .AddString(Token)
-        .AddString(HostAddress);
+        .AddString(HostAddress)
+        .AddByte(MapId);
 }

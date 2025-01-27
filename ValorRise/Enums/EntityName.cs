@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum EntityType : byte
+public enum EntityName : byte
 {
     Player,
     Slime

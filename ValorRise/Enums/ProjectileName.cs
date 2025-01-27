@@ -1,6 +1,6 @@
 namespace ValorRise.Enums;
 
-public enum SpellName : byte
+public enum ProjectileName : byte
 {
     Fireball
 }

@@ -11,15 +11,13 @@ public class CharacterInfo : IMessageSerializable
     public byte Slot { get; set; }
     public string Name { get; set; }
     public byte Level { get; set; }
-    public Class Class { get; set; }
 
     public void Serialize(Message message) => message
         .AddObjectId(Id)
         .AddObjectId(UserId)
         .AddByte(Slot)
         .AddString(Name)
-        .AddByte(Level)
-        .AddByte((byte)Class);
+        .AddByte(Level);
 
     public void Deserialize(Message message)
     {
@@ -28,7 +26,6 @@ public class CharacterInfo : IMessageSerializable
         Slot = message.GetByte();
         Name = message.GetString();
         Level = message.GetByte();
-        Class = (Class)message.GetByte();
     }
 
     public static CharacterInfo FromCharacter(Character character) => new CharacterInfo
@@ -37,6 +34,5 @@ public class CharacterInfo : IMessageSerializable
         UserId = character.UserId,
         Name = character.Name,
         Level = character.Level,
-        Class = character.Class,
     };
 }

@@ -13,19 +13,19 @@ public enum PacketType : ushort
 
     // From GameServer
     VerifyTokenResponse,
-    MapInfo,
-    PlayerInfo,
+    InitInfo,
     EntitySpawn,
+    ProjectileSpawn,
+    DropItemSpawn,
     ObjectDespawn,
     WorldPositionState,
-    WorldStatsState,
-    FetchServerTimeResponse,
+    EntityStatsState,
+    WorldHealthState,
     EntityHealthChange,
-    PlayerFireball,
+    EntitySpellCast,
     ProjectileHitEntity,
     EntityAttack,
-    InventoryUpdate,
-    ItemSpawn,
+    SlotUpdate,
 
     #endregion
 
@@ -33,10 +33,10 @@ public enum PacketType : ushort
 
     // From Client
     Authenticate = 2000,
-    FetchServerTime,
     ClientMove,
     ClientAttack,
-    ClientSpell,
+    ClientSlotUse,
+    ClientSlotsSwap,
 
     // From Authenticate
     GameServerInfoResponse,
